@@ -1,5 +1,13 @@
+<div class="toolbar">
+    <div class="breadcrumb">
+        <a href="..">..</a>
+        <a href="#">{{ current }}</a>
+    </div>
+</div>
 <div class="root">
     <ul>
-      <li>herro</li>
+      {% for item in results.objects %}
+        <li><a href="_/{{ item.resource_uri }}/">{{ item.__name__ }}</a></li>
+      {% endfor %}
     </ul>
 </div>
