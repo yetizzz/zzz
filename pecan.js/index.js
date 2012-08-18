@@ -31,6 +31,7 @@ proto.init = function(body) {
 
     window.history.pushState({}, {}, '/'+basePath+ev.target.pathname)
 
+    self.root.addClass('loading')
     fn(self)
   })
 
@@ -39,6 +40,7 @@ proto.init = function(body) {
       window.location.pathname.slice(1).split('/').slice(1).join('/').replace(/^\/?/, '/')
     )
 
+    self.root.addClass('loading')
     fn(self)
   }
 
