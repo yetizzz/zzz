@@ -71,6 +71,7 @@ INSTALLED_APPS = (
     'tastypie',
     'hydra',
     'gunicorn',
+    'analytics',
 )
 
 if not SENTRY_DSN is None:
