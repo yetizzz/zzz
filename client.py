@@ -13,6 +13,10 @@ To query that data::
 
     python client.py get
 
+To search that data::
+
+    python client.py get <slug__startswith>
+
 To delete all the data::
 
     python client.py delete
@@ -34,7 +38,7 @@ test_data = [
 ]
 
 
-if len(sys.argv) == 2:
+if len(sys.argv) > 1:
     if sys.argv[1] == 'create':
         for data in test_data:
             key, url = data
@@ -51,7 +55,10 @@ if len(sys.argv) == 2:
                 except:
                     pass
     if sys.argv[1] == 'get':
-        ret = api.hydra.get()
+        if len(sys.argv) == 3:
+            ret = api.hydra.get(slug=sys.argv[2])
+        else:
+            ret = api.hydra.get()
         for ret in ret['objects']:
             print ret
 
@@ -66,4 +73,3 @@ if len(sys.argv) == 2:
             slug = ret['slug']
             print slug,
             print " - Deleted: %s" % api.hydra(slug).delete()
-
