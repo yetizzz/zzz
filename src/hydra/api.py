@@ -17,7 +17,7 @@ def make_slug(val, version="latest"):
 
 
 def remove_slug(val, version="latest"):
-    return val.replace("hydra:v1:redirects:%s:" % version, "")
+    return val.replace(make_slug('', version=version), "")
 
 
 def save(slug, url, version="latest"):
@@ -129,10 +129,11 @@ class HydraResource(Resource):
         else:
             keys = get_keys("*")
         for key in keys:
+            base_key = remove_slug(key)
             ret_obj = RedisObject()
             ret_obj.urls = []
-            ret_obj.slug = remove_slug(key)
-            ret_obj.urls = get_urls(remove_slug(key))
+            ret_obj.slug = base_key
+            ret_obj.urls = get_urls(base_key)
             ret_val.append(ret_obj)
         return ret_val
 
