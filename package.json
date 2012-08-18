@@ -14,6 +14,6 @@
   "license": "BSD",
   "dependencies": {
     "plate": "~1.0.1",
-    "jquery-browserify": "~1.7.2"
+    "br-jquery": "0.0.3"
   }
 }
