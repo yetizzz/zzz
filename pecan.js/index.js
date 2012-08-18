@@ -1,6 +1,6 @@
 module.exports = Site
 
-var $ = require('jquery')
+var $ = require('br-jquery')
   , plate = require('plate')
   , route = require('./routes')
   , request = require('./request')
@@ -43,7 +43,12 @@ proto.render = function(name, context, ready) {
 }
 
 proto.cachedTemplate = function(name) {
-  return this._tplCache[name] || this._tplCache[name] = new plate.Template(templates[name] || '')
+  var tpl = this._tplCache[name]
+  if(!tpl) {
+    tpl = new plate.Template(templates[name] || '')
+  }
+  this._tplCache[name] = tpl
+  return tpl
 }
 
 proto.schema = function(name, ready) {
