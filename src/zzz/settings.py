@@ -13,6 +13,9 @@ DATABASES = {
     'default': dj_database_url.config(default='sqlite:///' + _('database.db'))
 }
 
+SENTRY_DSN = os.getenv('SENTRY_DSN', None)
+REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
 SITE_ID = 1
@@ -69,6 +72,9 @@ INSTALLED_APPS = (
     'hydra',
     'gunicorn',
 )
+
+if not SENTRY_DSN is None:
+    INSTALLED_APPS += ('raven.contrib.django',)
 
 LOGGING = {
     'version': 1,

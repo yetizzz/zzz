@@ -9,3 +9,4 @@ slumber
 gunicorn
 dj_database_url
 sphinx
+raven
