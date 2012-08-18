@@ -1,9 +1,9 @@
 module.exports = Site
 
 var $ = require('jquery')
-  , route = require('./routes')
   , plate = require('plate')
-  , request = require('request')
+  , route = require('./routes')
+  , request = require('./request')
 
 function Site() {
   this.root = null
