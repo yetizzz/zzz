@@ -149,6 +149,7 @@ class HydraResource(Resource):
     def override_urls(self):
         raw_url = r"^(?P<resource_name>%s)/(?P<pk>^(schema)[^/]+)$"
         return [
+            url(r"^(?P<resource_name>%s)/schema/$" % self._meta.resource_name, self.wrap_view('get_schema'), name="api_get_schema"),
             url(raw_url % self._meta.resource_name,
                 self.wrap_view('dispatch_detail'),
                 name="api_dispatch_detail"),
