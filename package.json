@@ -1,0 +1,18 @@
+{
+  "name": "zzz",
+  "version": "0.0.0",
+  "description": "Our epic Django Dash project.",
+  "main": "build_templates.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/yetizzz/zzz.git"
+  },
+  "author": "",
+  "license": "BSD",
+  "dependencies": {
+    "plate": "~1.0.1"
+  }
+}

@@ -4,3 +4,6 @@ include/
 *.swp
 *.swo
 *.pyc
+node_modules/
+pecan.js/templates.js
+src/media/js/bundle.js

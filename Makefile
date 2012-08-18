@@ -1,3 +1,8 @@
+templates:
+	echo "module.exports = " > pecan.js/templates.js
+	node build_templates.js >> pecan.js/templates.js
+
 build:
-	browserify pecan.js/index.js > src/media/js/bundle.js
+	make templates    
+	browserify -r plate pecan.js/site.js > src/media/js/bundle.js
 

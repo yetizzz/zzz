@@ -1,5 +1,8 @@
 var Site = require('./index')
+  , scaffold = require('./scaffold')
   , site
 
-site = new Site()
-site.init()
+scaffold(function(err, ready) {
+  site = new Site()
+  site.init('body', scaffold.templates)
+})
