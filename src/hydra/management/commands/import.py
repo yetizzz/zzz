@@ -1,6 +1,5 @@
 import os
 import operator
-import requests
 
 from sphinx.ext import intersphinx
 from django.core.management.base import NoArgsCommand

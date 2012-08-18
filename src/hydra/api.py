@@ -1,4 +1,3 @@
-import os
 import redis
 
 from django.conf import settings
@@ -8,8 +7,6 @@ from tastypie.resources import Resource
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
-from tastypie.exceptions import ImmediateHttpResponse
-from tastypie.http import HttpConflict
 
 
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
@@ -48,10 +45,10 @@ def get_urls(slug, count=None):
         count = -1
     values = get_range(slug)
     for value in values:
-        url, score = value
+        redirect_url, score = value
         ret_val.append({
             'score': score,
-            'url': url
+            'url': redirect_url
         })
     return ret_val
 
@@ -115,10 +112,10 @@ class HydraResource(Resource):
         ret_val.slug = pk
         values = get_range(pk)
         for value in values:
-            url, score = value
+            redirect_url, score = value
             ret_val.urls.append({
                 'score': score,
-                'url': url
+                'url': redirect_url
             })
         return ret_val
 

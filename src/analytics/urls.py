@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, include
 from tastypie.api import Api
 
 from analytics.resources import VisitResource
