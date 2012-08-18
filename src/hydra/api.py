@@ -1,5 +1,7 @@
 from tastypie.resources import Resource
 from tastypie import fields
+from tastypie.authorization import Authorization
+from tastypie.authentication import Authentication
 import redis
 
 from collections import defaultdict
@@ -9,6 +11,11 @@ r = redis.Redis()
 def make_key(val):
     return "hydra:v1:redirect:%s" % val
 
+def remove_key(val):
+    return val.replace("hydra:v1:redirect:", "")
+
+def save(key, url):
+    r.set(make_key(key), url)
 
 class RedisObject(object):
     def __init__(self, initial=None):
@@ -26,15 +33,29 @@ class RedisObject(object):
     def to_dict(self):
         return self._data
 
+    def __unicode__(self):
+        print "Redis: %s -> %s" % (self.key, self.url)
+
 
 class HydraResource(Resource):
     key = fields.CharField(attribute='key')
     url = fields.CharField(attribute='url')
 
-    #keys = redis.key('hydra:v1:redirect:*')
+    class Meta:
+        object_class = RedisObject
+        authorization=Authorization()
+        authentication=Authentication()
+
+    def get_resource_uri(self, bundle_or_obj):
+        if getattr(bundle_or_obj, 'obj'):
+            return "/api/v1/hydra/%s" % remove_key(bundle_or_obj.obj.key)
+        return "/api/v1/hydra/%s" % remove_key(bundle_or_obj.key)
 
     def obj_create(self, bundle, request=None, **kwargs):
-        print kwargs
+        bundle.obj  = RedisObject(bundle.data)
+        bundle = self.full_hydrate(bundle)
+        save(bundle.obj.key, bundle.obj.url)
+        return bundle.obj
 
     def obj_get(self, request=None, pk=None, **kwargs):
         value = r.get(make_key(pk))
@@ -57,3 +78,6 @@ class HydraResource(Resource):
             ret_obj.url = values[index]
             ret_val.append(ret_obj)
         return ret_val
+
+    def rollback(self, bundles):
+        pass

@@ -6,5 +6,5 @@ from hydra.api import HydraResource
 hydra_resource = HydraResource()
 
 urlpatterns = patterns('',
-    (r'^api/', include(hydra_resource.urls)),
+    (r'^', include(hydra_resource.urls)),
 )
