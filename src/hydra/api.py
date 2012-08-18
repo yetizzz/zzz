@@ -7,7 +7,7 @@ from tastypie.resources import Resource
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
-
+from tastypie.exceptions import NotFound
 
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
@@ -107,10 +107,12 @@ class HydraResource(Resource):
         return bundle.obj
 
     def obj_get(self, request=None, pk=None, **kwargs):
+        values = get_range(pk)
+        if not values:
+            raise NotFound("No object matching this pk")
         ret_val = RedisObject()
         ret_val.urls = []
         ret_val.slug = pk
-        values = get_range(pk)
         for value in values:
             redirect_url, score = value
             ret_val.urls.append({
@@ -145,7 +147,7 @@ class HydraResource(Resource):
             r.delete(slug)
 
     def override_urls(self):
-        raw_url = r"^(?P<resource_name>%s)/(?P<pk>^(schema)[^/]+)/$"
+        raw_url = r"^(?P<resource_name>%s)/(?P<pk>^(schema)[^/]+)$"
         return [
             url(raw_url % self._meta.resource_name,
                 self.wrap_view('dispatch_detail'),
