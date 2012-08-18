@@ -4,3 +4,4 @@ redis
 South
 django-debug-toolbar
 psycopg2
+ipdb
