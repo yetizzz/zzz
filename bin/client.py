@@ -5,17 +5,13 @@ To populate some data::
 
     python client.py create
 
-To list the data:;
+To query that data::
 
     python client.py list
 
-To query that data::
-
-    python client.py get
-
 To search that data::
 
-    python client.py get <slug__startswith>
+    python client.py list <slug__startswith>
 
 To delete all the data::
 
@@ -29,6 +25,8 @@ import sys
 import slumber
 
 api = slumber.API("http://localhost:8000/api/v1/")
+
+LIMIT=500
 
 test_data = [
     ["rtd", "http://readthedocs.org"],
@@ -54,21 +52,16 @@ if len(sys.argv) > 1:
                     print ret['traceback']
                 except:
                     pass
-    if sys.argv[1] == 'get':
-        if len(sys.argv) == 3:
-            ret = api.hydra.get(slug=sys.argv[2])
-        else:
-            ret = api.hydra.get()
-        for ret in ret['objects']:
-            print ret
-
     if sys.argv[1] == 'list':
-        ret =  api.hydra.get()
+        if len(sys.argv) == 3:
+            ret = api.hydra.get(slug=sys.argv[2], limit=LIMIT)
+        else:
+            ret = api.hydra.get(limit=LIMIT)
         for ret in ret['objects']:
             print ret['slug']
 
     if sys.argv[1] == 'delete':
-        ret =  api.hydra.get(limit=5000)
+        ret =  api.hydra.get(limit=LIMIT)
         for ret in ret['objects']:
             slug = ret['slug']
             print slug,

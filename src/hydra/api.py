@@ -13,23 +13,32 @@ from tastypie.http import HttpConflict
 
 r = redis.StrictRedis()
 
-def make_slug(val):
-    return "hydra:v1:redirects:%s" % val
+def make_slug(val, version="latest"):
+    return "hydra:v1:redirects:%s:%s" % (version, val)
 
-def remove_slug(val):
-    return val.replace("hydra:v1:redirects:", "")
+def remove_slug(val, version="latest"):
+    return val.replace("hydra:v1:redirects:%s:" % version, "")
 
-def save(slug, url):
-    redis_slug = make_slug(slug)
-    r.zincrby(redis_slug, url, 1)
+def save(slug, url, version="latest"):
+    redis_slug = make_slug(slug, version)
+    return r.zincrby(redis_slug, url, 1)
     #r.set(redis_slug, urls)
+
+def get_range(pk, withscores=True):
+    return r.zrange(make_slug(pk), 0, -1, withscores=withscores)
+
+def get_keys(key):
+    return r.keys(make_slug('%s' % key))
+
+def delete(slug):
+    return r.delete(make_slug(slug))
 
 def get_urls(slug, count=None):
     ret_val = []
     # Could have defaulted to -1 but that is a less obvious API
     if count is None:
         count = -1
-    values = r.zrange(make_slug(slug), 0, -1, withscores=True)
+    values = get_range(slug)
     for value in values:
         url, score = value
         ret_val.append({
@@ -106,7 +115,7 @@ class HydraResource(Resource):
         ret_val = RedisObject()
         ret_val.urls = []
         ret_val.slug = pk
-        values = r.zrange(make_slug(pk), 0, -1, withscores=True)
+        values = get_range(pk)
         for value in values:
             url, score = value
             ret_val.urls.append({
@@ -119,9 +128,9 @@ class HydraResource(Resource):
         ret_val = []
         filter_slug = request.GET.get('slug', None)
         if filter_slug:
-            keys = r.keys(make_slug('%s*' % filter_slug))
+            keys = get_keys('%s*' % filter_slug)
         else:
-            keys = r.keys(make_slug('*'))
+            keys = get_keys("*")
         for key in keys:
             ret_obj = RedisObject()
             ret_obj.urls = []
@@ -134,10 +143,10 @@ class HydraResource(Resource):
         return self.obj_create(bundle, request, **kwargs)
 
     def obj_delete(self, request=None, **kwargs):
-        r.delete(make_slug(kwargs['pk']))
+        delete(kwargs['pk'])
 
     def obj_delete_list(self, request=None, **kwargs):
-        for slug in r.keys('*'):
+        for slug in get_keys('*'):
             r.delete(slug)
 
     def rollback(self, bundles):
