@@ -8,13 +8,16 @@ from django.conf import settings
 
 from hydra.api import r, save, make_slug
 
+
 def safe_save(slug, url):
     if not r.keys(make_slug(slug)):
         save(slug, url)
 
+
 class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         read(os.path.join(settings.ROOT_DIR, 'django.inv'))
+
 
 def read(file):
     urlpattern = 'http://django.readthedocs.org/en/latest/%s'
@@ -27,7 +30,7 @@ def read(file):
         inner_keys = data[top_key].keys()
         for inner_key in inner_keys:
             #print "INNER KEY: %s" % inner_key
-            project, version, url, title =  data[top_key][inner_key]
+            project, version, url, title = data[top_key][inner_key]
             url_key = url.split('#')[1]
             if ":" in url_key:
                 #This dumps junk data into the url namespace we don't need

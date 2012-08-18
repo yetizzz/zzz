@@ -23,4 +23,3 @@ urlpatterns += patterns('',
     url(r'^_analytics/', include('analytics.urls')),
     url(r'^', include('hydra.urls.slug')),
 )
-

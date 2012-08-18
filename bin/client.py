@@ -25,9 +25,7 @@ import sys
 import slumber
 
 api = slumber.API("http://localhost:8000/api/v1/")
-
-LIMIT=500
-
+LIMIT = 500
 test_data = [
     ["rtd", "http://readthedocs.org"],
     ["google", "http://google.com"],
@@ -61,7 +59,7 @@ if len(sys.argv) > 1:
             print ret['slug']
 
     if sys.argv[1] == 'delete':
-        ret =  api.hydra.get(limit=LIMIT)
+        ret = api.hydra.get(limit=LIMIT)
         for ret in ret['objects']:
             slug = ret['slug']
             print slug,

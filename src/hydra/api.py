@@ -14,25 +14,32 @@ from tastypie.http import HttpConflict
 
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
+
 def make_slug(val, version="latest"):
     return "hydra:v1:redirects:%s:%s" % (version, val)
 
+
 def remove_slug(val, version="latest"):
     return val.replace("hydra:v1:redirects:%s:" % version, "")
+
 
 def save(slug, url, version="latest"):
     redis_slug = make_slug(slug, version)
     return r.zincrby(redis_slug, url, 1)
     #r.set(redis_slug, urls)
 
+
 def get_range(pk, withscores=True):
     return r.zrange(make_slug(pk), 0, -1, withscores=withscores)
+
 
 def get_keys(key):
     return r.keys(make_slug('%s' % key))
 
+
 def delete(slug):
     return r.delete(make_slug(slug))
+
 
 def get_urls(slug, count=None):
     ret_val = []
@@ -141,6 +148,9 @@ class HydraResource(Resource):
             r.delete(slug)
 
     def override_urls(self):
+        raw_url = r"^(?P<resource_name>%s)/(?P<pk>^(schema)[^/]+)/$"
         return [
-            url(r"^(?P<resource_name>%s)/(?P<pk>^(schema)[^/]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
+            url(raw_url % self._meta.resource_name,
+                self.wrap_view('dispatch_detail'),
+                name="api_dispatch_detail"),
         ]
