@@ -87,16 +87,6 @@ class HydraResource(Resource):
         authorization = Authorization()
         authentication = Authentication()
 
-    def detail_uri_kwargs(self, bundle_or_obj):
-        kwargs = {}
-
-        if isinstance(bundle_or_obj, Bundle):
-            kwargs['pk'] = bundle_or_obj.obj.slug
-        else:
-            kwargs['pk'] = bundle_or_obj.slug
-
-        return kwargs
-
     def get_resource_uri(self, bundle_or_obj):
         try:
             if getattr(bundle_or_obj, 'obj'):
@@ -149,10 +139,7 @@ class HydraResource(Resource):
         for slug in get_keys('*'):
             r.delete(slug)
 
-    def rollback(self, bundles):
-        pass
-
     def override_urls(self):
         return [
-            url(r"^(?P<resource_name>%s)/(?P<pk>[^/]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
+            url(r"^(?P<resource_name>%s)/(?P<pk>^(schema)[^/]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
         ]
