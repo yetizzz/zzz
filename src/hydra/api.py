@@ -20,8 +20,11 @@ def save(slug, url):
     r.zincrby(redis_slug, url, 1)
     #r.set(redis_slug, urls)
 
-def get_urls(slug):
+def get_urls(slug, count=None):
     ret_val = []
+    # Could have defaulted to -1 but that is a less obvious API
+    if count is None:
+        count = -1
     values = r.zrange(make_slug(slug), 0, -1, withscores=True)
     for value in values:
         url, score = value

@@ -9,5 +9,5 @@ api.register(HydraResource())
 
 
 urlpatterns = patterns('',
-    (r'^', include(api.urls)),
+    url(r'^', include(api.urls)),
 )

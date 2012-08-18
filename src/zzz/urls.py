@@ -10,7 +10,9 @@ urlpatterns = patterns('',
     url(r'^_admin/',
         TemplateView.as_view(template_name='admin.html'),
         name='admin'),
-    url(r'^api/', include('hydra.urls')),
+    url(r'^api/', include('hydra.urls.api')),
+    url(r'^_analytics/', include('analytics.urls')),
+    url(r'^', include('hydra.urls.slug')),
 )
 
 
