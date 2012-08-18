@@ -4,5 +4,5 @@ templates:
 
 build:
 	make templates    
-	browserify -r jquery-browserify -a jquery:jquery-browserify -r plate pecan.js/site.js > src/media/js/bundle.js
+	browserify -r jquery-browserify -a jquery:jquery-browserify -r plate pecan.js/site.js | uglifyjs > src/media/js/bundle.js
 
