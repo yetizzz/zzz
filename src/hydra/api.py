@@ -110,7 +110,11 @@ class HydraResource(Resource):
 
     def obj_get_list(self, request=None, **kwargs):
         ret_val = []
-        keys = r.keys(make_slug('*'))
+        filter_slug = request.GET.get('slug', None)
+        if filter_slug:
+            keys = r.keys(make_slug('%s*' % filter_slug))
+        else:
+            keys = r.keys(make_slug('*'))
         for key in keys:
             ret_obj = RedisObject()
             ret_obj.urls = []
