@@ -77,6 +77,8 @@ INSTALLED_APPS = (
 if not SENTRY_DSN is None:
     INSTALLED_APPS += ('raven.contrib.django',)
 
+APPEND_SLASH = False
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
