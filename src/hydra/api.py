@@ -6,15 +6,17 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.http import HttpConflict
 import redis
 
-from collections import defaultdict
 
 r = redis.StrictRedis()
+
 
 def make_key(val):
     return "hydra:v1:redirect:%s" % val
 
+
 def remove_key(val):
     return val.replace("hydra:v1:redirect:", "")
+
 
 def is_valid_key(key):
     redis_key = make_key(key)
@@ -27,6 +29,7 @@ def is_valid_key(key):
 def save(key, url):
     redis_key = make_key(key)
     r.set(redis_key, url)
+
 
 class RedisObject(object):
     def __init__(self, initial=None):
@@ -47,14 +50,15 @@ class RedisObject(object):
     def __unicode__(self):
         print "Redis: %s -> %s" % (self.key, self.url)
 
+
 class HydraResource(Resource):
     key = fields.CharField(attribute='key')
     url = fields.CharField(attribute='url')
 
     class Meta:
         object_class = RedisObject
-        authorization=Authorization()
-        authentication=Authentication()
+        authorization = Authorization()
+        authentication = Authentication()
 
     def detail_uri_kwargs(self, bundle_or_obj):
         kwargs = {}
@@ -75,12 +79,12 @@ class HydraResource(Resource):
             return ""
 
     def obj_create(self, bundle, request=None, **kwargs):
-        bundle.obj  = RedisObject(bundle.data)
+        bundle.obj = RedisObject(bundle.data)
         bundle = self.full_hydrate(bundle)
         if not is_valid_key(bundle.obj.key):
             raise ImmediateHttpResponse(
                 HttpConflict("Already exists")
-                )
+            )
         save(bundle.obj.key, bundle.obj.url)
         return bundle.obj
 
@@ -102,7 +106,7 @@ class HydraResource(Resource):
             ret_obj = RedisObject()
             value = values[index]
             ret_obj.key = key
-            ret_obj.url = values[index]
+            ret_obj.url = value
             ret_val.append(ret_obj)
         return ret_val
 
