@@ -1,3 +1,16 @@
+"""
+Basic API client
+
+To populate some data::
+
+    python client.py create
+
+To query that data::
+
+    python client.py get
+
+"""
+
 import json
 import sys
 
