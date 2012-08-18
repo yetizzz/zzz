@@ -8,7 +8,7 @@ import redis
 
 from collections import defaultdict
 
-r = redis.Redis()
+r = redis.StrictRedis()
 
 def make_key(val):
     return "hydra:v1:redirect:%s" % val
@@ -46,7 +46,6 @@ class RedisObject(object):
 
     def __unicode__(self):
         print "Redis: %s -> %s" % (self.key, self.url)
-
 
 class HydraResource(Resource):
     key = fields.CharField(attribute='key')
