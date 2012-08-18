@@ -7,6 +7,15 @@ urlpatterns = patterns('',
     url(r'^$',
         TemplateView.as_view(template_name='base.html'),
         name='home'),
+)
+
+if settings.DEBUG:
+    urlpatterns += patterns('',
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
+            'document_root': settings.MEDIA_ROOT}),
+    )
+
+urlpatterns += patterns('',
     url(r'^_admin/',
         TemplateView.as_view(template_name='admin.html'),
         name='admin'),
@@ -15,9 +24,3 @@ urlpatterns = patterns('',
     url(r'^', include('hydra.urls.slug')),
 )
 
-
-if settings.DEBUG:
-    urlpatterns += patterns('',
-        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
-            'document_root': settings.MEDIA_ROOT}),
-    )
