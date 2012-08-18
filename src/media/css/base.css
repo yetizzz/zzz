@@ -50,3 +50,25 @@ blockquote, q {
 html, body {
     font-family:"helvetica neue", "myriad", "helvetica", sans-serif;
 }
+
+body {
+    background:url('../img/low_contrast_linen.png');
+}
+
+.loading .root {
+    opacity:0.0;
+    -webkit-transition:opacity 0.2s ease-in-out;
+    -moz-transition:opacity 0.2s ease-in-out;
+    -ms-transition:opacity 0.2s ease-in-out;
+    -o-transition:opacity 0.2s ease-in-out;
+    transition:opacity 0.2s ease-in-out;
+}
+
+.root {
+    opacity: 1.0;
+    width:960px;
+    margin:16pt auto;
+    background:white;
+    border-radius:3px;
+    padding:18px;
+}
