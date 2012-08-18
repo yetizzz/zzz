@@ -1,5 +1,7 @@
 module.exports = create
 
-function create() {
+var edit = require('./edit')
 
+function create(site, resource) {
+  return edit(site, resource, null)
 }
