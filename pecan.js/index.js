@@ -2,6 +2,7 @@ module.exports = Site
 
 var route = require('./routes')
   , request = require('./request')
+  , templates = require('./templates')
 
 function Site() {
   this.root = null
@@ -11,20 +12,35 @@ function Site() {
 var cons = Site
   , proto = cons.prototype
 
-proto.init = function(body, templates) {
-  var fn = route(window.location.pathname)
+proto.init = function(body) {
+  var path = window.location.pathname.slice(1).split('/')
+    , basePath = path[0]
+    , fn = route(path.slice(1).join('/').replace(/^\/?/, '/'))
     , self = this
 
   self.root = $(body)
 
-  $('body').on('click', function(ev) {
+  $('body').on('click', 'a', function(ev) {
+
     if(ev.target.host !== window.location.host)
       return
 
     ev.preventDefault()
 
+    fn = route(ev.target.pathname)
+
+    window.history.pushState({}, {}, '/'+basePath+ev.target.pathname)
+
     fn(self)
   })
+
+  window.onpopstate = function(ev) {
+    fn = route(
+      window.location.pathname.slice(1).split('/').slice(1).join('/').replace(/^\/?/, '/')
+    )
+
+    fn(self)
+  }
 
   fn(self) 
 }
@@ -84,12 +100,16 @@ proto.schemaAll = function(ready) {
   if(schema)
     return ready(null, schema)
 
-  request.get(self.apiURL(), function(err, data) {
+  request.get(self.apiURL(), {}, {}, function(err, data) {
     if(err) return ready(err)
 
     self.storage.set('schema', data)
     return ready(null, data)
   })
+}
+
+proto.apiURL = function() {
+  return '/api/v1/'
 }
 
 proto.storage = {
