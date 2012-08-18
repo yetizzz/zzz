@@ -1,13 +1,15 @@
-<div class="toolbar">
+<header>
+    <h1><a href="/">Pecans</a></h1>
     <div class="breadcrumb">
         <a href="..">..</a>
         <a href="#">{{ current }}</a>
     </div>
-</div>
+</header>
+
 <div class="root">
     <ul>
       {% for item in results.objects %}
-        <li><a href="_/{{ item.resource_uri }}/">{{ item.__name__ }}</a></li>
+        <li><a href="{{ resource }}/_/{{ item.resource_uri }}/">{{ item.__name__ }}</a></li>
       {% endfor %}
     </ul>
 </div>

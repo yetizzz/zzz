@@ -13,38 +13,46 @@ var cons = Site
   , proto = cons.prototype
 
 proto.init = function(body) {
-  var path = window.location.pathname.slice(1).split('/')
-    , basePath = path[0]
-    , fn = route(path.slice(1).join('/').replace(/^\/?/, '/'))
-    , self = this
+  var self = this
 
   self.root = $(body)
 
-  $('body').on('click', 'a', function(ev) {
+  self.getRootURL(function(err, url) {
+    $('body').on('click', 'a', function(ev) {
+      if(ev.target.host !== window.location.host)
+        return
 
-    if(ev.target.host !== window.location.host)
-      return
+      ev.preventDefault()
 
-    ev.preventDefault()
+      window.history.pushState({}, {}, please_route(ev.target.pathname))
 
-    fn = route(ev.target.pathname)
+      self.root.addClass('loading')
+      fn(self)
+    })
 
-    window.history.pushState({}, {}, '/'+basePath+ev.target.pathname)
+    window.onpopstate = function(ev) {
+      please_route(window.location.pathname)
+      self.root.addClass('loading')
+      fn(self)
+    }
 
-    self.root.addClass('loading')
-    fn(self)
+    please_route(window.location.pathname)
+
+    function please_route(path) {
+      var first_bit = /^\/([^\/]+)\//g.exec(path)[1]
+
+      path = path
+        .replace(/^\/([^\/]+)\//g, '')
+        .replace(/\/?/, '/')
+
+      fn = route(path)
+      console.log('routing...', path, fn.name)
+
+      fn(self) 
+
+      return '/'+first_bit+path
+    }
   })
-
-  window.onpopstate = function(ev) {
-    fn = route(
-      window.location.pathname.slice(1).split('/').slice(1).join('/').replace(/^\/?/, '/')
-    )
-
-    self.root.addClass('loading')
-    fn(self)
-  }
-
-  fn(self) 
 }
 
 proto.render = function(name, context, ready) {
@@ -95,6 +103,25 @@ proto.schema = function(name, ready) {
   }
 }
 
+proto.getRootURL = function(ready) {
+  var self = this
+    , url = self.storage.get('rooturl')
+
+  if(url) {
+    return ready(null, url)
+  }
+
+  self.render('root_url_dialog.html', {}, function(err, el) {
+    var form = el.find('form')
+    
+    form.submit(function(ev) {
+      ev.preventDefault()
+      
+      return ready(null, self._apiURL = form.find('[name=root_url]').val())
+    })
+  })
+}
+
 proto.schemaAll = function(ready) {
   var self = this
     , schema = self.storage.get('schema')
@@ -111,12 +138,27 @@ proto.schemaAll = function(ready) {
 }
 
 proto.apiURL = function() {
-  return '/api/v1/'
+  return this._apiURL
 }
 
-proto.storage = {
-  get: getStorage
-, set: setStorage
+if(false) {
+  proto.storage = {
+    get: getStorage
+  , set: setStorage
+  }
+} else {
+  proto.storage = {
+    get: getEphemeral
+  , set: setEphemeral
+  }
+}
+
+function getEphemeral(key) {
+  return this[key]
+}
+
+function setEphemeral(key, val) {
+  this[key] = val
 }
 
 function getStorage(key) {

@@ -7,7 +7,10 @@ function route(path) {
 
   for(var i = 0, len = route.routes.length; i < route.routes.length; ++i) {
     if(match = route.routes[i][0].exec(path)) {
-      return function() { route.routes[i][1].apply(null, [].slice.call(arguments).concat(match.slice(1))) } 
+      var ret = function() { route.routes[i][1].apply(null, [].slice.call(arguments).concat(match.slice(1))) }
+
+      ret.name = route.routes[i][1].name
+      return ret 
     } 
   }
 }
