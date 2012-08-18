@@ -39,7 +39,7 @@ proto.editor = function() {
 }
 
 proto.name = function() {
-  return this._data[this._schema.getSortedFields()[0]]
+  return this._data[this._schema.getSortedFields()[0]] || 'unknown'
 }
 
 function guard(datum) {

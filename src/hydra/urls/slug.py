@@ -5,10 +5,10 @@ from hydra.views import SlugLookupRedirectView
 
 
 urlpatterns = patterns('',
-    url(r'^_/(?P<slug>[-\w\d]+)',
+    url(r'^_/(?P<slug>.+)',
         TemplateView.as_view(template_name='base.html'),
         name='slug-details'),
-    url(r'^(?P<slug>[-\w\d]+)',
+    url(r'^(?P<slug>.+)',
         SlugLookupRedirectView.as_view(),
         name='slug-redirect'),
 )
