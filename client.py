@@ -5,9 +5,17 @@ To populate some data::
 
     python client.py create
 
+To list the data:;
+
+    python client.py list
+
 To query that data::
 
     python client.py get
+
+To delete all the data::
+
+    python client.py delete
 
 """
 
@@ -43,12 +51,19 @@ if len(sys.argv) == 2:
                 except:
                     pass
     if sys.argv[1] == 'get':
-        print api.hydra('awesome').get()
+        ret = api.hydra.get()
+        for ret in ret['objects']:
+            print ret
+
+    if sys.argv[1] == 'list':
+        ret =  api.hydra.get()
+        for ret in ret['objects']:
+            print ret['slug']
 
     if sys.argv[1] == 'delete':
         ret =  api.hydra.get()
         for ret in ret['objects']:
             slug = ret['slug']
-            print slug
-            print api.hydra(slug).delete()
+            print slug,
+            print " - Deleted: %s" % api.hydra(slug).delete()
 
