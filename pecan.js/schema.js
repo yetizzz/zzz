@@ -69,6 +69,19 @@ proto.viewable = function() {
 
 }
 
+proto.instantiate = function() {
+  return new ResourceInstance({}, this)
+}
+
+proto.get = function(url, ready) {
+  var self = this
+
+  self._site.resourceInstance(url, function(err, data) {
+    console.log(data)
+    ready(null, self.wrap(data))
+  })
+}
+
 proto.list = function(url, ready) {
   var self = this
 

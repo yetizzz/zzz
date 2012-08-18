@@ -146,6 +146,7 @@ proto.schemaAll = function(ready) {
   })
 }
 
+proto.resourceInstance = 
 proto.schemaResources = function(url, ready) {
   request.get(url, this.authHeader(), {}, ready)
 }
@@ -155,6 +156,7 @@ proto.authHeader = function() {
     'Authorization': 'Basic '+this.storage.get('auth')
   }
 }
+
 
 proto.apiURL = function() {
   return this._apiURL
