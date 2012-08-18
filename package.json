@@ -13,8 +13,7 @@
   "author": "",
   "license": "BSD",
   "dependencies": {
-    "plate": "1.0.2",
-    "br-jquery": "0.0.3",
-    "browserify": "1.X.X"
+    "browserify": "1.X.X",
+    "plate": "1.0.2"
   }
 }

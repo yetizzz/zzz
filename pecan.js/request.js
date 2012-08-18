@@ -1,7 +1,5 @@
 module.exports = request
 
-var $ = require('br-jquery')
-
 function request(method, path, headers, body, ready) {
   $.ajax({
       type: method

@@ -1,8 +1,6 @@
 module.exports = Site
 
-var $ = require('br-jquery')
-  , plate = require('plate')
-  , route = require('./routes')
+var route = require('./routes')
   , request = require('./request')
 
 function Site() {
@@ -100,9 +98,9 @@ proto.storage = {
 }
 
 function getStorage(key) {
-  localStorage.get(key)
+  localStorage.getItem(key)
 }
 
 function setStorage(key, value) {
-  localStorage.set(key, value)
+  localStorage.setItem(key, value)
 }

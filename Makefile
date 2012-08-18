@@ -4,7 +4,10 @@ templates:
 
 build:
 	npm install
-	make templates    
-	node_modules/.bin/browserify -r br-jquery -r plate pecan.js/site.js > src/media/js/bundle.js
+	make templates
+	cd node_modules/plate/ && make build && cd -
+	cat node_modules/plate/plate.min.js > src/media/js/bundle.js
+	cat pecan.js/jquery.js >> src/media/js/bundle.js
+	node_modules/.bin/browserify pecan.js/site.js >> src/media/js/bundle.js
 
 
