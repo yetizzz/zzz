@@ -1,5 +1,7 @@
 # Django settings for zzz project.
 import os
+import dj_database_url
+
 
 ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
 _ = lambda x: os.path.join(ROOT_DIR, x)
@@ -8,14 +10,7 @@ DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'database.db',
-        'USER': '',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '',
-    }
+    'default': dj_database_url.config(default='sqlite:///' + _('database.db'))
 }
 
 TIME_ZONE = 'America/Chicago'
