@@ -1,3 +1,4 @@
+import os
 import redis
 
 from django.conf.urls import url
@@ -10,8 +11,8 @@ from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.http import HttpConflict
 
 
-
-r = redis.StrictRedis()
+r = redis.StrictRedis.from_url(os.getenv('REDISTOGO_URL',
+                                         'redis://localhost:6379'))
 
 def make_slug(val, version="latest"):
     return "hydra:v1:redirects:%s:%s" % (version, val)
