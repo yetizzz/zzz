@@ -45,13 +45,12 @@ if len(sys.argv) > 1:
     if sys.argv[1] == 'create':
         for data in test_data:
             key, url = data
-
             try:
                 resp = api.hydra.post({"slug": key, "urls": [url]})
                 print "WOOT"
                 print resp
             except Exception, e:
-                print e
+                print "Exception: %s" % e
                 try:
                     ret = json.loads(e.content)
                     print ret['traceback']

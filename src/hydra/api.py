@@ -53,8 +53,8 @@ class HydraResource(Resource):
     def get_resource_uri(self, bundle_or_obj):
         try:
             if getattr(bundle_or_obj, 'obj'):
-                return "/api/v1/hydra/%s" % remove_slug(bundle_or_obj.obj.slug)
-            return "/api/v1/hydra/%s" % remove_slug(bundle_or_obj.slug)
+                return "/_api/v1/hydra/%s" % remove_slug(bundle_or_obj.obj.slug)
+            return "/_api/v1/hydra/%s" % remove_slug(bundle_or_obj.slug)
         except:
             return ""
 
