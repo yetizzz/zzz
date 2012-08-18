@@ -19,12 +19,19 @@ To delete all the data::
 
 """
 
+import os
 import json
 import sys
 
 import slumber
 
-api = slumber.API("http://localhost:8000/api/v1/")
+if os.environ.get("BUILDPACK_URL", None):
+    print "HITTING PROD!"
+    api = slumber.API("http://zzz.herokuapp.com/_api/v1/")
+else:
+    print "HITTING LOCAL"
+    api = slumber.API("http://localhost:8000/_api/v1/")
+
 LIMIT = 500
 test_data = [
     ["rtd", "http://readthedocs.org"],
