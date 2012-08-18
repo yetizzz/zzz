@@ -6,6 +6,8 @@
     {% endif %}
 </div>
 <div class="form-row-target">
+{% block form_row_target %}
     <input {% if meta.readonly %}disabled{% endif %} type="text" name="{{ name }}" id="id_{{ name }}" value="{{ value }}" />
+{% endblock %}
 </div>
 </div>

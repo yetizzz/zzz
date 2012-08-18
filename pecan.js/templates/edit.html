@@ -8,7 +8,6 @@
 </header>
 
 <div class="root">
-    hi guys
     <h2>{% if instance.name %}Editing {{ instance.name }}{% else %}Create a new {{ resource }}{% endif %}</h2>
     <form action="." method="POST">
         {% for field in instance.editor %}

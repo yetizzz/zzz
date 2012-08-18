@@ -11,6 +11,18 @@ function Site() {
   this._auth = {}
 }
 
+plate.Template.Meta.registerPlugin('loader', function(name, ready) {
+  return new plate.Template(templates[name] || '')
+})
+
+plate.Template.Meta.registerFilter('is_object', function(input) {
+  return input+'' === '[object Object]'
+})
+
+plate.Template.Meta.registerFilter('is_array', function(input) {
+  return Array.isArray(input)
+})
+
 var cons = Site
   , proto = cons.prototype
 
