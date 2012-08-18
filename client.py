@@ -17,6 +17,7 @@ for data in test_data:
         print "WOOT"
         print resp
     except Exception, e:
+        print e
         try:
             ret = json.loads(e.content)
             print ret['traceback']
