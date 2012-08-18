@@ -4,7 +4,8 @@ Our epic Django Dash project.
 API
 ---
 
-    GET /api/v1/redirct/
+```rest
+    GET /api/v1/redirect/
     [
         "slugs": {
             "queryset",
@@ -24,7 +25,7 @@ API
     POST /api/v1/redirect/<slug>/
         {"url": "http://django.rtfd.org/docs/queryset.html"}
 
-    GET /api/v1/redirct/<slug>/
+    GET /api/v1/redirect/<slug>/
         [
             {
                 "count": 5,
@@ -38,3 +39,7 @@ API
 
 
     DELETE /api/v1/redirect/<slug>/
+
+    PUT /api/v1/redirect/<slug>/
+
+```
