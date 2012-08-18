@@ -1,7 +1,10 @@
+import os
 import operator
+import requests
 
 from sphinx.ext import intersphinx
 from django.core.management.base import NoArgsCommand
+from django.conf import settings
 
 from hydra.api import r, save, make_slug
 
@@ -11,7 +14,7 @@ def safe_save(slug, url):
 
 class Command(NoArgsCommand):
     def handle_noargs(self, **options):
-        read('objects.inv')
+        read(os.path.join(settings.ROOT_DIR, 'django.inv'))
 
 def read(file):
     urlpattern = 'http://django.readthedocs.org/en/latest/%s'
