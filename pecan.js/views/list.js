@@ -3,45 +3,21 @@ module.exports = list
 var request = require('../request')
 
 function list(site, resource) {
-  site.schemaAll(done)
+  site.schema(resource, done)
 
-  function done(err, schemas) {
-    var schema = schemas[resource]
+  function done(err, schema) {
 
-    request.get(schema.list_endpoint, {}, {}, function(err, items) {
-      items.objects = items.objects.map(getName.bind(schema))
+    schema.list(null, function(err, items, meta) {
+      var ctxt = {
+          resource: resource
+        , meta: meta
+        , results: items
+        , schema: schema
+      }
 
-      site.render('list.html', {resource: resource, results: items}, function(err, el) {
+      site.render('list.html', ctxt, function(err, el) {
 
       })
     })    
   }
 }
-
-function getName(obj, idx, all) {
-  for(var i = 0, len = names.length; i < len; ++i) {
-    if(obj[names[i]]) {
-      obj.__name__ = obj[names[i]]
-      return obj
-    }
-  }
-  
-  for(var key in this) {
-    if(this[key].type === 'string') {
-      obj.__name__ = obj[this[key]]
-      return obj
-    }
-  }
-
-  obj.__name__ = resource_uri
-
-  return obj
-}
-
-var names = [
-    'name'
-  , 'display_name'
-  , 'human_name'
-  , 'title'
-  , 'slug'
-]

@@ -16,8 +16,8 @@ function route(path) {
 }
 
 route.routes = [
-    [/^\/?$/, views.root]
-  , [/^\/([\w\d\-_]+)\/_\/new/, views.create]
-  , [/^\/([\w\d\-_]+)\/_\/(.*?)/, views.edit]
-  , [/^\/([\w\d\-_]+)/, views.list]
+    [/^$/, views.root]
+  , [/^([\w\d\-_]+)\/_\/new/, views.create]
+  , [/^([\w\d\-_]+)\/_\/(.*?)/, views.edit]
+  , [/^([\w\d\-_]+)/, views.list]
 ]

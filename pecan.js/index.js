@@ -3,10 +3,12 @@ module.exports = Site
 var route = require('./routes')
   , request = require('./request')
   , templates = require('./templates')
+  , Schema = require('./schema')
 
 function Site() {
   this.root = null
   this._tplCache = {}
+  this._auth = {}
 }
 
 var cons = Site
@@ -43,14 +45,12 @@ proto.init = function(body) {
 
       path = path
         .replace(/^\/([^\/]+)\//g, '')
-        .replace(/\/?/, '/')
 
       fn = route(path)
-      console.log('routing...', path, fn.name)
 
       fn(self) 
 
-      return '/'+first_bit+path
+      return '/'+first_bit+'/'+path
     }
   })
 }
@@ -75,34 +75,6 @@ proto.cachedTemplate = function(name) {
   return tpl
 }
 
-proto.schema = function(name, ready) {
-  var self = this
-    , key = 'schema:'+name
-    , schema = self.storage.get(key)
-  
-  if(schema) {
-    return ready(null, schema)
-  }
-
-  self.schemaAll(gotSchema)
-
-  function gotSchema(err, data) {
-    if(err) return ready(err)
-
-    if(!data[name] || !data[name].schema) {
-      return ready(new Error('schema was borked'))
-    }
-
-    request.get(data[name].schema, {}, {}, function(err, data) {
-      if(err) {
-        return ready(err)
-      }
-      self.storage.set(key, data)
-      return ready(null, data)
-    })
-  }
-}
-
 proto.getRootURL = function(ready) {
   var self = this
     , url = self.storage.get('rooturl')
@@ -116,10 +88,46 @@ proto.getRootURL = function(ready) {
     
     form.submit(function(ev) {
       ev.preventDefault()
-      
-      return ready(null, self._apiURL = form.find('[name=root_url]').val())
+     
+      var val = self._apiURL = form.find('[name=root_url]').val()
+
+      console.log(val)
+      self.storage.set('rooturl', val)
+      self.storage.set('auth', btoa(form.find('[name=user]').val()+':'+form.find('[name=password]')))
+      return ready(null, val)
     })
   })
+}
+
+proto.schema = function(name, ready) {
+  var self = this
+    , key = 'schema:'+name
+    , schema = self.storage.get(key)
+  
+  if(schema) {
+    return ready(null, new Schema(name, schema, self))
+  }
+
+  self.schemaAll(gotSchema)
+
+  function gotSchema(err, data) {
+    if(err) return ready(err)
+
+    if(!data[name] || !data[name].schema) {
+      return ready(new Error('schema was borked'))
+    }
+
+    request.get(data[name].schema, self.authHeader(), {}, function(err, schemaData) {
+      if(err) {
+        return ready(err)
+      }
+
+      schemaData.urls = data[name]
+
+      self.storage.set(key, schemaData)
+      return ready(null, new Schema(name, schemaData, self))
+    })
+  }
 }
 
 proto.schemaAll = function(ready) {
@@ -129,19 +137,30 @@ proto.schemaAll = function(ready) {
   if(schema)
     return ready(null, schema)
 
-  request.get(self.apiURL(), {}, {}, function(err, data) {
+  request.get(self.apiURL(), self.authHeader(), {}, function(err, data) {
     if(err) return ready(err)
 
     self.storage.set('schema', data)
+
     return ready(null, data)
   })
+}
+
+proto.schemaResources = function(url, ready) {
+  request.get(url, this.authHeader(), {}, ready)
+}
+
+proto.authHeader = function() {
+  return {
+    'Authorization': 'Basic '+this.storage.get('auth')
+  }
 }
 
 proto.apiURL = function() {
   return this._apiURL
 }
 
-if(false) {
+if(true) {
   proto.storage = {
     get: getStorage
   , set: setStorage
@@ -162,9 +181,9 @@ function setEphemeral(key, val) {
 }
 
 function getStorage(key) {
-  localStorage.getItem(key)
+  return JSON.parse(localStorage.getItem(key))
 }
 
 function setStorage(key, value) {
-  localStorage.setItem(key, value)
+  localStorage.setItem(key, JSON.stringify(value))
 }
