@@ -1,10 +1,14 @@
+import redis
+
+from django.conf.urls import url
+
 from tastypie.resources import Resource
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
 from tastypie.exceptions import ImmediateHttpResponse
 from tastypie.http import HttpConflict
-import redis
+
 
 
 r = redis.StrictRedis()
@@ -138,3 +142,8 @@ class HydraResource(Resource):
 
     def rollback(self, bundles):
         pass
+
+    def override_urls(self):
+        return [
+            url(r"^(?P<resource_name>%s)/(?P<pk>[^/]+)/$" % self._meta.resource_name, self.wrap_view('dispatch_detail'), name="api_dispatch_detail"),
+        ]

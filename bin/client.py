@@ -68,7 +68,7 @@ if len(sys.argv) > 1:
             print ret['slug']
 
     if sys.argv[1] == 'delete':
-        ret =  api.hydra.get()
+        ret =  api.hydra.get(limit=5000)
         for ret in ret['objects']:
             slug = ret['slug']
             print slug,
