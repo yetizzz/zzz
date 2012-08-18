@@ -72,7 +72,7 @@ INSTALLED_APPS = (
     'south',
     'tastypie',
     'hydra',
-    'analytics',
+    'gunicorn',
 )
 
 LOGGING = {

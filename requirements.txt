@@ -6,3 +6,4 @@ django-debug-toolbar
 psycopg2
 ipdb
 slumber
+gunicorn
