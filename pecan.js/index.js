@@ -50,7 +50,7 @@ proto.init = function(body) {
 
       fn(self) 
 
-      return '/'+first_bit+'/'+path
+      return '/'+first_bit+'/'+(path ? path.replace(/\/?$/, '/') : '')
     }
   })
 }

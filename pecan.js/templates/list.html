@@ -22,9 +22,9 @@
               {% for field_name, value in item.fields %}
                 <td>
                 {% if forloop.first %}
-                    <a href="{{ resource }}/_/{{ item.url }}/">
+                    <a href="_/{{ item.url }}/">
                 {% endif %}
-                {{ value }}
+                    {{ value }}
                 {% if forloop.first %}
                     </a>
                 {% endif %}
