@@ -15,10 +15,20 @@ var cons = Site
 
 proto.init = function(body, templates) {
   var fn = route(window.location.pathname)
+    , self = this
 
-  this.root = $(body)
+  self.root = $(body)
 
-  fn(this) 
+  $('body').on('click', function(ev) {
+    if(ev.target.host !== window.location.host)
+      return
+
+    ev.preventDefault()
+
+    fn(self)
+  })
+
+  fn(self) 
 }
 
 proto.render = function(name, context, ready) {
@@ -26,6 +36,8 @@ proto.render = function(name, context, ready) {
 
   self.cachedTemplate(name).render(context, function(err, data) {
     self.root.html(data)
+    self.root.removeClass('loading')
+
     ready(null, self.root)  
   })  
 }
