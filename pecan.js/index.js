@@ -68,6 +68,9 @@ proto.render = function(name, context, ready) {
 
 proto.cachedTemplate = function(name) {
   var tpl = this._tplCache[name]
+  if(!templates[name])
+    return null
+
   if(!tpl) {
     tpl = new plate.Template(templates[name] || '')
   }
@@ -156,7 +159,6 @@ proto.authHeader = function() {
     'Authorization': 'Basic '+this.storage.get('auth')
   }
 }
-
 
 proto.apiURL = function() {
   return this._apiURL

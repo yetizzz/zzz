@@ -12,7 +12,7 @@
         <thead>
             <tr>
                 {% for field in schema.getSortedFields %}
-                    <th>{{ field }}</th>
+                    <th>{{ field|capfirst }}</th>
                 {% endfor %}
             </tr>
         </thead>

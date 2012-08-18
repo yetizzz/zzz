@@ -1,0 +1,11 @@
+<div class="form-row {% if not meta.blank and not meta.nullable %}required{% endif %}">
+<div class="form-row-label">
+    <label for="id_{{ name }}">{{ meta.display_name|default:name }}</label>
+    {% if meta.help_text %}
+        <aside>{{ meta.help_text }}</aside>
+    {% endif %}
+</div>
+<div class="form-row-target">
+    <input {% if meta.readonly %}disabled{% endif %} type="text" name="{{ name }}" id="id_{{ name }}" value="{{ value }}" />
+</div>
+</div>

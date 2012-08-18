@@ -3,6 +3,8 @@ module.exports = edit
 function edit(site, resource, full_resource) {
   var ctxt = {}
 
+  full_resource = full_resource.replace(/\/?$/, '/')
+
   console.log(resource, full_resource)
   site.schema(resource, function(err, schema) {
     ctxt.schema = schema
@@ -18,8 +20,7 @@ function edit(site, resource, full_resource) {
     ctxt.resource = resource
     ctxt.instance = instance
 
-    site.render('edit.html', ctxt, function() {
-
+    site.render('edit.html', ctxt, function(err, data) {
     })
   }
 }

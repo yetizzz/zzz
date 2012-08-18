@@ -6,12 +6,16 @@ function Schema(name, obj, site) {
   this._source = obj
   this._site = site
   this._name = name
+  this._sortedFieldsCache = null
 }
 
 var cons = Schema
   , proto = cons.prototype
 
 proto.getSortedFields = function() {
+  if(this._sortedFieldsCache)
+    return this._sortedFieldsCache
+
   // name first, then everything else
   var names = [
       'display_name'
@@ -46,7 +50,7 @@ proto.getSortedFields = function() {
         .filter(function(x) { return x !== name_field && x !== 'resource_uri' })
     )
 
-  return fields
+  return this._sortedFieldsCache = fields
 }
 
 proto.wrap = function(result) {
@@ -70,14 +74,28 @@ proto.viewable = function() {
 }
 
 proto.instantiate = function() {
-  return new ResourceInstance({}, this)
+  var obj = {}
+  for(var key in this._source.fields) {
+    obj[key] = this._source.fields.default !== 'No default provided.' ? this._source.fields.default : default_for_type(this._source.fields.type)
+  }
+
+  return new ResourceInstance(obj, this)
+
+  function default_for_type(type) {
+    switch(type) {
+      case 'list': return []
+      case 'integer': return 0
+      case 'string': return ''
+      case 'datetime': return new Date().toISOString()
+    }
+    return ''
+  }
 }
 
 proto.get = function(url, ready) {
   var self = this
 
   self._site.resourceInstance(url, function(err, data) {
-    console.log(data)
     ready(null, self.wrap(data))
   })
 }

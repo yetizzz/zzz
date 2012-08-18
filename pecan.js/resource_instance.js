@@ -21,6 +21,27 @@ proto.fields = function() {
   })
 }
 
+proto.editor = function() {
+  var self = this
+    , fieldNames = self._schema.getSortedFields()
+    , fields = self._schema._source.fields
+    , site = self._schema._site
+
+  return fieldNames.map(function(fieldName) {
+    var meta = fields[fieldName]
+      , tpl = site.cachedTemplate('widgets/'+meta.type+'.html') || site.cachedTemplate('widgets/default.html')
+      , ctxt = {name: fieldName, meta: meta, value:self._data[fieldName]}
+    return function(ready) {
+      tpl.render(ctxt, ready)
+    }
+  })
+
+}
+
+proto.name = function() {
+  return this._data[this._schema.getSortedFields()[0]]
+}
+
 function guard(datum) {
   if(typeof datum !== 'object') {
     return _($('<div />').text(datum).html())
