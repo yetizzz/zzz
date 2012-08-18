@@ -57,6 +57,16 @@ class HydraResource(Resource):
         authorization=Authorization()
         authentication=Authentication()
 
+    def detail_uri_kwargs(self, bundle_or_obj):
+        kwargs = {}
+
+        if isinstance(bundle_or_obj, Bundle):
+            kwargs['pk'] = bundle_or_obj.obj.key
+        else:
+            kwargs['pk'] = bundle_or_obj.key
+
+        return kwargs
+
     def get_resource_uri(self, bundle_or_obj):
         try:
             if getattr(bundle_or_obj, 'obj'):
@@ -96,6 +106,16 @@ class HydraResource(Resource):
             ret_obj.url = values[index]
             ret_val.append(ret_obj)
         return ret_val
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        return self.obj_create(bundle, request, **kwargs)
+
+    def obj_delete(self, request=None, **kwargs):
+        r.delete(make_key(kwargs['pk']))
+
+    def obj_delete_list(self, request=None, **kwargs):
+        for key in r.keys('*'):
+            r.delete(key)
 
     def rollback(self, bundles):
         pass
