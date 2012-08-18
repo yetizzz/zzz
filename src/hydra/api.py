@@ -9,29 +9,31 @@ import redis
 
 r = redis.StrictRedis()
 
+def make_slug(val):
+    return "hydra:v1:redirects:%s" % val
 
-def make_key(val):
-    return "hydra:v1:redirect:%s" % val
+def remove_slug(val):
+    return val.replace("hydra:v1:redirects:", "")
 
+def save(slug, url):
+    redis_slug = make_slug(slug)
+    r.zincrby(redis_slug, url, 1)
+    #r.set(redis_slug, urls)
 
-def remove_key(val):
-    return val.replace("hydra:v1:redirect:", "")
-
-
-def is_valid_key(key):
-    redis_key = make_key(key)
-    keys = r.keys(redis_key)
-    if keys:
-        return False
-    return True
-
-
-def save(key, url):
-    redis_key = make_key(key)
-    r.set(redis_key, url)
+def get_urls(slug):
+    ret_val = []
+    values = r.zrange(make_slug(slug), 0, -1, withscores=True)
+    for value in values:
+        url, score = value
+        ret_val.append({
+            'score': score,
+            'url': url
+        })
+    return ret_val
 
 
 class RedisObject(object):
+
     def __init__(self, initial=None):
         self.__dict__['_data'] = {}
 
@@ -48,12 +50,21 @@ class RedisObject(object):
         return self._data
 
     def __unicode__(self):
-        print "Redis: %s -> %s" % (self.key, self.url)
+        print "Redis: %s -> %s" % (self.slug, self.urls)
+
+    def save(self):
+        pass
+
+    def inc(self):
+        pass
+
+    def delete(self):
+        pass
 
 
 class HydraResource(Resource):
-    key = fields.CharField(attribute='key')
-    url = fields.CharField(attribute='url')
+    slug = fields.CharField(attribute='slug')
+    urls = fields.ListField(attribute='urls', null=True)
 
     class Meta:
         object_class = RedisObject
@@ -64,49 +75,47 @@ class HydraResource(Resource):
         kwargs = {}
 
         if isinstance(bundle_or_obj, Bundle):
-            kwargs['pk'] = bundle_or_obj.obj.key
+            kwargs['pk'] = bundle_or_obj.obj.slug
         else:
-            kwargs['pk'] = bundle_or_obj.key
+            kwargs['pk'] = bundle_or_obj.slug
 
         return kwargs
 
     def get_resource_uri(self, bundle_or_obj):
         try:
             if getattr(bundle_or_obj, 'obj'):
-                return "/api/v1/hydra/%s" % remove_key(bundle_or_obj.obj.key)
-            return "/api/v1/hydra/%s" % remove_key(bundle_or_obj.key)
+                return "/api/v1/hydra/%s" % remove_slug(bundle_or_obj.obj.slug)
+            return "/api/v1/hydra/%s" % remove_slug(bundle_or_obj.slug)
         except:
             return ""
 
     def obj_create(self, bundle, request=None, **kwargs):
         bundle.obj = RedisObject(bundle.data)
         bundle = self.full_hydrate(bundle)
-        if not is_valid_key(bundle.obj.key):
-            raise ImmediateHttpResponse(
-                HttpConflict("Already exists")
-            )
-        save(bundle.obj.key, bundle.obj.url)
+        save(bundle.obj.slug, bundle.obj.urls[0])
         return bundle.obj
 
     def obj_get(self, request=None, pk=None, **kwargs):
-        value = r.get(make_key(pk))
-        ret_obj = RedisObject()
-        ret_obj.key = pk
-        ret_obj.url = value
-        return ret_obj
+        ret_val = RedisObject()
+        ret_val.urls = []
+        ret_val.slug = pk
+        values = r.zrange(make_slug(pk), 0, -1, withscores=True)
+        for value in values:
+            url, score = value
+            ret_val.urls.append({
+                'score': score,
+                'url': url
+            })
+        return ret_val
 
     def obj_get_list(self, request=None, **kwargs):
         ret_val = []
-        keys = r.keys(make_key('*'))
-        if keys:
-            values = r.mget(keys)
-        else:
-            values = []
-        for index, key in enumerate(keys):
+        keys = r.keys(make_slug('*'))
+        for key in keys:
             ret_obj = RedisObject()
-            value = values[index]
-            ret_obj.key = key
-            ret_obj.url = value
+            ret_obj.urls = []
+            ret_obj.slug = remove_slug(key)
+            ret_obj.urls = get_urls(remove_slug(key))
             ret_val.append(ret_obj)
         return ret_val
 
@@ -114,11 +123,11 @@ class HydraResource(Resource):
         return self.obj_create(bundle, request, **kwargs)
 
     def obj_delete(self, request=None, **kwargs):
-        r.delete(make_key(kwargs['pk']))
+        r.delete(make_slug(kwargs['pk']))
 
     def obj_delete_list(self, request=None, **kwargs):
-        for key in r.keys('*'):
-            r.delete(key)
+        for slug in r.keys('*'):
+            r.delete(slug)
 
     def rollback(self, bundles):
         pass

@@ -21,6 +21,7 @@ api = slumber.API("http://localhost:8000/api/v1/")
 test_data = [
     ["rtd", "http://readthedocs.org"],
     ["google", "http://google.com"],
+    ["google", "http://google.com/2/"],
     ["dash", "http://djangodash.com"],
 ]
 
@@ -31,7 +32,7 @@ if len(sys.argv) == 2:
             key, url = data
 
             try:
-                resp = api.hydra.post({"key": key, "url": url})
+                resp = api.hydra.post({"slug": key, "urls": [url]})
                 print "WOOT"
                 print resp
             except Exception, e:
@@ -43,3 +44,11 @@ if len(sys.argv) == 2:
                     pass
     if sys.argv[1] == 'get':
         print api.hydra('awesome').get()
+
+    if sys.argv[1] == 'delete':
+        ret =  api.hydra.get()
+        for ret in ret['objects']:
+            slug = ret['slug']
+            print slug
+            print api.hydra(slug).delete()
+
