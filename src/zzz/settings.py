@@ -46,6 +46,7 @@ TEMPLATE_LOADERS = (
 )
 
 MIDDLEWARE_CLASSES = (
+    'analytics.middleware.VisitMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -70,6 +71,8 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'south',
     'tastypie',
+    'hydra',
+    'analytics',
 )
 
 LOGGING = {
