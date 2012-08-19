@@ -23,10 +23,11 @@
   // queue of current requests
   var xhr = [];
 
-  var $input, $button, $results, $title, $selected_facets = null;
+  var $input, $project, $button, $results, $title, $selected_facets = null;
 
   function init() {
     $input = $('#id_site_search_2');
+    $project = $("#id_project");
     $button = $('#id_search_button');
     $results = $("#id_search_result");
     $title = $("#id_search_title");
@@ -150,8 +151,8 @@
 
   // Url for the current query with any facet filters removed
   function removeFacetsUrl() {
-    return '?' + jQuery.param({q: getKeywords()});
-  }
+    return '?' + jQuery.param({slug: getKeywords()});
+  }e
 
   // Perform the ajax request to get the search results from the API
   function run(ev) {
@@ -179,9 +180,10 @@
   // TODO: The api search is incomplete. It doesn't take into account
   // facets nor pagination. It's a partial implemenation.
   function apiSearch(data) {
+     var project = $project[0].value
      xhr.push(jQuery.ajax({
       type: 'GET',
-      url: "/_api/v1/hydra/",
+      url: "/_api/v1/redirects/" + project + "/",
       data: data,
       dataType: 'jsonp',
       success: function(res, text, xhqr) {

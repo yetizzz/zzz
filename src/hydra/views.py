@@ -43,3 +43,13 @@ class SlugDetailView(TemplateView):
         proj_obj = RedisRedirect(slug=slug, project=project)
         context['urls'] = proj_obj.get_urls()
         return context
+
+
+class HomeView(TemplateView):
+    extra_context = None
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(HomeView, self).get_context_data(*args, **kwargs)
+        context['projects'] = RedisProject.all_projects()
+        context.update(kwargs)
+        return context

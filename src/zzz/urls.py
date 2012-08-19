@@ -2,10 +2,12 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 from django.conf import settings
 
+from hydra.views import HomeView
+
 
 urlpatterns = patterns('',
     url(r'^$',
-        TemplateView.as_view(template_name='base.html'),
+        HomeView.as_view(template_name='home.html'),
         name='home'),
 )
 

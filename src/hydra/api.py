@@ -1,6 +1,7 @@
 import redis
 
 from django.conf.urls import url
+from django.conf import settings
 
 from tastypie.resources import Resource
 from tastypie import fields
@@ -8,8 +9,7 @@ from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
 from tastypie.exceptions import NotFound
 
-from hydra.utils import (r, make_slug, remove_slug, save,
-                         get_range, get_keys, delete, get_urls)
+r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
 
 """
