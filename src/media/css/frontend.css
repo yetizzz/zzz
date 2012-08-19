@@ -51,6 +51,7 @@
 
   box-shadow:0px -10px 14px 0px rgba(0, 0, 0, 0.2) inset;
 
+  width:135px;
   background:no-repeat url('../img/dropdown.png') scroll 95% 3px, -webkit-linear-gradient(-90deg, #1a7405, #3c8e23);
   padding:9px;
   font-size:1.2em;
