@@ -22,6 +22,7 @@ What we built
     * You can point it at any Tastypie API, and get basic CRUD
     * Understands what tastypie methods are allowed
     * Visible at http://slug.in/_admin/
+    * Runs against Read the Docs, [too!](https://github.com/yetizzz/zzz#running-the-site-against-read-the-docs)
     * You'll need to login to use it
         * This is protected by the web-scale-iest of security methods: `Authorization: Basic <base64 yourname:yourpassword>`
 
