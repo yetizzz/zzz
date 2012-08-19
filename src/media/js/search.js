@@ -88,7 +88,7 @@
       obj = results[i]
       project = obj['project']
       slug = obj['slug']
-      url = "/" + project + "/" + slug + "/"
+      url = "/_/" + project + "/" + slug + "/"
       html.push([
         '<li class="module-item">',
           '<p class="module-item-title">',
