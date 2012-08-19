@@ -22,6 +22,8 @@ class SlugLookupRedirectView(RedirectView):
             if len(urls) > 1:
                 if urls[0]['score'] - urls[1]['score'] > 5:
                     redirect_url = urls[0]['url']
+            else:
+                redirect_url = urls[0]['url']
         if not redirect_url:
             Visit.objects.create(
                 key=slug,
