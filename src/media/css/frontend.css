@@ -157,3 +157,44 @@
 #search_module ul {
   display:block;
 }
+
+
+.score {
+  font-size:2.5em;
+  font-weight:bold;
+}
+
+.slug-details input[rel=increment] {
+  background: none;
+  color: #0664BC !important;
+  border:none;
+  text-shadow:none;
+  position:relative;
+  top:-9px; 
+  -webkit-appearance:none;
+  box-shadow:none;
+}
+
+p { 
+  line-height:1.5;
+  color:#334;
+}
+
+code { font-family:monospace; }
+strong { font-weight:bold; }
+
+.emphasis { 
+  font-size:1.2em;
+  margin-bottom:6px;
+  padding-bottom:3px;
+  border-bottom:1px dotted #CCC;
+}
+
+.slug-details li {
+
+    padding:6px 0px;
+    margin-top:3px;
+    border-bottom:1px solid #ccc;
+
+}
+

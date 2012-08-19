@@ -5,12 +5,14 @@
     <title>Slug Details</title>
 {% endblock head %}
 
+{% block body_class %}slug-details{% endblock %}
+
 {% block content %}
       <h2>{{ slug }}</h2>
       <form>
       {{ form.errors }}
-      <p>
-      Please select a URL that you think works best for <b>{{ slug }}</b>.
+      <p class="emphasis">
+      Please select a URL that you think works best for <strong>{{ slug }}</strong>.
       </p>
       {% if winner %}
       <p>
@@ -18,7 +20,7 @@
       </p>
       {% else %}
       <p>
-        This shortcut points to this page. Once it has {{ THRESHOLD }} more points than any other URL, it will automatically be redirected at <a href="http://slug.in/{{ project }}/{{ slug}}/">http://slug.in/{{ project }}/{{ slug}}/</a>
+        <strong>This shortcut points to this page.</strong><br />Once it has {{ THRESHOLD }} more points than any other URL, it will automatically be redirected at <code><a href="http://slug.in/{{ project }}/{{ slug}}/">http://slug.in/{{ project }}/{{ slug}}/</a></code>
       </p>
       {% endif %}
       </form>
@@ -30,7 +32,7 @@
         <input type="hidden" name="slug" value="{{ slug }}">
         <ul>
       {% endif %}
-          <li>{{ url.score }} <input type="submit" name="url" value="{{ url.url }}"></li>
+          <li><span class="score">{{ url.score|floatformat:0 }}</score> <input type="submit" rel="increment" name="url" value="{{ url.url }}"></li>
       {% if forloop.last %}
         </ul>
       </form>
