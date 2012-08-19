@@ -20,7 +20,7 @@ What we built
     * It works in conjunction with the data store
     * Has the basic underpinnings for a generic RedisResource for Tastypie,
       still needs a ton of work tho.
-    * Visible at http://slug.in/_api/
+    * Visible at http://slug.in/_api/v1/?format=json
 
 * Analytics gathering and API
     * Provides a Tastypie API on top of Postgres
