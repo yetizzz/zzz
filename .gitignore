@@ -9,4 +9,4 @@ pecan.js/templates.js
 database.db
 objects.inv
 share/
-src/media/bundle.js
+src/media/js/bundle.js
