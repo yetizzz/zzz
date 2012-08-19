@@ -70,6 +70,7 @@ class RedisProject(object):
 
     def delete(self):
         r.delete(self.redis_slug)
+        r.delete("%s:whitelist" % self.redis_slug)
         r.srem(self.index_slug, self.name)
 
     def exists(self):
