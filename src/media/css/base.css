@@ -208,6 +208,12 @@ header {
     box-shadow:0px 0px 2px 1px #0664BC, 0px 0px 2px 1px #569CCE;
 }
 
+td ul li { list-style:none; font-size:0.8em; font-family:monospace; color:#666; }
+tr:first-child td dl dd { display:block; text-decoration:underline; }
+
+td dl dt { display:block; font-weight:bold; }
+td dl dd { display:block; display:none; }
+
 .btn,
 input[type=submit] {
     border:1px solid #CCC;

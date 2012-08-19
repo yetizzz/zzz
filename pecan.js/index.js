@@ -36,6 +36,7 @@ var cons = Site
 
 proto.init = function(body) {
   var self = this
+    , current
 
   self.root = $(body)
 
@@ -68,7 +69,13 @@ proto.init = function(body) {
 
       fn = route(path)
 
+      if(current && current.exit) {
+        current.exit()
+      }
+
       fn(self) 
+
+      current = fn
 
       return '/'+first_bit+'/'+(path ? path.replace(/\/?$/, '/') : '')
     }

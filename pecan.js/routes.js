@@ -7,9 +7,12 @@ function route(path) {
 
   for(var i = 0, len = route.routes.length; i < route.routes.length; ++i) {
     if(match = route.routes[i][0].exec(path)) {
-      var ret = function() { route.routes[i][1].apply(null, [].slice.call(arguments).concat(match.slice(1))) }
-
-      ret.name = route.routes[i][1].name
+      var target = route.routes[i][1]
+        , ret = function() { target.apply(null, [].slice.call(arguments).concat(match.slice(1))) }
+      
+      for(var key in target) {
+        ret[key] = target[key]
+      }
       return ret 
     } 
   }
@@ -21,3 +24,15 @@ route.routes = [
   , [/^([^\/]+)\/_\/(.*)\//, views.edit]
   , [/^([^\/]+)\//, views.list]
 ]
+
+route.routes.forEach(function(tuple) {
+  var view = tuple[1]
+    , behaviors = view.behaviors || {}
+
+  for(var key in behaviors) {
+    key = key.split(' ')
+    $('body').on(key[0], '.view_'+view.name+' '+key[1], behaviors[key.join(' ')])
+  }
+})
+
+

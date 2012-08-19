@@ -58,7 +58,7 @@ proto.wrap = function(result) {
 }
 
 proto.instantiable = function() {
-
+  
 }
 
 proto.editable = function() {
