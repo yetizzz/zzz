@@ -50,26 +50,29 @@ class RedisProject(object):
         return "hydra:v1:projects:%s" % (key)
 
     @property
-    def slug(self):
+    def redis_slug(self):
         return "hydra:v1:projects:%s" % (self.name)
 
     def save_whitelist(self):
         for url in self.whitelist:
-            r.sadd("%s:whitelist" % self.slug, url)
+            r.sadd("%s:whitelist" % self.redis_slug, url)
 
     def save_project(self):
-        r.hset(self.slug, "exists", "true")
+        r.hset(self.redis_slug, "exists", "true")
         r.sadd(self.index_slug, self.name)
 
     def save(self):
         self.save_whitelist()
         self.save_project()
 
+    def delete(self):
+        r.delete(self.redis_slug)
+
     def exists(self):
-        return r.hget(self.slug, "exists") == "true"
+        return r.hget(self.redis_slug, "exists") == "true"
 
     def get_whitelist(self):
-        return r.smembers("%s:whitelist" % self.slug)
+        return r.smembers("%s:whitelist" % self.redis_slug)
 
 class ProjectResource(Resource):
     name = fields.CharField(attribute='name')
@@ -92,8 +95,15 @@ class ProjectResource(Resource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle.obj = RedisProject(bundle.data)
         bundle = self.full_hydrate(bundle)
+        if kwargs.get('delete', None):
+            bundle.obj.delete()
         bundle.obj.save()
         return bundle
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        if bundle.data.get('resource_uri'):
+            del bundle.data['resource_uri']
+        return self.obj_create(bundle, request, delete=True, **kwargs)
 
     def obj_get(self, request=None, pk=None, **kwargs):
         proj = RedisProject(pk)
@@ -113,9 +123,6 @@ class ProjectResource(Resource):
                 obj = RedisProject(key)
                 ret_val.append(obj)
         return ret_val
-
-    def obj_update(self, bundle, request=None, **kwargs):
-        return self.obj_create(bundle, request, **kwargs)
 
     def obj_delete(self, request=None, **kwargs):
         obj = RedisProject(kwargs['pk'])
