@@ -23,6 +23,5 @@ urlpatterns += patterns('',
         TemplateView.as_view(template_name='search.html'),
         name='search'),
     url(r'^_api/', include('hydra.urls.api')),
-    url(r'^_analytics/', include('analytics.urls')),
     url(r'^', include('hydra.urls.slug')),
 )
