@@ -27,9 +27,17 @@
   background:no-repeat url('../img/logo.png');
 }
 
-.home #landing h1 + div {
+.home #landing hgroup + div {
   clear:both;
   padding-top:33px;
+}
+
+.home #landing hgroup p {
+  font-family:"KnewaveOutlineRegular";
+  color:rgba(90, 100, 128, 0.7);
+  font-size:1.5em;
+  letter-spacing:1.1px;
+  margin-top:18px;
 }
 
 .home #landing form {
