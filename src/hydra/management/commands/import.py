@@ -13,5 +13,3 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         for proj, url in INV_MAPPING.iteritems():
             read_intersphinx(os.path.join(settings.ROOT_DIR, proj), url)
-
-
