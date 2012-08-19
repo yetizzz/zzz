@@ -210,11 +210,22 @@ class RedirectResource(Resource):
 
     def obj_get_list(self, request=None, project=None, **kwargs):
         ret_val = []
-        proj_obj = RedisRedirect(project=project)
-        keys = proj_obj.all_slugs()
-        for key in keys:
-            obj = RedisRedirect(slug=key, project=project)
-            ret_val.append(obj)
+        if project:
+            proj_obj = RedisRedirect(project=project)
+            keys = proj_obj.all_slugs()
+            for key in keys:
+                obj = RedisRedirect(slug=key, project=project)
+                ret_val.append(obj)
+        else:
+            #Return all things for all projects
+            indexes = r.keys("hydra:v1:projects:*:slugs")
+            for index in indexes:
+                index_project = index.split(":")[3]
+                proj_obj = RedisRedirect(project=index_project)
+                keys = proj_obj.all_slugs()
+                for key in keys:
+                    obj = RedisRedirect(slug=key, project=index_project)
+                    ret_val.append(obj)
         return ret_val
 
     def obj_update(self, bundle, request=None, **kwargs):
