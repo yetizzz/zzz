@@ -10,4 +10,7 @@ build:
 	cat pecan.js/jquery.js >> src/media/js/bundle.js
 	node_modules/.bin/browserify pecan.js/site.js >> src/media/js/bundle.js
 
+fixture:
+	./bin/client project create
+	./bin/manage.py import
 

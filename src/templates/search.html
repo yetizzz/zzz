@@ -15,6 +15,11 @@
   <div class="wide-search-bar">
     <div class="wide-search-bar-wrapper clearfix">
       <form action="." method="GET">
+        <select name="project" id="id_project">
+          {% for project in projects %}
+          <option value="{{ project }}">{{ project }}</option>
+          {% endfor %}
+        </select>
         <div class="text-input-wrapper">
           <input type="text" name="q" value="" autocomplete="off" id="id_site_search_2">
         </div>

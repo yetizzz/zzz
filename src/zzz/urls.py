@@ -2,12 +2,12 @@ from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 from django.conf import settings
 
-from hydra.views import HomeView
+from hydra.views import ProjectView
 
 
 urlpatterns = patterns('',
     url(r'^$',
-        HomeView.as_view(template_name='home.html'),
+        ProjectView.as_view(template_name='home.html'),
         name='home'),
 )
 
@@ -22,7 +22,7 @@ urlpatterns += patterns('',
         TemplateView.as_view(template_name='admin.html'),
         name='admin'),
     url(r'^_search/',
-        TemplateView.as_view(template_name='search.html'),
+        ProjectView.as_view(template_name='search.html'),
         name='search'),
     url(r'^_api/', include('hydra.urls.api')),
     url(r'^', include('hydra.urls.slug')),
