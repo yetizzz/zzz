@@ -1,6 +1,6 @@
 /* base javascript ha ha, ho ho */
 
-$(document).ready(function()
-{
-    Search.init();
-});
+$(function() {
+  if(window.Search)
+    Search.init()
+})

@@ -179,6 +179,10 @@
   box-shadow:none;
 }
 
+.slug-details .incr {
+  font-size:1.0em;
+} 
+
 p { 
   line-height:1.5;
   color:#334;

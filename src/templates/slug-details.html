@@ -34,12 +34,12 @@
 
       {% for url in urls %}
       {% if forloop.first %}
-      <form action="{% url 'slug-details' project slug %}" method="POST">{% csrf_token %}
+      <form name="increment" action="{% url 'slug-details' project slug %}" method="POST">{% csrf_token %}
         <input type="hidden" name="project" value="{{ project }}">
         <input type="hidden" name="slug" value="{{ slug }}">
         <ul>
       {% endif %}
-          <li><span class="score">{{ url.score|floatformat:0 }}</score> <input type="submit" rel="increment" name="url" value="{{ url.url }}"></li>
+          <li><span class="score">{{ url.score|floatformat:0 }}</span> <input type="submit" rel="increment" name="url" value="{{ url.url }}"></li>
       {% if forloop.last %}
         </ul>
       </form>
@@ -60,4 +60,6 @@
         {% endfor %}
         </ul>
       </form>
+
+      <script src="{{ MEDIA_URL }}js/slug-detail.js"></script>
 {% endblock content %}
