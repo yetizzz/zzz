@@ -182,7 +182,7 @@ class RedisRedirect(object):
         if urls:
             self.urls = urls
         else:
-            self.get_urls()
+            self.urls = self.get_urls()
 
     @property
     def index_slug(self):
@@ -207,7 +207,6 @@ class RedisRedirect(object):
                 if obj.get('score', None):
                     r.zadd(self.redis_slug, int(obj['score']), obj['url'])
             else:
-                print "WTF?!"
                 r.zincrby(self.redis_slug, self.urls[0], 1)
 
     def save(self):
@@ -233,15 +232,15 @@ class RedisRedirect(object):
         return r.zcard(self.redis_slug)
 
     def get_urls(self):
-        self._urls = r.zrevrange(self.redis_slug, 0, -1, withscores=True)
-        self.urls = []
-        for obj in self._urls:
+        urls = r.zrevrange(self.redis_slug, 0, -1, withscores=True)
+        ret_val = []
+        for obj in urls:
             redirect_url, score = obj
-            self.urls.append({
+            ret_val.append({
                 'score': score,
                 'url': redirect_url
             })
-        return self.urls
+        return ret_val
 
 
 class RedirectResource(Resource):
