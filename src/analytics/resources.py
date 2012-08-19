@@ -9,3 +9,7 @@ class VisitResource(ModelResource):
         queryset = Visit.objects.all()
         resource_name = 'visits'
         allowed_methods = ('get',)
+        filtering = {
+            'key': resources.ALL,
+            'when': resources.ALL,
+        }
