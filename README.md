@@ -5,9 +5,6 @@ API
 ---
 
 ```rest
-    GET /api/v1/projects/<project>/slugs/<slug>/
-        Detail view for slug
-
     # List of projects
     GET /api/v1/projects/?format=json
     {
@@ -43,6 +40,7 @@ API
         ]
     }
 
+    # List of Redirects
     GET /api/v1/redirect/?format=json
     {
         "meta": {},
@@ -61,8 +59,8 @@ API
         ]
     }
 
+    # Redirect detail
     GET /api/v1/redirect/django/get_object/?format=json
-
     {
         "project": "django",
         "resource_uri": "/_api/v1/redirect/django/get_object/",
@@ -75,8 +73,16 @@ API
         ]
     }
 
+    #Delete project
+    DELETE /api/v1/project/django/
+
+    #Delete redirect
     DELETE /api/v1/redirect/django/get_object/
 
+    #Edit project
+    PUT /api/v1/project/django
+
+    #Edit redirect
     PUT /api/v1/redirect/django/get_object/
 
 ```
