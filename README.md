@@ -7,6 +7,12 @@ Because it is the Django Dash, we felt the need to overarchitect it in just
 about every way. On our vision quest, we have learned many things about the
 inner working of Tastypie, Redis, and the World.
 
+> ### Editor's note
+>
+> it turns out nosql databases aren't great at relational data
+>
+> *who knew*
+
 What we built
 -------------
 
