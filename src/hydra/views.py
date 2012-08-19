@@ -95,4 +95,4 @@ class ProjectRedirect(RedirectView):
 
     def get_redirect_url(self, **kwargs):
         project = kwargs.get('project', '')
-        return "%s?project=%s" % (reverse("search"), project)
+        return "%s?project=%s" % (reverse("home"), project)
