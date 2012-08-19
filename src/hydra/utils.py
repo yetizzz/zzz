@@ -1,11 +1,11 @@
 import redis
 import operator
+from urlparse import urlparse
 
 from django.conf import settings
-
 from sphinx.ext import intersphinx
 
-from .api import RedisRedirect
+from .api import RedisRedirect, RedisProject
 
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
@@ -26,7 +26,8 @@ def read_intersphinx(project, file, urlpattern):
     Reads file as intersphinx format. Prepends the url pattern on the front of
     URLs. URL Pattern should have a %s in it for string formatting.
 
-    Only supports intersphinx v2. It parses down into an effective set of data that is:
+    Only supports intersphinx v2. It parses down into an effective set of data
+    that is:
 
     {'<id>': [
         "<project>", # From conf.py
@@ -60,3 +61,16 @@ def read_intersphinx(project, file, urlpattern):
                     safe_save(project, last_key, url)
                 print "URL: %s->%s" % (url_key, url)
                 safe_save(project, url_key, url)
+
+
+def in_whitelist(project, url):
+    parsed_url = urlparse(url)
+    if parsed_url.scheme == '':
+        return False, 'url must be absolute'
+    project = RedisProject(project)
+    results = [parsed_url.netloc.endswith('.%s' % domain)
+               for domain in project.whitelist]
+    results.append(parsed_url.netloc in project.whitelist)
+    if not any(results):
+        return False, '%s is not on a domain in the whitelist.' % url
+    return True, ''

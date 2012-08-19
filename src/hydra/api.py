@@ -21,6 +21,8 @@ from tastypie.authorization import Authorization, DjangoAuthorization
 from tastypie.authentication import Authentication, BasicAuthentication
 from tastypie.exceptions import NotFound, ImmediateHttpResponse
 from tastypie.http import HttpConflict
+from tastypie.validation import Validation
+
 
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
@@ -248,6 +250,29 @@ class RedisRedirect(object):
         return ret_val
 
 
+class URLValidation(Validation):
+    def is_valid(self, bundle, request=None):
+        if not bundle.data:
+            return {'__all__': 'No data provided.'}
+        errors = {}
+
+        if not 'project' in bundle.data:
+            errors['project'] = 'required field'
+        if not 'slug' in bundle.data:
+            errors['slug'] = 'required field'
+        if not 'urls' in bundle.data:
+            errors['urls'] = 'required field'
+
+        if not errors:
+            from .utils import in_whitelist
+            for url in bundle.data['urls']:
+                valid, msg = in_whitelist(bundle.data['project'], url['url'])
+                if not valid:
+                    errors['urls'] = errors.get('urls', '') + msg
+
+        return errors
+
+
 class RedirectResource(Resource):
     """
     A tastypie Resource that maps to the Redirect Redis Model
@@ -265,12 +290,13 @@ class RedirectResource(Resource):
         object_class = RedisRedirect
         authorization = Authorization()
         authentication = Authentication()
+        validation = URLValidation()
 
     def get_resource_uri(self, bundle_or_obj):
         try:
             if getattr(bundle_or_obj, 'obj'):
                 return "/_api/v1/redirect/%s/%s/" % (bundle_or_obj.obj.project,
-                                                    bundle_or_obj.obj.slug)
+                                                     bundle_or_obj.obj.slug)
             return "/_api/v1/redirect/%s/%s/" % (bundle_or_obj.project,
                                                 bundle_or_obj.slug)
         except:
