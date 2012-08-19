@@ -35,6 +35,10 @@ What we built
     * Works with Pecan
     * Tracks what redirects are followed, and used the most
 
+* An importer for Intersphinx data
+    * Currently we only index data from Sphinx
+    * We can index any arbitrary intersphinx page, so people can host this themselves
+
 * The main site
     * Provides a instant-filtering interface for finding shortcuts
     * Allows users to add new links
