@@ -1,11 +1,14 @@
 """
 A redis-based Tastypie API.
 
-It adds has "Model" type objects RedisProject and RedisRedirect. These are used for all of the data access, and for hydration at the Tatypie level.
+It adds has "Model" type objects RedisProject and RedisRedirect. These are used
+for all of the data access, and for hydration at the Tatypie level.
 
-Then we have resources that are based on these models. The ProjectResource and RedirectResource map onto the model objects listed above.
+Then we have resources that are based on these models. The ProjectResource and
+RedirectResource map onto the model objects listed above.
 
-This could be a generic interface, and the code is most of the way there to making a moderately generic BaseResource for interacting with Redis Models.
+This could be a generic interface, and the code is most of the way there to
+making a moderately generic BaseResource for interacting with Redis Models.
 """
 import redis
 
@@ -26,11 +29,16 @@ class RedisProject(object):
     """
     A model layer repsenting a Project in Redis.
 
-    It has an index of all existing projects, and then contains metadata about projects including their existence, and a whitelist of URLs that you can link to from them.
+    It has an index of all existing projects, and then contains metadata about
+    projects including their existence, and a whitelist of URLs that you can
+    link to from them.
 
-    Generally you create an instance by passing in a name, and a possible whitelist. If you only pass in the name, the whitelist is populated from the data store.
+    Generally you create an instance by passing in a name, and a possible
+    whitelist. If you only pass in the name, the whitelist is populated from
+    the data store.
 
-    The main methods you will call on an instance are save, delete, and exists. There is a classmethod called all_projects that will return all projects.
+    The main methods you will call on an instance are save, delete, and exists.
+    There is a classmethod called all_projects that will return all projects.
 
     """
     index_slug = "hydra:v1:projects"
@@ -48,7 +56,8 @@ class RedisProject(object):
     @classmethod
     def all_projects(cls):
         """
-        Return all projects. Classmethod because it doesn't need any data on the instance.
+        Return all projects. Classmethod because it doesn't need any data on
+        the instance.
         """
         ret_val = r.sort(cls.index_slug)
         return ret_val
@@ -84,7 +93,8 @@ class BaseResource(Resource):
     """
     A base resource for all Redis-based Tastypie APIs.
 
-    It expects you to be using the Redis Model interface, which mostly just boils down to save, delete, and exists.
+    It expects you to be using the Redis Model interface, which mostly just
+    boils down to save, delete, and exists.
     """
     def obj_update(self, bundle, request=None, **kwargs):
         if bundle.data.get('resource_uri'):
@@ -120,8 +130,12 @@ class BaseResource(Resource):
         slug_field = self._find_slug()
         try:
             if getattr(bundle_or_obj, 'obj'):
-                return "/_api/v1/%s/%s/" % (resource, getattr(bundle_or_obj.obj, slug_field))
-            return "/_api/v1/%s/%s/" % (resource, getattr(bundle_or_obj, slug_field))
+                return "/_api/v1/%s/%s/" % (resource,
+                                            getattr(bundle_or_obj.obj,
+                                                    slug_field))
+            return "/_api/v1/%s/%s/" % (resource,
+                                        getattr(bundle_or_obj,
+                                                slug_field))
         except:
             return ""
 
@@ -197,7 +211,9 @@ class ProjectResource(Resource):
     def override_urls(self):
         raw_url = r"^(?P<resource_name>%s)/(?P<pk>.+)/$"
         return [
-            url(r"^(?P<resource_name>%s)/schema/$" % self._meta.resource_name, self.wrap_view('get_schema'), name="api_get_schema"),
+            url(r"^(?P<resource_name>%s)/schema/$" % self._meta.resource_name,
+                self.wrap_view('get_schema'),
+                name="api_get_schema"),
             url(raw_url % self._meta.resource_name,
                 self.wrap_view('dispatch_detail'),
                 name="api_dispatch_detail"),
@@ -207,9 +223,12 @@ class RedisRedirect(object):
     """
     A Redis Model for a Redirect
 
-    This contains the basic information about how a projects redirects will work.
+    This contains the basic information about how a projects redirects will
+    work.
 
-    The set of (project, slug) is unique, and each contains a set of URLs that might possibly be correct. We store these in a sorted set so that we can keep score of clicks in the data model in Redis.
+    The set of (project, slug) is unique, and each contains a set of URLs that
+    might possibly be correct. We store these in a sorted set so that we can
+    keep score of clicks in the data model in Redis.
     """
 
     def __init__(self, slug=None, project=None, urls=None, *args, **kwargs):
@@ -285,7 +304,8 @@ class RedirectResource(Resource):
 
     slug - The URL slug that will identify this Redirect
     project - The project the slug belongs to
-    urls - The Sorted Set of URLs. We use score to keep track of clicks on the Redirects.
+    urls - The Sorted Set of URLs. We use score to keep track of clicks on
+           the Redirects.
     """
     slug = fields.CharField(attribute='slug')
     project = fields.CharField(attribute='project')
@@ -369,7 +389,9 @@ class RedirectResource(Resource):
         list_url = r"^(?P<resource_name>%s)/(?P<project>[^/]+)/$"
         detail_url = r"^(?P<resource_name>%s)/(?P<project>[^/]+)/(?P<pk>.+)/$"
         return [
-            url(r"^(?P<resource_name>%s)/schema/$" % self._meta.resource_name, self.wrap_view('get_schema'), name="api_get_schema"),
+            url(r"^(?P<resource_name>%s)/schema/$" % self._meta.resource_name,
+                self.wrap_view('get_schema'),
+                name="api_get_schema"),
             url(detail_url % self._meta.resource_name,
                 self.wrap_view('dispatch_detail'),
                 name="api_dispatch_detail"),
