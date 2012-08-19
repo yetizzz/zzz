@@ -1,10 +1,16 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title></title>
-</head>
-<body>
-	<h1> hello world</h1>
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css" />
+    {% block head %}
+    {% endblock head %}
+    <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+  </head>
+  <body>
+    <div class="root">
+    {% block content %}
+    {% endblock content %}
+    </div>
+  </body>
 </html>
