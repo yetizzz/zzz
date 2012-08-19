@@ -1,11 +1,10 @@
-<header>
-    <h1><a href="/">Pecans</a></h1>
-    <div class="breadcrumb">
-    </div>
-</header>
+{% extends "base.html" %}
 
-<div class="root">
-  <h2>Login</h2>
+{% block title %}
+    Login
+{% endblock %}
+
+{% block content %}
   <form method="POST" action=".">
     <div class="form-row required">
       <div class="form-row-label">
@@ -39,4 +38,5 @@
     </div>
 
   </form>
-</div>
+
+{% endblock %}

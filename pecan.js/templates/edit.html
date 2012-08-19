@@ -1,14 +1,16 @@
-<header>
-    <h1><a href="/">Pecans</a></h1>
-    <div class="breadcrumb">
-        <a href="..">..</a>
-        <a href="{{ resource }}">{{ resource }}</a>
-        <a href="#">{{ instance.resource_uri }}</a>
-    </div>
-</header>
+{% extends "base.html" %}
 
-<div class="root">
-    <h2>{% if instance.name %}{{ instance.name }}{% else %}Create a new {{ resource }}{% endif %}</h2>
+{% block breadcrumb %}
+<a href="..">..</a>
+<a href="{{ resource }}">{{ resource }}</a>
+<a href="#">{{ instance.resource_uri }}</a>
+{% endblock %} 
+
+{% block title %}
+    {% if instance.name %}{{ instance.name }}{% else %}Create a new {{ resource }}{% endif %}
+{% endblock %}
+
+{% block content %}
     <form action="." method="POST">
         {% for field in instance.editor %}
           {{ field|safe }}
@@ -27,5 +29,4 @@
         {% endif %}
         </div>
     </form>
-</div>
-
+{% endblock %}

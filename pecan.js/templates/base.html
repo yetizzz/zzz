@@ -1,0 +1,19 @@
+<header>
+    <h1><a href="/">Pecans</a></h1>
+    <div class="breadcrumb">
+        {% block breadcrumb %}
+
+        {% endblock %}
+    </div>
+
+    <a href="#" rel="logout">Logout</a>
+</header>
+{% block outer %}
+
+{% endblock %}
+<div class="root">
+    <h2>{% block title %}{% endblock %}</h2>
+    {% block content %}
+
+    {% endblock %}
+</div>

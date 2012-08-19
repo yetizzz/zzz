@@ -1,14 +1,13 @@
-<header>
-    <h1><a href="/">Pecans</a></h1>
-    <div class="breadcrumb">
-    </div>
-</header>
+{% extends "base.html" %}
 
-<div class="root">
-    <h2>Available Resources</h2>
+{% block title %}
+    Available Resources
+{% endblock %}
+
+{% block content %}
     <ul>
       {% for key in results %} 
         <li><a href="{{ key }}/">{{ key }}</a></li>
       {% endfor %}
     </ul>
-</div>
+{% endblock %}
