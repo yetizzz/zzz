@@ -25,6 +25,7 @@ import json
 import sys
 
 import slumber
+import requests
 
 if os.environ.get("BUILDPACK_URL", None):
     print "HITTING PROD!"
@@ -76,10 +77,17 @@ if len(sys.argv) > 1:
         print obj['urls'][0]['url']
         obj['urls'][0]['url'] = "BOOO"
         uri = obj['resource_uri']
-        import requests
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         resp = requests.put("http://localhost:8000" + uri, data=json.dumps(obj), headers=headers)
         print resp.json['traceback']
+
+    if sys.argv[1] == 'delete':
+        ret = api.redirect.get(limit=2)
+        obj = ret['objects'][1]
+        uri = obj['resource_uri']
+        resp = requests.delete("http://localhost:8000" + uri)
+        print resp.json['traceback']
+
 
     if sys.argv[1] == 'create':
         for data in test_data:

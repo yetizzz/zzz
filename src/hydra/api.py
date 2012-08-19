@@ -285,7 +285,7 @@ class RedirectResource(Resource):
 
 
     def obj_delete(self, request=None, **kwargs):
-        obj = RedisRedirect(kwargs['pk'])
+        obj = RedisRedirect(slug=kwargs['pk'], project=kwargs['project'])
         obj.delete()
 
     def obj_delete_list(self, request=None, **kwargs):
