@@ -194,7 +194,7 @@ Pics or it didn't happen
 
 #### list
 
-![detail](https://dl.dropbox.com/u/15509266/ddash2012/admin_list.png)
+![detail](https://dl.dropbox.com/u/15509266/ddash2012/admin_list_new.png)
 
 #### edit
 
