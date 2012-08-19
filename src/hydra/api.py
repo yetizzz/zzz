@@ -178,6 +178,7 @@ class RedisRedirect(object):
         return True
 
     def incr(self, url):
+        self.save_redirect()
         r.zincrby(self.redis_slug, url, 1)
 
     def url_exists(self, url):
@@ -185,8 +186,6 @@ class RedisRedirect(object):
             if url == url_obj['url']:
                 return True
         return False
-
-
 
     def exists(self):
         return r.zcard(self.redis_slug)
