@@ -1,3 +1,4 @@
+#!/usr/bin/python
 """
 Basic API client
 
@@ -34,19 +35,32 @@ else:
 
 LIMIT = 500
 test_data = [
-    ["rtd", "http://readthedocs.org"],
-    ["google", "http://google.com"],
-    ["google", "http://google.com/2/"],
-    ["dash", "http://djangodash.com"],
+    ["rtd", "http://readthedocs.org", "django"],
+    ["google", "http://google.com", "django"],
+    ["google", "http://google.com/2/", "django"],
+    ["dash", "http://djangodash.com", "django"],
+]
+
+project_data = [
+    {
+        "name": "django",
+        "whitelist":
+            [
+                "djangoproject.com",
+                "readthedocs.org",
+            ]
+    }
 ]
 
 
 if len(sys.argv) > 1:
     if sys.argv[1] == 'create':
         for data in test_data:
-            key, url = data
+            key, url, project = data
             try:
-                resp = api.hydra.post({"slug": key, "urls": [url]})
+                resp = api.redirect.post({"slug": key,
+                                          "urls": [url],
+                                           "project": project})
                 print "WOOT"
                 print resp
             except Exception, e:
@@ -58,15 +72,20 @@ if len(sys.argv) > 1:
                     pass
     if sys.argv[1] == 'list':
         if len(sys.argv) == 3:
-            ret = api.hydra.get(slug=sys.argv[2], limit=LIMIT)
+            ret = api.redirect.get(slug=sys.argv[2], limit=LIMIT)
         else:
-            ret = api.hydra.get(limit=LIMIT)
+            ret = api.redirect.get(limit=LIMIT)
         for ret in ret['objects']:
             print ret['slug']
 
     if sys.argv[1] == 'delete':
-        ret = api.hydra.get(limit=LIMIT)
+        ret = api.redirect.get(limit=LIMIT)
         for ret in ret['objects']:
             slug = ret['slug']
             print slug,
-            print " - Deleted: %s" % api.hydra(slug).delete()
+            print " - Deleted: %s" % api.redirect(slug).delete()
+
+    if sys.argv[1] == "project":
+        if sys.argv[2] == 'create':
+            for obj in project_data:
+                print api.project.post(obj)

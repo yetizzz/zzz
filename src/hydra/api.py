@@ -11,102 +11,114 @@ from tastypie.exceptions import NotFound
 from hydra.utils import (r, make_slug, remove_slug, save,
                          get_range, get_keys, delete, get_urls)
 
-class RedisObject(object):
 
-    def __init__(self, initial=None):
-        self.__dict__['_data'] = {}
+"""
+"hydra:v1:projects" = Set of projects
+"hydra:v1:projects:<project>" = Metadata
+GET /api/v1/projects/
+    List of Projects
+GET /api/v1/projects/<project>/
+    Metadata on Project
+    resource_uri -> /slugs/
 
-        if hasattr(initial, 'items'):
-            self.__dict__['_data'] = initial
+"hydra:v1:projects:<project>:slugs" = Set of slugs
+GET /api/v1/projects/<project>/slugs/
+    Slugs for a project
+"hydra:v1:projects:<project>:slugs:<slug>" = Actual Data
+GET /api/v1/projects/<project>/slugs/<slug>/
+    Detail view for slug
+"""
 
-    def __getattr__(self, name):
-        return self._data.get(name, None)
+class RedisProject(object):
+    index_slug = "hydra:v1:projects"
 
-    def __setattr__(self, name, value):
-        self.__dict__['_data'][name] = value
+    def __init__(self, name=None, whitelist=None, *args, **kwargs):
+        super(RedisProject, self).__init__(*args, **kwargs)
+        self.name = name
+        if whitelist:
+            self.whitelist = whitelist
+        else:
+            self.whitelist = self.get_whitelist()
 
-    def to_dict(self):
-        return self._data
+    @classmethod
+    def all_projects(cls):
+        return r.smembers(cls.index_slug)
 
-    def __unicode__(self):
-        print "Redis: %s -> %s" % (self.slug, self.urls)
+    @classmethod
+    def make_key(cls, key):
+        return "hydra:v1:projects:%s" % (key)
+
+    @property
+    def slug(self):
+        return "hydra:v1:projects:%s" % (self.name)
+
+    def save_whitelist(self):
+        for url in self.whitelist:
+            r.sadd("%s:whitelist" % self.slug, url)
+
+    def save_project(self):
+        r.hset(self.slug, "exists", "true")
+        r.sadd(self.index_slug, self.name)
 
     def save(self):
-        pass
+        self.save_whitelist()
+        self.save_project()
 
-    def inc(self):
-        pass
+    def exists(self):
+        return r.hget(self.slug, "exists") == "true"
 
-    def delete(self):
-        pass
+    def get_whitelist(self):
+        return r.smembers("%s:whitelist" % self.slug)
 
-
-class HydraResource(Resource):
-    slug = fields.CharField(attribute='slug')
-    urls = fields.ListField(attribute='urls', null=True)
+class ProjectResource(Resource):
+    name = fields.CharField(attribute='name')
+    whitelist = fields.ListField(attribute="whitelist")
 
     class Meta:
-        object_class = RedisObject
+        resource_name = "project"
+        object_class = RedisProject
         authorization = Authorization()
         authentication = Authentication()
 
     def get_resource_uri(self, bundle_or_obj):
         try:
             if getattr(bundle_or_obj, 'obj'):
-                return "/_api/v1/hydra/%s" % remove_slug(bundle_or_obj.obj.slug)
-            return "/_api/v1/hydra/%s" % remove_slug(bundle_or_obj.slug)
+                return "/_api/v1/project/%s/" % bundle_or_obj.obj.name
+            return "/_api/v1/project/%s/" % bundle_or_obj.name
         except:
             return ""
 
     def obj_create(self, bundle, request=None, **kwargs):
-        bundle.obj = RedisObject(bundle.data)
+        bundle.obj = RedisProject(bundle.data)
         bundle = self.full_hydrate(bundle)
-        save(bundle.obj.slug, bundle.obj.urls[0])
-        return bundle.obj
+        bundle.obj.save()
+        return bundle
 
     def obj_get(self, request=None, pk=None, **kwargs):
-        values = get_range(pk)
-        if not values:
+        proj = RedisProject(pk)
+        if not proj.exists():
             raise NotFound("No object matching this pk")
-        ret_val = RedisObject()
-        ret_val.urls = []
-        ret_val.slug = pk
-        for value in values:
-            redirect_url, score = value
-            ret_val.urls.append({
-                'score': score,
-                'url': redirect_url
-            })
-        return ret_val
+        return proj
 
     def obj_get_list(self, request=None, **kwargs):
         ret_val = []
-        filter_slug = request.GET.get('slug', None)
-        if not filter_slug:
-            #Support ?q= format also
-            filter_slug = request.GET.get('q', None)
-        if filter_slug:
-            keys = get_keys('%s*' % filter_slug)
-        else:
-            keys = get_keys("*")
+        keys = RedisProject.all_projects()
         for key in keys:
-            base_key = remove_slug(key)
-            ret_obj = RedisObject()
-            ret_obj.urls = []
-            ret_obj.slug = base_key
-            ret_obj.urls = get_urls(base_key)
-            ret_val.append(ret_obj)
+            obj = RedisProject(key)
+            ret_val.append(obj)
         return ret_val
 
     def obj_update(self, bundle, request=None, **kwargs):
         return self.obj_create(bundle, request, **kwargs)
 
     def obj_delete(self, request=None, **kwargs):
-        delete(kwargs['pk'])
+        obj = RedisProject(kwargs['pk'])
+        obj.delete()
 
     def obj_delete_list(self, request=None, **kwargs):
-        for slug in get_keys('*'):
-            r.delete(slug)
+        for name in RedisProject.all_projects():
+            obj = RedisProject(name)
+            obj.delete()
 
     def override_urls(self):
         raw_url = r"^(?P<resource_name>%s)/(?P<pk>.+)/$"
@@ -115,4 +127,117 @@ class HydraResource(Resource):
             url(raw_url % self._meta.resource_name,
                 self.wrap_view('dispatch_detail'),
                 name="api_dispatch_detail"),
+        ]
+
+class RedisRedirect(object):
+
+    def __init__(self, slug=None, project=None, urls=None, *args, **kwargs):
+        super(RedisRedirect, self).__init__(*args, **kwargs)
+        self.project = project
+        self.slug = slug
+        if urls:
+            self.urls = urls
+        else:
+            self.get_urls()
+
+    @property
+    def index_slug(self):
+        return "hydra:v1:projects:%s:slugs" % (self.project)
+
+    @property
+    def redis_slug(self):
+        return "%s:%s" % (self.index_slug, self.slug)
+
+    def all_slugs(self):
+        return r.smembers(self.index_slug)
+
+    def make_key(cls, key):
+        return "%s:%s" % (self.index_slug, key)
+
+    def save_redirect(self):
+        r.zincrby(self.redis_slug, self.urls[0], 1)
+        r.sadd(self.index_slug, self.slug)
+
+    def save(self):
+        if not self.exists():
+            self.save_redirect()
+
+    def exists(self):
+        return r.zcard(self.redis_slug)
+
+    def get_urls(self):
+        self._urls = r.zrange(self.redis_slug, 0, -1, withscores=True)
+        self.urls = []
+        for obj in self._urls:
+            redirect_url, score = obj
+            self.urls.append({
+                'score': score,
+                'url': redirect_url
+            })
+
+
+class RedirectResource(Resource):
+    slug = fields.CharField(attribute='slug')
+    project = fields.CharField(attribute='project')
+    urls = fields.ListField(attribute='urls', null=True)
+
+    class Meta:
+        object_class = RedisRedirect
+        authorization = Authorization()
+        authentication = Authentication()
+
+    def get_resource_uri(self, bundle_or_obj):
+        try:
+            if getattr(bundle_or_obj, 'obj'):
+                return "/_api/v1/redirect/%s/%s" % (bundle_or_obj.obj.project,
+                                                    bundle_or_obj.obj.slug)
+            return "/_api/v1/redirect/%s/%s" % (bundle_or_obj.project,
+                                                bundle_or_obj.slug)
+        except:
+            return ""
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle.obj = RedisRedirect(**bundle.data)
+        bundle = self.full_hydrate(bundle)
+        bundle.obj.save()
+        return bundle
+
+    def obj_get(self, request=None, pk=None, project=None, **kwargs):
+        proj = RedisRedirect(slug=pk, project=project)
+        if not proj.exists():
+            raise NotFound("No object matching this pk")
+        return proj
+
+    def obj_get_list(self, request=None, project=None, **kwargs):
+        ret_val = []
+        proj_obj = RedisRedirect(project=project)
+        keys = proj_obj.all_slugs()
+        for key in keys:
+            obj = RedisRedirect(slug=key, project=project)
+            ret_val.append(obj)
+        return ret_val
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        return self.obj_create(bundle, request, **kwargs)
+
+    def obj_delete(self, request=None, **kwargs):
+        obj = RedisRedirect(kwargs['pk'])
+        obj.delete()
+
+    def obj_delete_list(self, request=None, **kwargs):
+        for name in RedisRedirect.all_slugs():
+            obj = RedisRedirect(name)
+            obj.delete()
+
+    def override_urls(self):
+        list_url = r"^(?P<resource_name>%s)/(?P<project>[^/]+)/$"
+        detail_url = r"^(?P<resource_name>%s)/(?P<project>[^/]+)/(?P<pk>.+)/$"
+        return [
+            url(r"^(?P<resource_name>%s)/schema/$" % self._meta.resource_name, self.wrap_view('get_schema'), name="api_get_schema"),
+            url(detail_url % self._meta.resource_name,
+                self.wrap_view('dispatch_detail'),
+                name="api_dispatch_detail"),
+            url(list_url % self._meta.resource_name,
+                self.wrap_view('dispatch_list'),
+                name="api_dispatch_list"),
         ]
