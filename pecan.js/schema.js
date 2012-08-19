@@ -58,10 +58,14 @@ proto.wrap = function(result) {
 }
 
 proto.filters = function() {
-  return []
+  return Object.keys(this._source.filtering || {})
 }
 
 proto.comparable = function() {
+  for(var key in this._source.fields) {
+    if(this._source.fields[key].type === 'datetime')
+      return true
+  }
   return false
 }
 

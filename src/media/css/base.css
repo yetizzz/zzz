@@ -867,6 +867,13 @@ input[type=submit] {
     cursor:pointer;
 }
 
+.view_root ul li {  
+    padding-top:3px; 
+    padding-bottom:6px; 
+    margin-bottom:3px; 
+    border-bottom:1px dotted #CCC; 
+} 
+
 .btn.danger {
     background:-webkit-linear-gradient(-90deg, #A20D11, #9D1418); 
     background:-moz-linear-gradient(-90deg, #A20D11, #9D1418); 

@@ -17,11 +17,11 @@
     <h2>
       {{ resource }}
       <div class="root-controls">
-        {% if not schema.comparable %}
+        {% if schema.comparable %}
         <a href="#" rel="compare" class="btn mini search">Compare<i class="icon-white icon-tasks"></i></a>
         {% endif %}
 
-        {% if not schema.filters|length %}
+        {% if schema.filters|length %}
         <a href="#search" rel="dropdown" class="btn mini search">Search<i class="icon-white icon-search"></i></a>
         {% endif %}
 
