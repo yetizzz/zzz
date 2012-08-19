@@ -28,8 +28,7 @@ class RedisProject(object):
 
     @classmethod
     def all_projects(cls):
-        ret_val = list(r.smembers(cls.index_slug))
-        ret_val.sort()
+        ret_val = r.sort(cls.index_slug)
         return ret_val
 
     @property
@@ -174,7 +173,7 @@ class RedisRedirect(object):
         return "%s:%s" % (self.index_slug, self.slug)
 
     def all_slugs(self):
-        return r.smembers(self.index_slug)
+        return r.sort(self.index_slug)
 
     def save_redirect(self):
         r.sadd(self.index_slug, self.slug)
