@@ -78,14 +78,20 @@ if len(sys.argv) > 1:
         resp = requests.put("http://localhost:8000" + uri,
                             data=json.dumps(obj),
                             headers=headers)
-        print resp.json['traceback']
+        try:
+            print resp.json['traceback']
+        except:
+            print "Woo!"
 
     if sys.argv[1] == 'delete':
         ret = api.redirect.get(limit=2)
         obj = ret['objects'][1]
         uri = obj['resource_uri']
         resp = requests.delete("http://localhost:8000" + uri)
-        print resp.json['traceback']
+        try:
+            print resp.json['traceback']
+        except:
+            print "Woo!"
 
     if sys.argv[1] == 'create':
         for data in test_data:
@@ -113,11 +119,12 @@ if len(sys.argv) > 1:
             print ret['slug']
 
     if sys.argv[1] == 'delete':
-        ret = api.redirect.get(limit=LIMIT)
-        for ret in ret['objects']:
-            slug = ret['slug']
-            print slug,
-            print " - Deleted: %s" % api.redirect(slug).delete()
+        if sys.argv[2] == 'all':
+            ret = api.redirect.get(limit=LIMIT)
+            for ret in ret['objects']:
+                slug = ret['slug']
+                print slug,
+                print " - Deleted: %s" % api.redirect(slug).delete()
 
     if sys.argv[1] == "project":
         if sys.argv[2] == 'create':
