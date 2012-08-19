@@ -1,0 +1,15 @@
+          {% for item in results %}
+              <tr>
+              {% for field_name, value in item.fields %}
+                <td>
+                {% if forloop.first and schema.viewable %}
+                    <a href="_/{{ item.url }}/">
+                {% endif %}
+                    {{ value }}
+                {% if forloop.first and schema.viewable %}
+                    </a>
+                {% endif %}
+                </td>
+              {% endfor %} 
+              </tr>
+          {% endfor %}

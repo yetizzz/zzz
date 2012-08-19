@@ -46,6 +46,10 @@
       </form>
     </div>
 
+    <aside class="metrics">
+      <p>Showing {{ meta.offset }} through {{ meta.shown }} of {{ meta.total_count }} items.</p>
+    </aside>
+
     <table>
         <thead>
             <tr>
@@ -72,5 +76,4 @@
           {% endfor %}
         </tbody>
     </table>
-
 {% endblock %}
