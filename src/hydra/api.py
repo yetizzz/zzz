@@ -58,7 +58,7 @@ class RedisProject(object):
     def get_whitelist(self):
         return r.smembers("%s:whitelist" % self.redis_slug)
 
-class BaseResource(object):
+class BaseResource(Resource):
     """
     Not used yet
     """
@@ -85,11 +85,28 @@ class BaseResource(object):
         obj = self._meta.object_class(**kwargs)
         obj.delete()
 
+    def _find_slug(self):
+        if self.fields.get('slug'):
+            return 'slug'
+        if self.fields.get('name'):
+            return 'name'
+
+    def get_resource_uri(self, bundle_or_obj):
+        resource = self._meta.resource_name
+        slug_field = self._find_slug()
+        try:
+            if getattr(bundle_or_obj, 'obj'):
+                return "/_api/v1/%s/%s/" % (resource, getattr(bundle_or_obj.obj, slug_field))
+            return "/_api/v1/%s/%s/" % (resource, getattr(bundle_or_obj, slug_field))
+        except:
+            return ""
+
 class ProjectResource(Resource):
     name = fields.CharField(attribute='name')
     whitelist = fields.ListField(attribute="whitelist")
 
     class Meta:
+        main_ident = "name"
         resource_name = "project"
         object_class = RedisProject
         authorization = Authorization()
