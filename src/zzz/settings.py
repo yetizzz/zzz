@@ -29,6 +29,8 @@ USE_TZ = True
 MEDIA_ROOT = _('media')
 MEDIA_URL = '/media/'
 if os.environ.get(REDIS_ENV_VAR) or not DEBUG:
+    #We have media.slug.in, but it was doing weird things with
+    # heroku & cnames & S3. So we went with the explicit version
     MEDIA_URL = "https://s3.amazonaws.com/media.slug.in/"
 
 STATIC_ROOT = _('media/static')
