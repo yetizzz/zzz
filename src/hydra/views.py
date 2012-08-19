@@ -45,7 +45,14 @@ class SlugDetailView(FormView):
         return context
 
     def get_success_url(self, *args, **kwargs):
-        return self.request.POST['url']
+        slug = self.kwargs.get('slug', '')
+        project = self.kwargs.get('project', '')
+        url = self.request.POST['url']
+        redirect = RedisRedirect(slug=slug,
+                                 project=project,
+                                 urls=(url,))
+        redirect.save_redirect()
+        return url
 
 
 class ProjectView(TemplateView):
