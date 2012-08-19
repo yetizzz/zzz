@@ -11,6 +11,7 @@ function Site() {
   this._tplCache = {}
   this._auth = {}
   this._offsetURL = null
+  this.go = null
 }
 
 plate.Template.Meta.registerPlugin('loader', function(name, ready) {
@@ -66,6 +67,10 @@ proto.init = function(body) {
 
     please_route(window.location.pathname)
 
+    self.go = function(path) {
+      window.history.pushState({}, {}, please_route(path))
+    }
+
     function please_route(path) {
       var first_bit = /^\/([^\/]+)\//g.exec(path)[1]
 
@@ -91,7 +96,7 @@ proto.init = function(body) {
 
       current = fn
      
-      return '/'+first_bit+'/'+(path ? path.replace(/\/?$/, '/') : '')
+      return '/'+self._offsetURL+'/'+(path ? path.replace(/\/?$/, '/') : '')
     }
   })
 }

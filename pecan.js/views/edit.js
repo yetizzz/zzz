@@ -41,22 +41,28 @@ function delete_instance(ev) {
   ev.preventDefault()
 
   current_instance.delete(function(err) {
-    // deleting! 
+    current_instance._schema._site.go('/x/'+current_instance._schema._name+'/')
   }) 
 }
 
 function save_instance(ev) {
   ev.preventDefault()
 
-  current_instance.save($('form'), function(err, data) {
+  current_instance.save($('form'), function(err, data, xhr) {
     if(err) {
       $('body').addClass('error')
       $('[name=error]').text(err.message)
 
       return setTimeout(function() { $('body').removeClass('error') }, 5000)
     }
-    
-    alert('yay you saved it') 
+
+    return current_instance
+      ._schema
+      ._site
+      .go(
+        '/x/'+current_instance._schema._name+'/'
+      )
+
   })  
 }
 
