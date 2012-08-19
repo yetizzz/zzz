@@ -5,7 +5,9 @@ from django.conf import settings
 
 from sphinx.ext import intersphinx
 
+
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
+
 
 def make_slug(val, version="latest"):
     return "hydra:v1:redirects:%s:%s" % (version, val)
@@ -22,7 +24,7 @@ def save(slug, url, version="latest"):
 
 
 def get_range(pk, withscores=True):
-    return r.zrange(make_slug(pk), 0, -1, withscores=withscores)
+    return r.zrevrange(make_slug(pk), 0, -1, withscores=withscores)
 
 
 def get_keys(key):
