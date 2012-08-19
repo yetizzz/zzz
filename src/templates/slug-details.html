@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Slug Details</title>
+</head>
+<body>
+	<h1>{{ slug }}</h1>
+        {% for url in urls %}
+        {% if forloop.first %}
+        <ul>
+        {% endif %}
+          <li>{{ url.score }} <a href="{{ url.url }}">{{ url.url }}</a>
+        {% if forloop.last %}
+        </ul>
+        {% endif %}
+        {% endfor %}
+</body>
+</html>

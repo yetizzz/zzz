@@ -1,6 +1,5 @@
 from django.core.urlresolvers import reverse
-from django.views.generic import RedirectView
-
+from django.views.generic import RedirectView, TemplateView
 from analytics.models import Visit
 from .utils import get_urls
 
@@ -26,3 +25,13 @@ class SlugLookupRedirectView(RedirectView):
 
         Visit.objects.create(key=slug, retval=redirect_url)
         return redirect_url
+
+
+class SlugDetailView(TemplateView):
+    extra_context = None
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(SlugDetailView, self).get_context_data(*args, **kwargs)
+        context.update(kwargs)
+        context['urls'] = get_urls(kwargs['slug'])
+        return context
