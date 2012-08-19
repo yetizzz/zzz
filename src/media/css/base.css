@@ -1004,3 +1004,37 @@ header [rel=logout] {
 header {
   overflow:hidden;
 }
+
+.metrics {
+    font-size:0.8em;
+    padding:18px;
+    padding-bottom:0;
+    color:#999;
+}
+
+td li {
+    margin-bottom:3px;
+    padding-bottom:6px;
+    border-bottom:1px solid #AAA;
+}
+
+td li:last-child {
+    border-bottom:none;
+}
+
+td dt {
+    padding-bottom:9px;
+    border-left:1px solid #CCC;
+    padding-left:9px;
+    margin-left:9px;
+}
+
+td dd {
+    margin-bottom:3px;
+    padding-bottom:6px;
+    margin-left:9px;
+}
+
+td dt:last-child {
+    border-bottom:none;
+}
