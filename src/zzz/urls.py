@@ -18,9 +18,6 @@ if settings.DEBUG:
 urlpatterns += patterns('',
     url(r'^_admin/',
         include('pecanpy.urls')),
-    url(r'^_search/',
-        ProjectView.as_view(template_name='search.html'),
-        name='search'),
     url(r'^_api/', include('hydra.urls.api')),
     url(r'^', include('hydra.urls.slug')),
 )
