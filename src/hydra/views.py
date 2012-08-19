@@ -1,9 +1,9 @@
 from django.core.urlresolvers import reverse
-from django.views.generic import RedirectView, TemplateView
+from django.views.generic import RedirectView, TemplateView, FormView
 from analytics.models import Visit
 
 from .api import RedisProject, RedisRedirect
-
+from .forms import SlugForm
 
 class SlugLookupRedirectView(RedirectView):
     permanent = False
@@ -31,17 +31,21 @@ class SlugLookupRedirectView(RedirectView):
         return redirect_url
 
 
-class SlugDetailView(TemplateView):
-    extra_context = None
+class SlugDetailView(FormView):
+    form_class = SlugForm
 
     def get_context_data(self, *args, **kwargs):
-        slug = kwargs.get('slug', '')
-        project = kwargs.get('project', '')
+        slug = self.kwargs.get('slug', '')
+        project = self.kwargs.get('project', '')
         context = super(SlugDetailView, self).get_context_data(*args, **kwargs)
-        context.update(kwargs)
+        context.update(self.kwargs)
         proj_obj = RedisRedirect(slug=slug, project=project)
         context['urls'] = proj_obj.get_urls()
+        context.update(self.kwargs)
         return context
+
+    def get_success_url(self, *args, **kwargs):
+        return self.request.POST['url']
 
 
 class ProjectView(TemplateView):

@@ -10,7 +10,7 @@
         {{ form.errors }}
         {% for url in urls %}
         {% if forloop.first %}
-        <form action="{% url 'slug-details' slug %}" method="POST">{% csrf_token %}
+        <form action="{% url 'slug-details' project slug %}" method="POST">{% csrf_token %}
           <input type="hidden" name="slug" value="{{ slug }}">
           <ul>
         {% endif %}
