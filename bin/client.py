@@ -2,6 +2,10 @@
 """
 Basic API client
 
+To create some projects::
+
+    python client.py project create
+
 To populate some data::
 
     python client.py create

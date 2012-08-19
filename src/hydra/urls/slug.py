@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, url
 
-from hydra.views import SlugLookupRedirectView, SlugDetailView
+from hydra.views import SlugLookupRedirectView, SlugDetailView, ProjectRedirect
 
 
 urlpatterns = patterns('',
@@ -10,4 +10,7 @@ urlpatterns = patterns('',
     url(r'^(?P<project>[^/]+)/(?P<slug>[^/]+)',
         SlugLookupRedirectView.as_view(),
         name='slug-redirect'),
+    url(r'^(?P<project>[^/]+)/',
+        ProjectRedirect.as_view(),
+        name='project-redirect'),
 )

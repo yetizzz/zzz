@@ -17,7 +17,7 @@
       <form action="." method="GET">
         <select name="project" id="id_project">
           {% for project in projects %}
-          <option value="{{ project }}">{{ project }}</option>
+          <option value="{{ project }}" {% if project == selected_project %}selected{% endif %}>{{ project }}</option>
           {% endfor %}
         </select>
         <div class="text-input-wrapper">

@@ -71,5 +71,15 @@ class ProjectView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectView, self).get_context_data(*args, **kwargs)
         context['projects'] = RedisProject.all_projects()
+        selected_proj = self.request.GET.get('project', None)
+        if selected_proj:
+            context['selected_project'] = selected_proj
         context.update(kwargs)
         return context
+
+class ProjectRedirect(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, **kwargs):
+        project = kwargs.get('project', '')
+        return "%s?project=%s" % (reverse("search"), project)

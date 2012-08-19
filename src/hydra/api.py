@@ -2,7 +2,7 @@
 A redis-based Tastypie API.
 
 It adds has "Model" type objects RedisProject and RedisRedirect. These are used
-for all of the data access, and for hydration at the Tatypie level.
+for all of the data access, and for hydration at the Tastypie level.
 
 Then we have resources that are based on these models. The ProjectResource and
 RedirectResource map onto the model objects listed above.
@@ -27,7 +27,7 @@ r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
 class RedisProject(object):
     """
-    A model layer repsenting a Project in Redis.
+    A model layer representing a Project in Redis.
 
     It has an index of all existing projects, and then contains metadata about
     projects including their existence, and a whitelist of URLs that you can
@@ -141,7 +141,7 @@ class BaseResource(Resource):
 
 class ProjectResource(Resource):
     """
-    A Resource reresenting a Project.
+    A Resource representing a Project.
 
     Provides GET, POST, PUT, DELETE. See the README for more details.
 
