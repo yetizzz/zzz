@@ -133,7 +133,7 @@ proto.getRootURL = function(ready) {
 
       console.log(val)
       self.storage.set('rooturl', val)
-      self.storage.set('auth', btoa(form.find('[name=user]').val()+':'+form.find('[name=password]')))
+      self.storage.set('auth', btoa(form.find('[name=user]').val()+':'+form.find('[name=password]').val()))
       return ready(null, val)
     })
   })

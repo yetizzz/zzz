@@ -123,3 +123,43 @@ proto.list = function(url, ready) {
     ready(null, data.objects.map(self.wrap.bind(self)), data.meta)
   })
 }
+
+proto.buildFromForm = function(form) {
+  var self = this
+    , fields = self._source.fields
+    , output = {}
+    , name
+    , field
+
+  form.find('.form-row')
+      .each(function(x, el) {
+        el = $(el)
+        name = el.attr('data-field')
+        field = fields[name]
+
+        ;(self['handle_'+handle_field.type] || self.handle_default)(name, field, el, output)
+      })
+}
+
+proto.handle_default = function(name, field, el, output) {
+  output[name] = el.find('[name='+JSON.stringify(name)+']').val()
+}
+
+proto.handle_datetime = function(name, field, el, output) {
+
+}
+
+proto.handle_list = function(name, field, el, output) {
+
+}
+
+proto.handle_list_object = function(name, field, el, output) {
+
+}
+
+proto.handle_list_input = function(name, field, el, output) {
+
+}
+
+
+
