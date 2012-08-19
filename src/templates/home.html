@@ -34,7 +34,7 @@
       <!-- END search form -->
 
       <!-- BEGIN search results -->
-      <div class="module" id='search_module'>
+      <div class="module" id='search_module' style="display:none">
         <div class="module-wrapper">
           <div class="module-header">
             <h3 id="id_search_title"></h3>
@@ -48,5 +48,19 @@
         </div>
       </div>
     <!-- END search results -->
+    <script>$('#search_module').show()</script>
+    <div class="wtf">
+      <div class="root" style="width:600px">
+      <h2 style="font-family:KnewaveOutlineRegular; font-size:1.5em;">WTF is Slug.in?</h2>
+      <p>
+        We provide quick access to information that you care about. Go ahead and pick a project and shortcut below, and then you will be directed there.
+      </p>
+
+      <p>
+        All of our shortcuts work as URLs too. So you can go to http://slug.in/*project*/*shortcut* to get to them. For example, <code>http://slug.in/django/TIME_ZONE/</code>
+      </p>
+      </div>
+    </div>
+
   </div>
 {% endblock body %}
