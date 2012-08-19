@@ -24,6 +24,9 @@ USE_L10N = True
 USE_TZ = True
 MEDIA_ROOT = _('media')
 MEDIA_URL = '/media/'
+if os.environ.get('REDISTOGO_URL') or not DEBUG:
+    MEDIA_URL = "http://media.slug.in/"
+
 STATIC_ROOT = _('media/static')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
