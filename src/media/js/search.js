@@ -24,6 +24,7 @@
   var xhr = [];
 
   var $input, $project, $button, $results, $title, $selected_facets = null;
+  var $search_module = null
 
   function init() {
     $input = $('#id_site_search_2');
@@ -32,6 +33,7 @@
     $results = $("#id_search_result");
     $title = $("#id_search_title");
     $selected_facets = $("#id_selected_facets");
+    $search_module = $('#search_module')
 
     // minimum requirements for this script to kick in...
     if(!$input.length || !$results.length) {
@@ -77,7 +79,11 @@
     $results.empty();
     $results.append(html);
     $title.html(getTitle());
-    $results.show();
+
+    if(html.replace(/\s+/, '').length)
+      $search_module.addClass('visible')
+    else
+      $search_module.removeClass('visible')
   }
 
   // Construct the results HTML
@@ -161,7 +167,7 @@
     // Don't do anything if there is no query
     if(getKeywords() == '') {
       $results.empty();
-      $results.hide();
+      $search_module.removeClass('visible')
       $title.html("No search term entered");
       return;
     }

@@ -6,11 +6,14 @@
     {% block head %}
     {% endblock head %}
     <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+    <link rel="stylesheet" href="{{ MEDIA_URL }}css/frontend.css"></script>
   </head>
-  <body>
+  <body class="{% block body_class %}{% endblock %}">
+    {% block body %}
     <div class="root">
     {% block content %}
     {% endblock content %}
     </div>
+    {% endblock body %}
   </body>
 </html>
