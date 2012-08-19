@@ -49,6 +49,26 @@ What we built
       shortcuts
     * Visible at http://slug.in/
 
+### TL;DR
+
+A play in two parts:
+
+#### The site
+
+"Let's build something like Django.me, but for multiple projects!"
+
+"Let's not use the Django ORM. Let's use redis!"
+
+![hmm.](http://static.guim.co.uk/sys-images/Guardian/Pix/pictures/2012/8/9/1344511024523/McKayla-Maroney--008.jpg)
+
+#### The admin
+
+"Let's not use the Django admin!"
+
+10 minutes later, "Let's just write our own"
+
+![okay](http://0.tqn.com/d/webtrends/1/0/B/A/-/-/okay-meme-face.jpg)
+
 API
 ===
 
