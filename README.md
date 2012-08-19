@@ -1,4 +1,34 @@
-Our epic Django Dash project.
+What is this?
+-------------
+
+We have built a generic, learning URL shortner. AKA, djamgo.me on steroids.
+
+Because it is the Django Dash, we felt the need to overarchitect it in just about every way. On our vision quest, we have learned many things about the inner working of Tastypie, Redis, and the World.
+
+What we built
+-------------
+
+* A generic Tastypie API Admin interface "Pecan".
+    * You can point it at any Tastypie API, and get basic CRUD
+    * Understands what tastypie methods are allowed
+
+* A Tastypie API for a Redis data store
+    * This exposes basic CRUD operations for a couple "Models"
+    * It works in conjunction with the data store
+    * Has the basic underpinnings for a generic RedisResource for Tastypie, still needs a ton of work tho.
+
+* Analytics gathering and API
+    * Provides a Tastypie API on top of Postgres
+    * Works with Pecan
+    * Tracks what redirects are followed, and used the most
+
+* The main site
+    * Provides a instant-filtering interface for finding shortcuts
+    * Allows users to add new links
+    * Uses Pecan to provide editing functionality
+    * Tracks what links are clicked the most, so you can crowd-source the best shortcuts
+
+
 
 
 API
