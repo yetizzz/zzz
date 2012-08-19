@@ -1,5 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.conf import settings
+from django.http import HttpResponseRedirect
 from django.views.generic import RedirectView, TemplateView, FormView
 from analytics.models import Visit
 
@@ -76,6 +77,17 @@ class ProjectView(TemplateView):
             context['selected_project'] = selected_proj
         context.update(kwargs)
         return context
+
+    def post(self, request, *args, **kwargs):
+        if request.method == 'POST':
+            url = reverse('slug-details', kwargs={
+                'project': request.POST.get('project'),
+                'slug': request.POST.get('q'),
+            })
+            return HttpResponseRedirect(url)
+
+        return super(ProjectView, self).post(request, *args, **kwargs) 
+
 
 class ProjectRedirect(RedirectView):
     permanent = False

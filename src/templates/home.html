@@ -15,7 +15,7 @@
 
       <div class="wide-search-bar">
         <div class="wide-search-bar-wrapper clearfix">
-          <form action="." method="GET">
+          <form action="/" method="POST">
             <select name="project" id="id_project">
               {% for project in projects %}
               <option value="{{ project }}" {% if project == selected_project %}selected{% endif %}>{{ project }}</option>
@@ -27,6 +27,7 @@
             <span class="submit-input-wrapper">
               <input type="submit" value="Slug it." id="id_search_button">
             </span>
+            {% csrf_token %}
           </form>
         </div>
       </div>

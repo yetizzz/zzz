@@ -62,7 +62,7 @@
       timer = setTimeout("Search.run()", delay);
     });
 
-    $button.click(Search.run);
+    // $button.click(Search.run);
   }
 
   // Abort all existing XHR requests, since a new search is starting

@@ -4,7 +4,6 @@ from django.conf import settings
 
 from hydra.views import ProjectView
 
-
 urlpatterns = patterns('',
     url(r'^$',
         ProjectView.as_view(template_name='home.html'),
