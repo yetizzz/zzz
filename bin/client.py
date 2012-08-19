@@ -66,6 +66,7 @@ project_data = [
         "whitelist": [
             "djangoproject.com",
             "readthedocs.org",
+            "fabfile.org"
         ]
     }
 ]

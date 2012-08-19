@@ -8,6 +8,7 @@ from hydra.utils import read_intersphinx
 INV_MAPPING = {
     'readthedocs.inv': 'http://read-the-docs.readthedocs.org/en/latest/%s',
     'django.inv': 'http://django.readthedocs.org/en/latest/%s',
+    'fabric.inv': 'http://docs.fabfile.org/en/latest/%s',
 }
 
 
