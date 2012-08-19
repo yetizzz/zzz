@@ -86,9 +86,9 @@
     var html = [];
     for (var i=0; i<results.length; i++) {
       obj = results[i]
+      project = obj['project']
       slug = obj['slug']
-      score = obj['urls'][0]['score']
-      url = obj['urls'][0]['url']
+      url = "/" + project + "/" + slug + "/"
       html.push([
         '<li class="module-item">',
           '<p class="module-item-title">',
