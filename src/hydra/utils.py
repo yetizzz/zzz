@@ -11,12 +11,12 @@ r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
 
 def safe_save(project, slug, url):
+    """
+    Save things to Redis, but check if they exist first
+    """
     obj = RedisRedirect(project=project, slug=slug)
     if not obj.exists():
-        try:
-            obj.save()
-        except Exception, e:
-            print e
+        obj.save()
     if not obj.url_exists(url):
         obj.incr(url)
 
@@ -25,6 +25,18 @@ def read_intersphinx(project, file, urlpattern):
     """
     Reads file as intersphinx format. Prepends the url pattern on the front of
     URLs. URL Pattern should have a %s in it for string formatting.
+
+    Only supports intersphinx v2. It parses down into an effective set of data that is:
+
+    {'<id>': [
+        "<project>", # From conf.py
+        "<version>", # From conf.py
+        "<url>", # With anchor
+        <title>" # Usually blank
+        ]
+    }
+
+    We then smartly parse the anchor tag and add it into Redis.
     """
     f = open(file)
     f.readline()
@@ -33,7 +45,7 @@ def read_intersphinx(project, file, urlpattern):
         print "KEY: %s" % top_key
         inner_keys = data[top_key].keys()
         for inner_key in inner_keys:
-            #print "INNER KEY: %s" % inner_key
+            print "INNER KEY: %s" % inner_key
             _project, version, url, title = data[top_key][inner_key]
             url_key = url.split('#')[1]
             if ":" in url_key:
