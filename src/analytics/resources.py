@@ -10,6 +10,7 @@ class VisitResource(ModelResource):
         resource_name = 'visits'
         allowed_methods = ('get',)
         filtering = {
-            'key': ALL,
+            'project': ALL,
+            'slug': ALL,
             'when': ALL,
         }
