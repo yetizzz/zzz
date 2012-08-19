@@ -166,7 +166,7 @@ class RedisRedirect(object):
         return r.zcard(self.redis_slug)
 
     def get_urls(self):
-        self._urls = r.zrange(self.redis_slug, 0, -1, withscores=True)
+        self._urls = r.zrevrange(self.redis_slug, 0, -1, withscores=True)
         self.urls = []
         for obj in self._urls:
             redirect_url, score = obj
