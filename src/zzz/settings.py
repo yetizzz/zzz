@@ -6,7 +6,11 @@ import dj_database_url
 ROOT_DIR = os.path.dirname(os.path.dirname(__file__))
 _ = lambda x: os.path.join(ROOT_DIR, x)
 
-DEBUG = True
+REDIS_ENV_VAR = 'OPENREDIS_URL'
+if os.environ.get(REDIS_ENV_VAR, None):
+    DEBUG = False
+else:
+    DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 DATABASES = {
@@ -14,7 +18,6 @@ DATABASES = {
 }
 
 SENTRY_DSN = os.getenv('SENTRY_DSN', None)
-REDIS_ENV_VAR = 'OPENREDIS_URL'
 REDIS_URL = os.getenv(REDIS_ENV_VAR, 'redis://localhost:6379')
 
 TIME_ZONE = 'America/Chicago'
