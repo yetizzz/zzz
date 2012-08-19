@@ -4,10 +4,10 @@ from hydra.views import SlugLookupRedirectView, SlugDetailView, ProjectRedirect
 
 
 urlpatterns = patterns('',
-    url(r'^_/(?P<project>[^/]+)$',
+    url(r'^_/(?P<project>[^/]+)/?$',
         ProjectRedirect.as_view(),
         name='project-redirect'),
-    url(r'^(?P<project>[^/]+)$',
+    url(r'^(?P<project>[^/]+)/?$',
         ProjectRedirect.as_view(),
         name='project-redirect'),
     url(r'^_/(?P<project>[^/]+)/(?P<slug>[^/]+)',
