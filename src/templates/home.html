@@ -1,63 +1,54 @@
 <!DOCTYPE HTML>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>Search</title>
+  <head>
+    <meta charset="UTF-8">
+    <title>Search</title>
     <link rel="stylesheet" href="{{ MEDIA_URL }}css/base.css" />
     <script type="text/javascript" src="http://code.jquery.com/jquery-1.8.0.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}js/search.js"></script>
     <script type="text/javascript" src="{{ MEDIA_URL }}js/base.js"></script>
+  </head>
 
-</head>
-<body >
-
+  <body >
     <!-- BEGIN search form -->
-  <div class="wide-search-bar">
-    <div class="wide-search-bar-wrapper clearfix">
-      <form action="." method="GET">
-        <select name="project" id="id_project">
-          {% for project in projects %}
-          <option value="{{ project }}">{{ project }}</option>
-          {% endfor %}
-        </select>
-        <div class="text-input-wrapper">
-          <input type="text" name="q" value="" autocomplete="off" id="id_site_search_2">
+    <div class="root">
+      <div class="wide-search-bar">
+        <div class="wide-search-bar-wrapper clearfix">
+          <form action="." method="GET">
+            <select name="project" id="id_project">
+              {% for project in projects %}
+              <option value="{{ project }}">{{ project }}</option>
+              {% endfor %}
+            </select>
+            <div class="text-input-wrapper">
+              <input type="text" name="q" value="" autocomplete="off" id="id_site_search_2">
+            </div>
+            <div class="submit-input-wrapper">
+              <input type="submit" value="Go crazy." id="id_search_button">
+            </div>
+          </form>
         </div>
-        <div class="submit-input-wrapper">
-          <input type="submit" value="Go crazy." id="id_search_button">
+      </div>
+      <!-- END search form -->
+
+
+
+      <!-- BEGIN search results -->
+      <div class="module" id='search_module'>
+        <div class="module-wrapper">
+          <div class="module-header">
+            <h3 id="id_search_title">No search term entered</h3>
+          </div>
+          <div class="module-list">
+            <div class="module-list-wrapper">
+              <ul id="id_search_result">
+              </ul>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
-  </div>
-  <!-- END search form -->
-
-
-
-<!-- BEGIN search results -->
-<div class="module" id='search_module'>
-  <div class="module-wrapper">
-
-    <div class="module-header">
-      <h3 id="id_search_title">No search term entered</h3>
-
-    </div>
-
-
-    <div class="module-list">
-      <div class="module-list-wrapper">
-        <ul id="id_search_result">
-
-        </ul>
       </div>
     </div>
+    <!-- END search results -->
 
-
-
-
-  </div>
-</div>
-
-<!-- END search results -->
-
-</body>
+  </body>
 </html>
