@@ -1,0 +1,278 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>What is this? &mdash; slug.in 1.0 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '1.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="top" title="slug.in 1.0 documentation" href="#" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li><a href="#">slug.in 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="what-is-this">
+<h1>What is this?<a class="headerlink" href="#what-is-this" title="Permalink to this headline">¶</a></h1>
+<p>We have built a generic, learning URL shortner. AKA, django.me on steroids.</p>
+<p>Because it is the Django Dash, we felt the need to overarchitect it in just
+about every way. On our vision quest, we have learned many things about the
+inner working of Tastypie, Redis, and the World.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p>it turns out nosql databases aren&#8217;t great at relational data</p>
+<p class="last"><em>who knew</em></p>
+</div>
+<div class="section" id="what-we-built">
+<h2>What we built<a class="headerlink" href="#what-we-built" title="Permalink to this headline">¶</a></h2>
+<ul>
+<li><dl class="first docutils">
+<dt>A generic Tastypie API Admin interface &#8220;Pecan&#8221;</dt>
+<dd><ul class="first last">
+<li><p class="first">You can point it at any Tastypie API, and get basic CRUD</p>
+</li>
+<li><p class="first">Understands what tastypie methods are allowed</p>
+</li>
+<li><p class="first">Visible at <a class="reference external" href="http://slug.in/_admin/">http://slug.in/_admin/</a></p>
+</li>
+<li><dl class="first docutils">
+<dt>You&#8217;ll need to login to use it</dt>
+<dd><ul class="first last simple">
+<li>This is protected by the web-scale-iest of security methods: <cite>Authorization: Basic &lt;base64 yourname:yourpassword&gt;</cite></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>A Tastypie API for a Redis data store</dt>
+<dd><ul class="first last simple">
+<li>This exposes basic CRUD operations for a couple &#8220;Models&#8221;</li>
+<li>It works in conjunction with the data store</li>
+<li>Has the basic underpinnings for a generic RedisResource for Tastypie,
+still needs a ton of work tho.</li>
+<li>Visible at <a class="reference external" href="http://slug.in/_api/v1/?format=json">http://slug.in/_api/v1/?format=json</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Analytics gathering and API</dt>
+<dd><ul class="first last simple">
+<li>Provides a Tastypie API on top of Postgres</li>
+<li>Works with Pecan</li>
+<li>Tracks what redirects are followed, and used the most</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>An importer for Intersphinx data</dt>
+<dd><ul class="first last simple">
+<li>Currently we only index data from Sphinx</li>
+<li>We can index any arbitrary intersphinx page, so people can host this themselves</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>The main site</dt>
+<dd><ul class="first last simple">
+<li>Provides a instant-filtering interface for finding shortcuts</li>
+<li>Allows users to add new links</li>
+<li>Uses Pecan to provide editing functionality</li>
+<li>Tracks what links are clicked the most, so you can crowd-source the best
+shortcuts</li>
+<li>Visible at <a class="reference external" href="http://slug.in/">http://slug.in/</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="api">
+<h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="redis-data-model">
+<h2>Redis Data Model<a class="headerlink" href="#redis-data-model" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre>"hydra:v1:projects" = Index of projects &lt;Set&gt;
+"hydra:v1:projects:&lt;project&gt;" = Project Metadata &lt;Hash&gt;
+"hydra:v1:projects:&lt;project&gt;:slugs" = Index of slugs &lt;Set&gt;
+"hydra:v1:projects:&lt;project&gt;:slugs:&lt;slug&gt;" = Slug Data &lt;SortedSet&gt;</pre>
+</div>
+</div>
+<div class="section" id="rest-api">
+<h2>REST API<a class="headerlink" href="#rest-api" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-python"><pre># List of projects
+GET /_api/v1/projects/?format=json
+{
+    "meta": {},
+    "objects": [
+        {
+            "name": "readthedocs",
+            "resource_uri": "/_api/v1/project/readthedocs/",
+            "whitelist": [
+                "djangoproject.com",
+                "readthedocs.org"
+            ]
+        },
+        {
+            "name": "fabric",
+            "resource_uri": "/_api/v1/project/fabric/",
+            "whitelist": [
+                "djangoproject.com",
+                "fabfile.org"
+            ]
+        }
+    ]
+}
+
+# Project Detail
+GET /_api/v1/projects/&lt;project&gt;/
+{
+    "name": "django",
+    "resource_uri": "/_api/v1/project/django/",
+    "whitelist": [
+        "djangoproject.com",
+        "readthedocs.org"
+    ]
+}
+
+# List of Redirects
+GET /_api/v1/redirect/?format=json
+{
+    "meta": {},
+    "objects": [
+        {
+            "project": "django",
+            "resource_uri": "/_api/v1/redirect/django/get_object/",
+            "slug": "get_object",
+            "urls": [
+                {
+                    "score": 1.0,
+                    "url": "http://django.readthedocs.org/en/latest/ref/class-based-views/mixins-single-object.html#django.views.generic.detail.SingleObjectMixin.get_object"
+                }
+            ]
+        }
+    ]
+}
+
+# Redirect detail
+GET /_api/v1/redirect/django/get_object/?format=json
+{
+    "project": "django",
+    "resource_uri": "/_api/v1/redirect/django/get_object/",
+    "slug": "get_object",
+    "urls": [
+        {
+            "score": 1.0,
+            "url": "http://django.readthedocs.org/en/latest/ref/class-based-views/mixins-single-object.html#django.views.generic.detail.SingleObjectMixin.get_object"
+        }
+    ]
+}
+
+#Delete project
+DELETE /_api/v1/project/django/
+
+#Delete redirect
+DELETE /_api/v1/redirect/django/get_object/
+
+#Edit project
+PUT /_api/v1/project/django
+
+#Edit redirect
+PUT /_api/v1/redirect/django/get_object/</pre>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">What is this?</a><ul>
+<li><a class="reference internal" href="#what-we-built">What we built</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#api">API</a><ul>
+<li><a class="reference internal" href="#redis-data-model">Redis Data Model</a></li>
+<li><a class="reference internal" href="#rest-api">REST API</a></li>
+</ul>
+</li>
+</ul>
+
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li><a href="#">slug.in 1.0 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2012, Chris Dickinson, Wraithan, Eric Holscher.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
