@@ -73,10 +73,12 @@ if len(sys.argv) > 1:
     if sys.argv[1] == 'put':
         ret = api.redirect.get(limit=2)
         obj = ret['objects'][1]
+        print obj['urls'][0]['url']
         obj['urls'][0]['url'] = "BOOO"
+        uri = obj['resource_uri']
         import requests
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        resp = requests.put("http://localhost:8000" + obj['resource_uri'], data=json.dumps(obj), headers=headers)
+        resp = requests.put("http://localhost:8000" + uri, data=json.dumps(obj), headers=headers)
         print resp.content
 
     if sys.argv[1] == 'create':

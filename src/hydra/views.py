@@ -59,7 +59,7 @@ class ProjectView(TemplateView):
     extra_context = None
 
     def get_context_data(self, *args, **kwargs):
-        context = super(HomeView, self).get_context_data(*args, **kwargs)
+        context = super(ProjectView, self).get_context_data(*args, **kwargs)
         context['projects'] = RedisProject.all_projects()
         context.update(kwargs)
         return context

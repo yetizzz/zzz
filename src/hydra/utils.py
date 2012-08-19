@@ -11,9 +11,10 @@ r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
 
 def safe_save(project, slug, url):
-    obj = RedisRedirect(project=project, slug=slug, urls=[url])
-    if not obj.exists():
-        obj.save()
+    obj = RedisRedirect(project=project, slug=slug)
+    if not obj.url_exists(url):
+        obj.incr(url)
+
 
 def read_intersphinx(project, file, urlpattern):
     """

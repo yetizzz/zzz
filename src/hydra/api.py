@@ -7,7 +7,8 @@ from tastypie.resources import Resource
 from tastypie import fields
 from tastypie.authorization import Authorization
 from tastypie.authentication import Authentication
-from tastypie.exceptions import NotFound
+from tastypie.exceptions import NotFound, ImmediateHttpResponse
+from tastypie.http import HttpConflict
 
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
@@ -160,12 +161,32 @@ class RedisRedirect(object):
         return "%s:%s" % (self.index_slug, key)
 
     def save_redirect(self):
-        r.zincrby(self.redis_slug, self.urls[0], 1)
         r.sadd(self.index_slug, self.slug)
 
+    def save_urls(self):
+        for obj in self.urls:
+            if hasattr(obj, 'get'):
+                if obj.get('score', None):
+                    r.zadd(self.redis_slug, obj['url'], obj['score'])
+            else:
+                print "WTF?!"
+                r.zincrby(self.redis_slug, self.urls[0], 1)
+
     def save(self):
-        if not self.exists():
-            self.save_redirect()
+        self.save_redirect()
+        self.save_urls()
+        return True
+
+    def incr(self, url):
+        r.zincrby(self.redis_slug, url, 1)
+
+    def url_exists(self, url):
+        for url_obj in self.get_urls():
+            if url == url_obj['url']:
+                return True
+        return False
+
+
 
     def exists(self):
         return r.zcard(self.redis_slug)
@@ -205,8 +226,17 @@ class RedirectResource(Resource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle.obj = RedisRedirect(**bundle.data)
         bundle = self.full_hydrate(bundle)
-        bundle.obj.save()
+        if not bundle.obj.save():
+            raise ImmediateHttpResponse(
+                HttpConflict("Object already exists")
+            )
+
         return bundle
+
+    def obj_update(self, bundle, request=None, **kwargs):
+        if bundle.data.get('resource_uri'):
+            del bundle.data['resource_uri']
+        return self.obj_create(bundle, request, **kwargs)
 
     def obj_get(self, request=None, pk=None, project=None, **kwargs):
         proj = RedisRedirect(slug=pk, project=project)
@@ -240,8 +270,6 @@ class RedirectResource(Resource):
                             ret_val.append(obj)
         return ret_val
 
-    def obj_update(self, bundle, request=None, **kwargs):
-        return self.obj_create(bundle, request, **kwargs)
 
     def obj_delete(self, request=None, **kwargs):
         obj = RedisRedirect(kwargs['pk'])
