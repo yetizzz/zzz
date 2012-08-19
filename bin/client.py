@@ -57,14 +57,18 @@ project_data = [
     {
         "name": "readthedocs",
         "whitelist": [
-            "djangoproject.com",
+            "readthedocs.org",
+        ]
+    },
+    {
+        "name": "tastypie",
+        "whitelist": [
             "readthedocs.org",
         ]
     },
     {
         "name": "fabric",
         "whitelist": [
-            "djangoproject.com",
             "readthedocs.org",
             "fabfile.org"
         ]
