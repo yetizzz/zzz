@@ -75,7 +75,7 @@
   border-right:2px solid #1a7405;
 }
 
-.home #landing form input[type=search] {
+.home #landing form input[type=text] {
   -moz-appearance:-moz-initial;
   -webkit-appearance:none;
 
