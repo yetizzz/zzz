@@ -4,6 +4,7 @@ var route = require('./routes')
   , request = require('./request')
   , templates = require('./templates')
   , Schema = require('./schema')
+  , cookie = require('./cookie')
 
 function Site() {
   this.root = null
@@ -194,6 +195,7 @@ proto.schemaResources = function(url, ready) {
 proto.authHeader = function() {
   return {
     'Authorization': 'Basic '+this.storage.get('auth')
+  , 'X-CSRFToken': cookie('csrftoken') 
   }
 }
 

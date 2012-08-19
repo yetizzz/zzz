@@ -32,6 +32,10 @@ function edit(site, resource, full_resource) {
 edit.behaviors = {
     'click [rel=delete]': delete_instance
   , 'submit form':        save_instance
+  , 'change [name=mode]': select_new_mode
+  , 'click [rel=add]': dispatch_add
+  , 'click [rel=remove]': dispatch_remove
+
 }
 
 function delete_instance(ev) {
@@ -52,3 +56,79 @@ function save_instance(ev) {
     alert('yay you saved it') 
   })  
 }
+
+function select_new_mode(ev) {
+  var el = $(ev.target)
+    , mode = el.val()
+
+  var next = el.nextAll('[name='+mode+']').html()
+
+  el.parent()
+    .html('')
+    .append(next)
+}
+
+function remove_key_value(ev) {
+  ev.preventDefault()
+
+  var el = $(ev.target)
+
+  el.parents('.key-value-row')
+    .remove()
+
+}
+
+function add_key_value(ev) {
+  ev.preventDefault()
+
+  var el = $(ev.target)
+    , root = el.parents('.key-value')
+    , rows = root.find('.key-value-row')
+    , row = rows.eq(0).clone()
+
+  row.find(':input').each(function(x, e) { $(e).val(null) })
+  row.insertAfter(rows.eq(rows.length-1))
+}
+
+function add_list_value(ev) {
+  ev.preventDefault()
+
+  var el = $(ev.target)
+    , root = el.parents('.value')
+    , row = root.clone()
+
+  row.find(':input').each(function(x, e) { $(e).val(null) })
+  row.insertAfter(root)
+}
+
+function remove_list_value(ev) {
+  ev.preventDefault()
+
+  var el = $(ev.target)
+
+  el.parents('.value')
+    .remove()
+}
+
+function dispatch_add(ev) {
+  var el = $(ev.target)
+
+  el = el.is('a') ? el : el.parents('a')
+
+  if(el.parents('.key-value').length)
+    return add_key_value(ev)
+  return add_list_value(ev)
+}
+
+function dispatch_remove(ev) {
+  var el = $(ev.target)
+
+  el = el.is('a') ? el : el.parents('a')
+
+  if(el.parents('.key-value-row').length)
+    return remove_key_value(ev)
+  return remove_list_value(ev)
+
+}
+
+

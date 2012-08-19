@@ -27,16 +27,33 @@
 
     {% if not value %}
       <li class="value">
-          <div class="key-value">
-              <div class="key-value-row">
-                  <input name="key" type="text" placeholder="add a key" />:
-                  <input name="value" type="text" placeholder="add a value" /> 
-                  <a rel="remove-key" href="#"><i class="icon icon-remove-sign"></i></a>
-              </div>
+          <select name="mode">
+            <option selected value="">---</option>
+            <option value="list">Array</option>
+            <option value="object">Object</option>
+          </select>
+
+          <div class="hidden" name="object">
+            <div class="key-value">
+                <div class="key-value-row">
+                    <input name="key" type="text" placeholder="add a key" />:
+                    <input name="value" type="text" placeholder="add a value" /> 
+                    <a rel="remove" href="#"><i class="icon icon-remove-sign"></i></a>
+                </div>
+                <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
+            </div>
+            <a rel="remove" href="#"><i class="icon icon-remove-sign"></i></a>
+            <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
           </div>
-          <a rel="add-key" href="#"><i class="icon icon-plus-sign"></i></a>
+          <div class="hidden" name="list">
+            <div class="value">
+              <input {% if meta.readonly %}disabled{% endif %} type="text" name="{{ name }}" id="id_{{ name }}" value="" />
+            </div>
+            <a rel="remove" href="#"><i class="icon icon-remove-sign"></i></a>
+            <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
           </div>
       </li> 
     {% endif %} 
     </ul>
+
 {% endblock %}

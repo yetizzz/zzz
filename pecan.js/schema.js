@@ -165,7 +165,7 @@ proto.handle_list_object = function(name, field, el, output) {
       var current = {}
       value_row = $(value_row)
       value_row
-        .find('.key-value')
+        .find('.key-value-row')
         .each(function(x, key_value) {
           key_value = $(key_value)
           current[key_value.find('[name=key]').val()] = key_value.find('[name=value]').val()

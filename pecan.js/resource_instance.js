@@ -40,9 +40,10 @@ proto.editor = function() {
 
 proto.save = function(form, ready) {
   var obj = this._schema.buildFromForm(form)
+    , uri = this._data.resource_uri
 
-  if(this.resource_uri) {
-    this._schema._site.put(this.resource_uri, obj, ready) 
+  if(uri) {
+    this._schema._site.put(uri, obj, ready) 
   } else {
     this._schema._site.post(this._schema._source.urls.list_endpoint, obj, ready)
   }

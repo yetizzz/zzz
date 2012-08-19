@@ -882,3 +882,48 @@ input[type=submit] {
     background:linear-gradient(-90deg, #A20D11, #9D1418); 
     border-color:#9D1418;
 }
+
+.key-value {
+    position:relative;
+}
+
+.key-value [rel=add] {
+    position:absolute;
+    bottom:11px;
+    left:446px;
+}
+
+.key-value-row:first-child [rel=remove] {
+    display:none;
+}
+
+li.value {
+    width:66%;
+    border-right:1px solid #CCC;
+    padding-left:9px;
+    position:relative;
+    margin-bottom:18px;
+}
+
+li.value > [rel=add] {
+    display:none;
+    position:absolute;
+    top:9px;
+    right:-54px;
+}
+
+li.value:first-child > [rel=remove] {
+    display:none;
+}
+
+li.value:last-child > [rel=add] {
+    display:block;
+}
+
+li.value > [rel=remove] {
+    position:absolute;
+    top:9px;
+    right:-27px;
+}
+
+
