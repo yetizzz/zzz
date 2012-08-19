@@ -1,7 +1,7 @@
 from django import forms
 
-from .api import RedisProject
 from .utils import in_whitelist
+
 
 class SlugForm(forms.Form):
     project = forms.CharField(max_length=255)

@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 from django.utils.functional import curry
 from django.core.urlresolvers import reverse
 from django.views.generic import TemplateView
@@ -13,4 +13,4 @@ urlpatterns = patterns('',
     url(r'^',
         PecanView.as_view(template_name='pecanpy/index.html'),
         name='pecanpy_root')
-) 
+)

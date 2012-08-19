@@ -17,8 +17,8 @@ from django.conf import settings
 
 from tastypie.resources import Resource
 from tastypie import fields
-from tastypie.authorization import Authorization, DjangoAuthorization
-from tastypie.authentication import Authentication, BasicAuthentication
+from tastypie.authorization import Authorization
+from tastypie.authentication import Authentication
 from tastypie.exceptions import NotFound, ImmediateHttpResponse
 from tastypie.http import HttpConflict
 from tastypie.validation import Validation
@@ -69,8 +69,8 @@ class RedisProject(object):
         return "hydra:v1:projects:%s" % (self.name)
 
     def save_whitelist(self):
-        for url in self.whitelist:
-            r.sadd("%s:whitelist" % self.redis_slug, url)
+        for redirect_url in self.whitelist:
+            r.sadd("%s:whitelist" % self.redis_slug, redirect_url)
 
     def save_project(self):
         r.hset(self.redis_slug, "exists", "true")

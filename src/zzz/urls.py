@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView
 from django.conf import settings
 
 from hydra.views import ProjectView
