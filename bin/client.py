@@ -45,27 +45,24 @@ test_data = [
 project_data = [
     {
         "name": "django",
-        "whitelist":
-            [
-                "djangoproject.com",
-                "readthedocs.org",
-            ]
+        "whitelist": [
+            "djangoproject.com",
+            "readthedocs.org",
+        ]
     },
     {
         "name": "readthedocs",
-        "whitelist":
-            [
-                "djangoproject.com",
-                "readthedocs.org",
-            ]
+        "whitelist": [
+            "djangoproject.com",
+            "readthedocs.org",
+        ]
     },
     {
         "name": "fabric",
-        "whitelist":
-            [
-                "djangoproject.com",
-                "readthedocs.org",
-            ]
+        "whitelist": [
+            "djangoproject.com",
+            "readthedocs.org",
+        ]
     }
 ]
 
@@ -78,7 +75,9 @@ if len(sys.argv) > 1:
         obj['urls'][0]['url'] = "BOOO"
         uri = obj['resource_uri']
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
-        resp = requests.put("http://localhost:8000" + uri, data=json.dumps(obj), headers=headers)
+        resp = requests.put("http://localhost:8000" + uri,
+                            data=json.dumps(obj),
+                            headers=headers)
         print resp.json['traceback']
 
     if sys.argv[1] == 'delete':
@@ -88,14 +87,14 @@ if len(sys.argv) > 1:
         resp = requests.delete("http://localhost:8000" + uri)
         print resp.json['traceback']
 
-
     if sys.argv[1] == 'create':
         for data in test_data:
             key, url, project = data
             try:
-                resp = api.redirect.post({"slug": key,
-                                          "urls": [url],
-                                           "project": project})
+                resp = api.redirect.post({
+                    "slug": key,
+                    "urls": [url],
+                    "project": project})
                 print "WOOT"
                 print resp
             except Exception, e:
