@@ -85,6 +85,8 @@ class ProjectView(TemplateView):
                 'project': request.POST.get('project'),
                 'slug': request.POST.get('q'),
             })
+            url = url if url.endswith('/') else '%s/' % url
+
             return HttpResponseRedirect(url)
 
         return super(ProjectView, self).post(request, *args, **kwargs)
