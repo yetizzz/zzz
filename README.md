@@ -20,6 +20,8 @@ What we built
     * You can point it at any Tastypie API, and get basic CRUD
     * Understands what tastypie methods are allowed
     * Visible at http://slug.in/_admin/
+    * You'll need to login to use it
+        * This is protected by the web-scale-iest of security methods: `Authorization: Basic <base64 yourname:yourpassword>`
 
 * A Tastypie API for a Redis data store
     * This exposes basic CRUD operations for a couple "Models"
