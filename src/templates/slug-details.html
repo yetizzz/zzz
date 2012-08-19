@@ -10,7 +10,6 @@
 {% block content %}
       <h2>{{ slug }}</h2>
       <form>
-      {{ form.errors }}
       <p class="emphasis">
       Please select a URL that you think works best for <strong>{{ slug }}</strong>.
       </p>
@@ -35,6 +34,15 @@
           <li><span class="score">{{ url.score|floatformat:0 }}</score> <input type="submit" rel="increment" name="url" value="{{ url.url }}"></li>
       {% if forloop.last %}
         </ul>
+      </form>
+      <form action="{% url 'slug-details' project slug %}" method="POST">{% csrf_token %}
+        <input type="hidden" name="project" value="{{ project }}">
+        <input type="hidden" name="slug" value="{{ slug }}">
+        {% if form.url.errors %}
+          <font color="red">{{ form.url.errors }}</font>
+        {% endif %}
+        {{ form.url }}
+        <input type="submit" value="Add a new Link" />
       </form>
       {% endif %}
       {% endfor %}
