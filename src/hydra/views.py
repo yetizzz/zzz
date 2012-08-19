@@ -1,7 +1,6 @@
 from django.core.urlresolvers import reverse
 from django.views.generic import RedirectView, TemplateView
 from analytics.models import Visit
-from .utils import get_urls
 
 from .api import RedisProject, RedisRedirect
 
@@ -18,7 +17,6 @@ class SlugLookupRedirectView(RedirectView):
         redirect_url = ''
         proj_obj = RedisRedirect(slug=slug, project=project)
         urls = proj_obj.get_urls()
-        import ipdb; ipdb.set_trace()
         if urls and urls[0]['score'] > 5:
             if len(urls) > 1:
                 if urls[0]['score'] - urls[1]['score'] > 5:

@@ -130,11 +130,7 @@
   // Params used in the search
   function getSearchData() {
     var data = {
-      q: getKeywords(),
-    }
-    var selected_facets = $selected_facets.val() || ''
-    if(selected_facets) {
-      data['selected_facets'] = selected_facets;
+      slug: getKeywords(),
     }
     return data;
   }
@@ -151,8 +147,8 @@
 
   // Url for the current query with any facet filters removed
   function removeFacetsUrl() {
-    return '?' + jQuery.param({slug: getKeywords()});
-  }e
+    return '?' + jQuery.param({q: getKeywords()});
+  }
 
   // Perform the ajax request to get the search results from the API
   function run(ev) {
@@ -183,7 +179,7 @@
      var project = $project[0].value
      xhr.push(jQuery.ajax({
       type: 'GET',
-      url: "/_api/v1/redirects/" + project + "/",
+      url: "/_api/v1/redirect/" + project + "/",
       data: data,
       dataType: 'jsonp',
       success: function(res, text, xhqr) {
