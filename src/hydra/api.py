@@ -167,7 +167,7 @@ class RedisRedirect(object):
         for obj in self.urls:
             if hasattr(obj, 'get'):
                 if obj.get('score', None):
-                    r.zadd(self.redis_slug, obj['url'], obj['score'])
+                    r.zadd(self.redis_slug, int(obj['score']), obj['url'])
             else:
                 print "WTF?!"
                 r.zincrby(self.redis_slug, self.urls[0], 1)
@@ -176,6 +176,9 @@ class RedisRedirect(object):
         self.save_redirect()
         self.save_urls()
         return True
+
+    def delete(self):
+        r.delete(self.redis_slug)
 
     def incr(self, url):
         self.save_redirect()
@@ -225,6 +228,8 @@ class RedirectResource(Resource):
     def obj_create(self, bundle, request=None, **kwargs):
         bundle.obj = RedisRedirect(**bundle.data)
         bundle = self.full_hydrate(bundle)
+        if kwargs.get('delete', None):
+            bundle.obj.delete()
         if not bundle.obj.save():
             raise ImmediateHttpResponse(
                 HttpConflict("Object already exists")
@@ -235,7 +240,7 @@ class RedirectResource(Resource):
     def obj_update(self, bundle, request=None, **kwargs):
         if bundle.data.get('resource_uri'):
             del bundle.data['resource_uri']
-        return self.obj_create(bundle, request, **kwargs)
+        return self.obj_create(bundle, request, delete=True, **kwargs)
 
     def obj_get(self, request=None, pk=None, project=None, **kwargs):
         proj = RedisRedirect(slug=pk, project=project)

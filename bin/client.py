@@ -79,7 +79,7 @@ if len(sys.argv) > 1:
         import requests
         headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
         resp = requests.put("http://localhost:8000" + uri, data=json.dumps(obj), headers=headers)
-        print resp.content
+        print resp.json['traceback']
 
     if sys.argv[1] == 'create':
         for data in test_data:
