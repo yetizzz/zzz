@@ -46,7 +46,7 @@ REST API
 
 ```rest
     # List of projects
-    GET /api/v1/projects/?format=json
+    GET /_api/v1/projects/?format=json
     {
         "meta": {},
         "objects": [
@@ -70,7 +70,7 @@ REST API
     }
 
     # Project Detail
-    GET /api/v1/projects/<project>/
+    GET /_api/v1/projects/<project>/
     {
         "name": "django",
         "resource_uri": "/_api/v1/project/django/",
@@ -81,7 +81,7 @@ REST API
     }
 
     # List of Redirects
-    GET /api/v1/redirect/?format=json
+    GET /_api/v1/redirect/?format=json
     {
         "meta": {},
         "objects": [
@@ -100,7 +100,7 @@ REST API
     }
 
     # Redirect detail
-    GET /api/v1/redirect/django/get_object/?format=json
+    GET /_api/v1/redirect/django/get_object/?format=json
     {
         "project": "django",
         "resource_uri": "/_api/v1/redirect/django/get_object/",
@@ -114,15 +114,15 @@ REST API
     }
 
     #Delete project
-    DELETE /api/v1/project/django/
+    DELETE /_api/v1/project/django/
 
     #Delete redirect
-    DELETE /api/v1/redirect/django/get_object/
+    DELETE /_api/v1/redirect/django/get_object/
 
     #Edit project
-    PUT /api/v1/project/django
+    PUT /_api/v1/project/django
 
     #Edit redirect
-    PUT /api/v1/redirect/django/get_object/
+    PUT /_api/v1/redirect/django/get_object/
 
 ```
