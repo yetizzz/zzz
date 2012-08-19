@@ -35,6 +35,8 @@
       {% if forloop.last %}
         </ul>
       </form>
+      {% endif %}
+      {% endfor %}
       <form action="{% url 'slug-details' project slug %}" method="POST">{% csrf_token %}
         <input type="hidden" name="project" value="{{ project }}">
         <input type="hidden" name="slug" value="{{ slug }}">
@@ -44,6 +46,4 @@
         {{ form.url }}
         <input type="submit" value="Add a new Link" />
       </form>
-      {% endif %}
-      {% endfor %}
 {% endblock content %}
