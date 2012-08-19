@@ -49,6 +49,10 @@ proto.save = function(form, ready) {
   }
 }
 
+proto.delete = function(ready) {
+  this._schema._site.delete(this._data.resource_uri, {}, ready)
+}
+
 proto.name = function() {
   return this._data[this._schema.getSortedFields()[0]] || 'unknown'
 }

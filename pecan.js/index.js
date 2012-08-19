@@ -211,6 +211,11 @@ proto.post = function(uri, data, ready) {
   request.post(uri, this.authHeader(), data, ready)
 }
 
+proto.delete = function(uri, data, ready) {
+  request.delete(uri, this.authHeader(), data, ready)
+}
+
+
 if(true) {
   proto.storage = {
     get: getStorage

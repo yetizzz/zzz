@@ -35,11 +35,14 @@ edit.behaviors = {
   , 'change [name=mode]': select_new_mode
   , 'click [rel=add]': dispatch_add
   , 'click [rel=remove]': dispatch_remove
-
 }
 
 function delete_instance(ev) {
+  ev.preventDefault()
 
+  current_instance.delete(function(err) {
+    // deleting! 
+  }) 
 }
 
 function save_instance(ev) {
