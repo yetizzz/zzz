@@ -30,6 +30,9 @@ GET /api/v1/projects/<project>/slugs/<slug>/
     Detail view for slug
 """
 
+
+
+
 class RedisProject(object):
     index_slug = "hydra:v1:projects"
 
@@ -75,6 +78,33 @@ class RedisProject(object):
     def get_whitelist(self):
         return r.smembers("%s:whitelist" % self.redis_slug)
 
+class BaseResource(object):
+    """
+    Not used yet
+    """
+    def obj_update(self, bundle, request=None, **kwargs):
+        if bundle.data.get('resource_uri'):
+            del bundle.data['resource_uri']
+        return self.obj_create(bundle, request, delete=True, **kwargs)
+
+    def obj_create(self, bundle, request=None, **kwargs):
+        bundle.obj = self._meta.object_class(**bundle.data)
+        bundle = self.full_hydrate(bundle)
+        if kwargs.get('delete', None):
+            bundle.obj.delete()
+        bundle.obj.save()
+        return bundle
+
+    def obj_get(self, request=None, **kwargs):
+        proj = self._meta.object_class(**kwargs)
+        if not proj.exists():
+            raise NotFound("No object matching this pk")
+        return proj
+
+    def obj_delete(self, request=None, **kwargs):
+        obj = self._meta.object_class(**kwargs)
+        obj.delete()
+
 class ProjectResource(Resource):
     name = fields.CharField(attribute='name')
     whitelist = fields.ListField(attribute="whitelist")
@@ -94,7 +124,7 @@ class ProjectResource(Resource):
             return ""
 
     def obj_create(self, bundle, request=None, **kwargs):
-        bundle.obj = RedisProject(bundle.data)
+        bundle.obj = RedisProject(**bundle.data)
         bundle = self.full_hydrate(bundle)
         if kwargs.get('delete', None):
             bundle.obj.delete()
@@ -121,7 +151,7 @@ class ProjectResource(Resource):
         for key in keys:
             #filter
             if not filter_slug or filter_slug in key:
-                obj = RedisProject(key)
+                obj = RedisProject(name=key)
                 ret_val.append(obj)
         return ret_val
 
