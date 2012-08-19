@@ -71,6 +71,7 @@ INSTALLED_APPS = (
     'hydra',
     'gunicorn',
     'analytics',
+    'pecanpy',
 )
 
 if not SENTRY_DSN is None:

@@ -19,8 +19,7 @@ if settings.DEBUG:
 
 urlpatterns += patterns('',
     url(r'^_admin/',
-        TemplateView.as_view(template_name='admin.html'),
-        name='admin'),
+        include('pecanpy.urls')),
     url(r'^_search/',
         ProjectView.as_view(template_name='search.html'),
         name='search'),
