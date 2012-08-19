@@ -1,7 +1,7 @@
 What is this?
 =============
 
-We have built a generic, learning URL shortner. AKA, djamgo.me on steroids.
+We have built a generic, learning URL shortner. AKA, django.me on steroids.
 
 Because it is the Django Dash, we felt the need to overarchitect it in just about every way. On our vision quest, we have learned many things about the inner working of Tastypie, Redis, and the World.
 
