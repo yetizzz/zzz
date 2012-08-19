@@ -16,9 +16,7 @@
             <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
             </div>
         {% else %}
-            <div class="value">
             <input {% if meta.readonly %}disabled{% endif %} type="text" name="{{ name }}" id="id_{{ name }}" value="{{ item }}" />
-            </div>
         {% endif %}
           <a rel="remove" href="#"><i class="icon icon-remove-sign"></i></a>
           <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
@@ -46,9 +44,7 @@
             <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
           </div>
           <div class="hidden" name="list">
-            <div class="value">
-              <input {% if meta.readonly %}disabled{% endif %} type="text" name="{{ name }}" id="id_{{ name }}" value="" />
-            </div>
+            <input {% if meta.readonly %}disabled{% endif %} type="text" name="{{ name }}" id="id_{{ name }}" value="" />
             <a rel="remove" href="#"><i class="icon icon-remove-sign"></i></a>
             <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
           </div>

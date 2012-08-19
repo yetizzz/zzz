@@ -152,7 +152,7 @@ proto.handle_datetime = function(name, field, el, output) {
 }
 
 proto.handle_list = function(name, field, el, output) {
-  if(el.find('.key-value'))
+  if(el.find('.key-value').length)
     return this.handle_list_object(name, field, el, output)
   this.handle_list_input(name, field, el, output)
 }
