@@ -198,3 +198,14 @@ Pics or it didn't happen
 #### edit
 
 ![detail](https://dl.dropbox.com/u/15509266/ddash2012/admin_edit.png)
+
+
+### Running the site against Read the Docs
+
+#### list
+
+![rtd_list](https://dl.dropbox.com/u/372293/Screenshots/gv4%7E.png)
+
+#### project detail
+
+![rtd_list](https://dl.dropbox.com/u/372293/Screenshots/j39g.png)
