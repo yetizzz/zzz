@@ -37,8 +37,6 @@ class RedisProject(object):
 
     def __init__(self, name=None, whitelist=None, *args, **kwargs):
         super(RedisProject, self).__init__(*args, **kwargs)
-        #if not name:
-            #raise ValueError("Projects need a name")
         self.name = name
         if whitelist:
             self.whitelist = whitelist
@@ -49,6 +47,9 @@ class RedisProject(object):
 
     @classmethod
     def all_projects(cls):
+        """
+        Return all projects. Classmethod because it doesn't need any data on the instance.
+        """
         ret_val = r.sort(cls.index_slug)
         return ret_val
 
@@ -81,7 +82,9 @@ class RedisProject(object):
 
 class BaseResource(Resource):
     """
-    Not used yet
+    A base resource for all Redis-based Tastypie APIs.
+
+    It expects you to be using the Redis Model interface, which mostly just boils down to save, delete, and exists.
     """
     def obj_update(self, bundle, request=None, **kwargs):
         if bundle.data.get('resource_uri'):
@@ -123,6 +126,15 @@ class BaseResource(Resource):
             return ""
 
 class ProjectResource(Resource):
+    """
+    A Resource reresenting a Project.
+
+    Provides GET, POST, PUT, DELETE. See the README for more details.
+
+    name - The name of the project
+    whitelist - Sites that links are allowed to go to.
+    """
+
     name = fields.CharField(attribute='name')
     whitelist = fields.ListField(attribute="whitelist")
 
@@ -192,6 +204,13 @@ class ProjectResource(Resource):
         ]
 
 class RedisRedirect(object):
+    """
+    A Redis Model for a Redirect
+
+    This contains the basic information about how a projects redirects will work.
+
+    The set of (project, slug) is unique, and each contains a set of URLs that might possibly be correct. We store these in a sorted set so that we can keep score of clicks in the data model in Redis.
+    """
 
     def __init__(self, slug=None, project=None, urls=None, *args, **kwargs):
         super(RedisRedirect, self).__init__(*args, **kwargs)
@@ -261,6 +280,13 @@ class RedisRedirect(object):
 
 
 class RedirectResource(Resource):
+    """
+    A tastypie Resource that maps to the Redirect Redis Model
+
+    slug - The URL slug that will identify this Redirect
+    project - The project the slug belongs to
+    urls - The Sorted Set of URLs. We use score to keep track of clicks on the Redirects.
+    """
     slug = fields.CharField(attribute='slug')
     project = fields.CharField(attribute='project')
     urls = fields.ListField(attribute='urls', null=True)
