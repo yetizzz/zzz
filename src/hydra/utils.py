@@ -20,8 +20,8 @@ def safe_save(project, slug, url):
 
 def read_intersphinx(project, file, urlpattern):
     """
-    Reads file as intersphinx format. Prepends the url pattern on the front of URLs.
-    URL Pattern should have a %s in it for string formatting.
+    Reads file as intersphinx format. Prepends the url pattern on the front of
+    URLs. URL Pattern should have a %s in it for string formatting.
     """
     f = open(file)
     f.readline()

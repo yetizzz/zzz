@@ -5,6 +5,7 @@ from analytics.models import Visit
 from .api import RedisProject, RedisRedirect
 from .forms import SlugForm
 
+
 class SlugLookupRedirectView(RedirectView):
     permanent = False
 
@@ -22,8 +23,9 @@ class SlugLookupRedirectView(RedirectView):
                 if urls[0]['score'] - urls[1]['score'] > 5:
                     redirect_url = urls[0]['url']
         if not redirect_url:
-            Visit.objects.create(key=slug,
-                                 retval=', '.join([url['url'] for url in urls]))
+            Visit.objects.create(
+                key=slug,
+                retval=', '.join([url['url'] for url in urls]))
             return reverse('slug-details', kwargs={'slug': slug,
                                                    'project': project})
 
