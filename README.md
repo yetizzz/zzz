@@ -145,3 +145,34 @@ REST API
     PUT /_api/v1/redirect/django/get_object/
 
 ```
+
+Pics or it didn't happen
+------------------------
+
+### The Site
+
+#### home
+
+![home](https://dl.dropbox.com/u/15509266/ddash2012/site_home.png)
+
+#### on search
+
+![search](https://dl.dropbox.com/u/15509266/ddash2012/site_home_list.png)
+
+#### detail
+
+![detail](https://dl.dropbox.com/u/15509266/ddash2012/site_detail.png)
+
+### The Admin
+
+#### login
+
+![detail](https://dl.dropbox.com/u/15509266/ddash2012/admin_login.png)
+
+#### list
+
+![detail](https://dl.dropbox.com/u/15509266/ddash2012/admin_list.png)
+
+#### edit
+
+![detail](https://dl.dropbox.com/u/15509266/ddash2012/admin_edit.png)
