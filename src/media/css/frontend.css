@@ -72,7 +72,7 @@
 
   padding:9px;
   font-size:1.2em;
-  width:366px;
+  width:340px;
 
   box-shadow:0px -10px 14px 0px rgba(0, 0, 0, 0.2) inset;
 }
@@ -129,10 +129,10 @@
  
     border-radius:3px 3px 0px 0px; 
     background:-webkit-linear-gradient(90deg, #0664BC, #569CCE); 
-    background:-moz-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:-moz-linear-gradient(0deg, #0664BC, #569CCE); 
     background:-ms-linear-gradient(90deg, #0664BC, #569CCE); 
     background:-o-linear-gradient(90deg, #0664BC, #569CCE); 
-    background:linear-gradient(90deg, #0664BC, #569CCE); 
+    background:linear-gradient(0deg, #0664BC, #569CCE); 
     color:#EFEFFF;
     border-bottom:1px solid #0664BC;
     border-radius:3px 3px 0px 0px; 
