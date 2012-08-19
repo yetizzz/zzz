@@ -8,7 +8,7 @@ function request(method, path, headers, body, ready) {
     , data: ['POST', 'PUT', 'PATCH'].indexOf(method) !== -1 ? JSON.stringify(body) : ''
     , contentType: 'application/json'
     , success: ready.bind(null, null)
-    , error: function(_, __, err) { ready(err) }
+    , error: function(xhr, status, err) { ready({status: status, text: xhr.responseText}) }
   })
 }
 

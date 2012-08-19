@@ -828,6 +828,23 @@ input[type=submit].mini,
     display:none;
 }
 
+label {
+    -webkit-transition: color 0.4s ease-in-out;
+}
+
+body.error .form-row.error label,
+body.error .form-row.error input {
+    border-color: red;
+    color: red;
+}
+
+.error[data-error]:after {
+    content:attr(data-error);
+    display:block;
+    color:black;
+
+}
+
 #search {
     padding:18px;
     background:#ECECEC;

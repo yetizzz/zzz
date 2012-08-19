@@ -49,11 +49,27 @@ function save_instance(ev) {
   ev.preventDefault()
 
   current_instance.save($('form'), function(err, data, xhr) {
-    if(err) {
-      $('body').addClass('error')
-      $('[name=error]').text(err.message)
+    console.log(err, data, xhr)
 
-      return setTimeout(function() { $('body').removeClass('error') }, 5000)
+    if(err) {
+      var parsed = JSON.parse(err.text)
+
+      for(var field in parsed) {
+        $('[data-field="'+field+'"]')
+          .addClass('error')
+          .attr('data-error', parsed[field])
+      }
+
+      $('body').addClass('error')
+
+      return setTimeout(function() {
+        $('body').removeClass('error') 
+        setTimeout(function() {
+          $('.error')
+            .removeClass('error')
+            .attr('data-error', '')  
+        }, 5000)
+      }, 5000)
     }
 
     return current_instance

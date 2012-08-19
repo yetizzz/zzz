@@ -12,6 +12,9 @@
 
 {% block content %}
     <form action="." method="POST">
+        <div name="error">
+        </div>
+
         {% for field in instance.editor %}
           {{ field|safe }}
         {% endfor %}
