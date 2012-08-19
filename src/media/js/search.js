@@ -137,6 +137,7 @@
   function getSearchData() {
     var data = {
       slug: getKeywords(),
+      project: getProject(),
     }
     return data;
   }
@@ -150,6 +151,11 @@
   // The active query value
   function getKeywords() {
    return $input.val()
+  }
+
+  // The active query value
+  function getProject() {
+   return $project.val()
   }
 
   // Url for the current query with any facet filters removed

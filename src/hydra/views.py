@@ -72,9 +72,10 @@ class ProjectView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(ProjectView, self).get_context_data(*args, **kwargs)
         context['projects'] = RedisProject.all_projects()
-        selected_proj = self.request.GET.get('project', None)
-        if selected_proj:
-            context['selected_project'] = selected_proj
+        selected_proj = self.request.GET.get('project', "")
+        selected_slug = self.request.GET.get('slug', "")
+        context['selected_project'] = selected_proj
+        context['selected_slug'] = selected_slug
         context.update(kwargs)
         return context
 
@@ -86,7 +87,7 @@ class ProjectView(TemplateView):
             })
             return HttpResponseRedirect(url)
 
-        return super(ProjectView, self).post(request, *args, **kwargs) 
+        return super(ProjectView, self).post(request, *args, **kwargs)
 
 
 class ProjectRedirect(RedirectView):
