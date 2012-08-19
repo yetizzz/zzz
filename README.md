@@ -13,6 +13,8 @@ inner working of Tastypie, Redis, and the World.
 >
 > *who knew*
 
+The docs are also hosted on Read the Docs: http://slugin.readthedocs.org/en/latest/
+
 What we built
 -------------
 
