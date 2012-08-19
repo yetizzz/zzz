@@ -11,6 +11,5 @@ build:
 	node_modules/.bin/browserify pecan.js/site.js >> src/media/js/bundle.js
 
 fixture:
-	./bin/client project create
-	./bin/manage.py import
-
+	python bin/client.py project create
+	python src/manage.py import

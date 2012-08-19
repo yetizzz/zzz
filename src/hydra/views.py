@@ -24,7 +24,8 @@ class SlugLookupRedirectView(RedirectView):
         if not redirect_url:
             Visit.objects.create(key=slug,
                                  retval=', '.join([url['url'] for url in urls]))
-            return reverse('slug-details', kwargs={'slug': slug, 'project': project})
+            return reverse('slug-details', kwargs={'slug': slug,
+                                                   'project': project})
 
         Visit.objects.create(key=slug, retval=redirect_url)
         return redirect_url
