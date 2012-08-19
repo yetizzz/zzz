@@ -17,8 +17,8 @@ from django.conf import settings
 
 from tastypie.resources import Resource
 from tastypie import fields
-from tastypie.authorization import Authorization
-from tastypie.authentication import Authentication
+from tastypie.authorization import Authorization, DjangoAuthorization
+from tastypie.authentication import BasicAuthentication
 from tastypie.exceptions import NotFound, ImmediateHttpResponse
 from tastypie.http import HttpConflict
 from tastypie.validation import Validation
@@ -91,6 +91,20 @@ class RedisProject(object):
     def get_whitelist(self):
         return r.smembers("%s:whitelist" % self.redis_slug)
 
+
+class NonModelAuthorization(Authorization):
+    def is_authorized(self, request, object=None):
+        if request.method == 'GET':
+            return True
+        if request.user.is_superuser:
+            return True
+        return False
+
+    def get_identifier(self, request):
+        if request.method == 'GET':
+            return 'anon'
+        return request.user.username
+
 class ProjectResource(Resource):
     """
     A Resource representing a Project.
@@ -108,8 +122,8 @@ class ProjectResource(Resource):
         main_ident = "name"
         resource_name = "project"
         object_class = RedisProject
-        authorization = Authorization()
-        authentication = Authentication()
+        authorization = NonModelAuthorization()
+        authentication = BasicAuthentication()
 
     def get_resource_uri(self, bundle_or_obj):
         try:
@@ -288,8 +302,8 @@ class RedirectResource(Resource):
 
     class Meta:
         object_class = RedisRedirect
-        authorization = Authorization()
-        authentication = Authentication()
+        authorization = NonModelAuthorization()
+        authentication = BasicAuthentication()
         validation = URLValidation()
 
     def get_resource_uri(self, bundle_or_obj):
