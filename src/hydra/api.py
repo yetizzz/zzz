@@ -179,6 +179,7 @@ class RedisRedirect(object):
                 'score': score,
                 'url': redirect_url
             })
+        return self.urls
 
 
 class RedirectResource(Resource):
