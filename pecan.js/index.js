@@ -50,6 +50,15 @@ proto.init = function(body) {
 
       var target = $(ev.target)
 
+      if(target.is('[rel=logout]') || target.parents('a[rel=logout]').length) {
+        for(var k in localStorage)
+          delete localStorage[k]
+
+        ev.preventDefault()
+        window.location = self._offsetURL
+        return
+      }
+
       if(target.is('[rel]') || target.parents('a[rel]').length)
         return
 
