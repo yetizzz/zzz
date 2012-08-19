@@ -13,7 +13,10 @@ r = redis.StrictRedis.from_url(settings.REDIS_URL)
 def safe_save(project, slug, url):
     obj = RedisRedirect(project=project, slug=slug)
     if not obj.exists():
-        obj.save()
+        try:
+            obj.save()
+        except Exception, e:
+            print e
     if not obj.url_exists(url):
         obj.incr(url)
 

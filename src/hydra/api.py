@@ -1,3 +1,12 @@
+"""
+A redis-based Tastypie API.
+
+It adds has "Model" type objects RedisProject and RedisRedirect. These are used for all of the data access, and for hydration at the Tatypie level.
+
+Then we have resources that are based on these models. The ProjectResource and RedirectResource map onto the model objects listed above.
+
+This could be a generic interface, and the code is most of the way there to making a moderately generic BaseResource for interacting with Redis Models.
+"""
 import redis
 
 from django.conf.urls import url
@@ -14,10 +23,22 @@ r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
 
 class RedisProject(object):
+    """
+    A model layer repsenting a Project in Redis.
+
+    It has an index of all existing projects, and then contains metadata about projects including their existence, and a whitelist of URLs that you can link to from them.
+
+    Generally you create an instance by passing in a name, and a possible whitelist. If you only pass in the name, the whitelist is populated from the data store.
+
+    The main methods you will call on an instance are save, delete, and exists. There is a classmethod called all_projects that will return all projects.
+
+    """
     index_slug = "hydra:v1:projects"
 
     def __init__(self, name=None, whitelist=None, *args, **kwargs):
         super(RedisProject, self).__init__(*args, **kwargs)
+        #if not name:
+            #raise ValueError("Projects need a name")
         self.name = name
         if whitelist:
             self.whitelist = whitelist
@@ -204,7 +225,7 @@ class RedisRedirect(object):
                 r.zincrby(self.redis_slug, self.urls[0], 1)
 
     def save(self):
-        proj = RedisProject(name=self.slug)
+        proj = RedisProject(name=self.project)
         proj.save()
         self.save_redirect()
         self.save_urls()
