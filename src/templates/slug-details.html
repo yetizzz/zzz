@@ -9,8 +9,17 @@
       <h2>{{ slug }}</h2>
       {{ form.errors }}
       <p>
-      Please select a URL that you think works best for <b>{{ slug }}</b>. Once it has {{ THRESHOLD }} more points than any other URL, it will automatically be redirected at <a href="http://slug.in/{{ project }}/{{ slug}}/">http://slug.in/{{ project }}/{{ slug}}/</a>
+      Please select a URL that you think works best for <b>{{ slug }}</b>.
       </p>
+      {% if winner %}
+      <p>
+        This shortcut currently pointed to: <a href="{{ winner }}">{{ winner }}</a>
+      </p>
+      {% else %}
+      <p>
+        This shortcut points to this page. Once it has {{ THRESHOLD }} more points than any other URL, it will automatically be redirected at <a href="http://slug.in/{{ project }}/{{ slug}}/">http://slug.in/{{ project }}/{{ slug}}/</a>
+      </p>
+      {% endif %}
       {% for url in urls %}
       {% if forloop.first %}
       <form action="{% url 'slug-details' project slug %}" method="POST">{% csrf_token %}
