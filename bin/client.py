@@ -70,6 +70,15 @@ project_data = [
 
 
 if len(sys.argv) > 1:
+    if sys.argv[1] == 'put':
+        ret = api.redirect.get(limit=2)
+        obj = ret['objects'][1]
+        obj['urls'][0]['url'] = "BOOO"
+        import requests
+        headers = {'Content-type': 'application/json', 'Accept': 'text/plain'}
+        resp = requests.put("http://localhost:8000" + obj['resource_uri'], data=json.dumps(obj), headers=headers)
+        print resp.content
+
     if sys.argv[1] == 'create':
         for data in test_data:
             key, url, project = data
