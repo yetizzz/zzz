@@ -67,6 +67,7 @@ class RedisProject(object):
 
     def delete(self):
         r.delete(self.redis_slug)
+        r.delete(self.index_slug)
 
     def exists(self):
         return r.hget(self.redis_slug, "exists") == "true"
@@ -186,6 +187,7 @@ class RedisRedirect(object):
 
     def delete(self):
         r.delete(self.redis_slug)
+        r.delete(self.index_slug)
 
     def incr(self, url):
         self.save_redirect()
