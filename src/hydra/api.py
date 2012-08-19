@@ -195,9 +195,9 @@ class RedirectResource(Resource):
     def get_resource_uri(self, bundle_or_obj):
         try:
             if getattr(bundle_or_obj, 'obj'):
-                return "/_api/v1/redirect/%s/%s" % (bundle_or_obj.obj.project,
+                return "/_api/v1/redirect/%s/%s/" % (bundle_or_obj.obj.project,
                                                     bundle_or_obj.obj.slug)
-            return "/_api/v1/redirect/%s/%s" % (bundle_or_obj.project,
+            return "/_api/v1/redirect/%s/%s/" % (bundle_or_obj.project,
                                                 bundle_or_obj.slug)
         except:
             return ""
