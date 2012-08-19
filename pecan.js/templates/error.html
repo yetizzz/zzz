@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ message }}
+{% endblock %}
+
+{% block content %}
+
+<br />
+<br />
+  <form>
+  <div class="form-row">
+  {{ extended_message }}
+  </div>
+  <div class="form-controls">
+    <a class="btn" href="/x/">Back</a>
+  </div>
+  </form>
+{% endblock %}
