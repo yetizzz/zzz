@@ -3,9 +3,8 @@ module.exports = edit
 function edit(site, resource, full_resource) {
   var ctxt = {}
 
-  full_resource = full_resource.replace(/\/?$/, '/')
+  full_resource = full_resource ? full_resource.replace(/\/?$/, '/') : ''
 
-  console.log(resource, full_resource)
   site.schema(resource, function(err, schema) {
     ctxt.schema = schema
 
@@ -27,7 +26,7 @@ function edit(site, resource, full_resource) {
 
 edit.behaviors = {
     'click [rel=delete]': delete_instance
-  , 'form submit':        save_instance
+  , 'submit form':        save_instance
 }
 
 function delete_instance(ev) {

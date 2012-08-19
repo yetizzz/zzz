@@ -6,8 +6,42 @@
     </div>
 </header>
 
+<div class="compare">
+  <div>
+  </div>
+  <div class="compare-controls">
+  </div>
+</div>
+
 <div class="root">
-    <h2>{{ resource }}</h2>
+    <h2>
+      {{ resource }}
+      <div class="root-controls">
+        {% if not schema.comparable %}
+        <a href="#" rel="compare" class="btn mini search">Compare<i class="icon-white icon-tasks"></i></a>
+        {% endif %}
+
+        {% if not schema.filters|length %}
+        <a href="#search" rel="dropdown" class="btn mini search">Search<i class="icon-white icon-search"></i></a>
+        {% endif %}
+
+        <a class="btn mini create" rel="add" href="_/new/">Create<i class="icon-white icon-upload"></i></a>
+      </div>  
+    </h2>
+
+    <div id="search" class="search hidden dropdown">
+      <form name="search" action="." method="POST">
+        <select name="filter_field">
+          <option value="" selected></option>
+          {% for field in schema.filters %}
+            <option value="{{ field }}" selected>{{ field }}</option>
+          {% endfor %}
+        </select>
+        <input type="search" />
+        <input type="submit" class="mini" value="Search" />
+      </form>
+    </div>
+
     <table>
         <thead>
             <tr>

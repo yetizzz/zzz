@@ -41,8 +41,13 @@ proto.init = function(body) {
   self.root = $(body)
 
   self.getRootURL(function(err, url) {
-    $('body').on('click', 'a', function(ev) {
+    $(':root').on('click', 'a', function(ev) {
       if(ev.target.host !== window.location.host)
+        return
+
+      var target = $(ev.target)
+
+      if(target.is('[rel]') || target.parents('a[rel]').length)
         return
 
       ev.preventDefault()
@@ -50,13 +55,11 @@ proto.init = function(body) {
       window.history.pushState({}, {}, please_route(ev.target.pathname))
 
       self.root.addClass('loading')
-      fn(self)
     })
 
     window.onpopstate = function(ev) {
       please_route(window.location.pathname)
       self.root.addClass('loading')
-      fn(self)
     }
 
     please_route(window.location.pathname)
@@ -69,14 +72,21 @@ proto.init = function(body) {
 
       fn = route(path)
 
-      if(current && current.exit) {
-        current.exit()
+
+      if(current) {
+        $('body')
+          .removeClass('view_'+current._name)
+
+        current.exit && current.exit()
       }
+
+      $('body')
+        .addClass('view_'+fn._name)
 
       fn(self) 
 
       current = fn
-
+     
       return '/'+first_bit+'/'+(path ? path.replace(/\/?$/, '/') : '')
     }
   })

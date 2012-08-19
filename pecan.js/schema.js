@@ -57,6 +57,14 @@ proto.wrap = function(result) {
   return new ResourceInstance(result, this)
 }
 
+proto.filters = function() {
+  return []
+}
+
+proto.comparable = function() {
+  return false
+}
+
 proto.instantiable = function() {
   
 }
