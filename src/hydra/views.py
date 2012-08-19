@@ -1,8 +1,10 @@
 from django.core.urlresolvers import reverse
-from django.views.generic import RedirectView, TemplateView
+from django.views.generic import RedirectView, FormView, TemplateView
+
 from analytics.models import Visit
 
 from .api import RedisProject, RedisRedirect
+from .forms import SlugForm
 
 
 class SlugLookupRedirectView(RedirectView):
@@ -24,23 +26,27 @@ class SlugLookupRedirectView(RedirectView):
         if not redirect_url:
             Visit.objects.create(key=slug,
                                  retval=', '.join([url['url'] for url in urls]))
-            return reverse('slug-details', kwargs={'slug': slug, 'project': project})
+            return reverse('slug-details', kwargs={'slug': slug,
+                                                   'project': project})
 
         Visit.objects.create(key=slug, retval=redirect_url)
         return redirect_url
 
 
-class SlugDetailView(TemplateView):
-    extra_context = None
+class SlugDetailView(FormView):
+    form_class = SlugForm
 
     def get_context_data(self, *args, **kwargs):
         slug = kwargs.get('slug', '')
         project = kwargs.get('project', '')
         context = super(SlugDetailView, self).get_context_data(*args, **kwargs)
-        context.update(kwargs)
         proj_obj = RedisRedirect(slug=slug, project=project)
         context['urls'] = proj_obj.get_urls()
+        context['slug'] = self.kwargs['slug']
         return context
+
+    def get_success_url(self, *args, **kwargs):
+        return self.request.POST['url']
 
 
 class HomeView(TemplateView):
@@ -49,5 +55,4 @@ class HomeView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super(HomeView, self).get_context_data(*args, **kwargs)
         context['projects'] = RedisProject.all_projects()
-        context.update(kwargs)
         return context

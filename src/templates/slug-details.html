@@ -1,3 +1,4 @@
+{% load url from future %}
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
@@ -6,13 +7,17 @@
 </head>
 <body>
 	<h1>{{ slug }}</h1>
+        {{ form.errors }}
         {% for url in urls %}
         {% if forloop.first %}
-        <ul>
+        <form action="{% url 'slug-details' slug %}" method="POST">{% csrf_token %}
+          <input type="hidden" name="slug" value="{{ slug }}">
+          <ul>
         {% endif %}
-          <li>{{ url.score }} <a href="{{ url.url }}">{{ url.url }}</a>
+            <li>{{ url.score }} <input type="submit" name="url" value="{{ url.url }}">
         {% if forloop.last %}
-        </ul>
+          </ul>
+        </form>
         {% endif %}
         {% endfor %}
 </body>
