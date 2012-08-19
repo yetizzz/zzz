@@ -8,6 +8,9 @@
 {% block content %}
       <h2>{{ slug }}</h2>
       {{ form.errors }}
+      <p>
+      Please select a URL that you think works best for <b>{{ slug }}</b>. Once any gets over {{ threshold }} points, it will automatically be redirected at <a href="http://slug.in/{{ project }}/{{ slug}}/">http://slug.in/{{ project }}/{{ slug}}/</a>
+      </p>
       {% for url in urls %}
       {% if forloop.first %}
       <form action="{% url 'slug-details' project slug %}" method="POST">{% csrf_token %}
