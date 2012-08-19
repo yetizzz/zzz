@@ -45,5 +45,11 @@
         {% endif %}
         {{ form.url }}
         <input type="submit" value="Add a new Link" />
+        <h3>Allowed Sites</h3>
+        <ul>
+        {% for site in whitelist %}
+            <p>* {{ site }}</p>
+        {% endfor %}
+        </ul>
       </form>
 {% endblock content %}

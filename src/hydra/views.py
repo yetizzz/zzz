@@ -47,8 +47,10 @@ class SlugDetailView(FormView):
         project = self.kwargs.get('project', '')
         context = super(SlugDetailView, self).get_context_data(*args, **kwargs)
         context.update(self.kwargs)
-        proj_obj = RedisRedirect(slug=slug, project=project)
-        urls = proj_obj.get_urls()
+        proj_obj = RedisProject(name=project)
+        context['whitelist'] = proj_obj.get_whitelist()
+        redirect_obj = RedisRedirect(slug=slug, project=project)
+        urls = redirect_obj.get_urls()
         if urls and urls[0]['score'] > THRESHOLD:
             context['winner'] = urls[0]['url']
         context['urls'] = urls
