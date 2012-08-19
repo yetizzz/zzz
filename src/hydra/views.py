@@ -49,9 +49,8 @@ class SlugDetailView(FormView):
         project = self.kwargs.get('project', '')
         url = self.request.POST['url']
         redirect = RedisRedirect(slug=slug,
-                                 project=project,
-                                 urls=(url,))
-        redirect.save_redirect()
+                                 project=project)
+        redirect.incr(url)
         return url
 
 
