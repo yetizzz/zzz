@@ -1,10 +1,12 @@
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from django.views.generic import RedirectView, TemplateView, FormView
 from analytics.models import Visit
 
 from .api import RedisProject, RedisRedirect
 from .forms import SlugForm
 
+THRESHOLD = getattr(settings, "THRESHOLD", 3)
 
 class SlugLookupRedirectView(RedirectView):
     permanent = False
@@ -18,9 +20,9 @@ class SlugLookupRedirectView(RedirectView):
         redirect_url = ''
         proj_obj = RedisRedirect(slug=slug, project=project)
         urls = proj_obj.get_urls()
-        if urls and urls[0]['score'] > 5:
+        if urls and urls[0]['score'] > THRESHOLD:
             if len(urls) > 1:
-                if urls[0]['score'] - urls[1]['score'] > 5:
+                if urls[0]['score'] - urls[1]['score'] > THRESHOLD:
                     redirect_url = urls[0]['url']
             else:
                 redirect_url = urls[0]['url']
@@ -45,6 +47,7 @@ class SlugDetailView(FormView):
         context.update(self.kwargs)
         proj_obj = RedisRedirect(slug=slug, project=project)
         context['urls'] = proj_obj.get_urls()
+        context['THRESHOLD'] = THRESHOLD
         context.update(self.kwargs)
         return context
 

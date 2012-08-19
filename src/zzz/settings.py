@@ -102,3 +102,5 @@ LOGGING = {
         },
     }
 }
+
+THRESHOLD = 3
