@@ -22,11 +22,15 @@ class RedisProject(object):
         if whitelist:
             self.whitelist = whitelist
         else:
+            # We need to populate the whitelist here,
+            # so when we return the object, it will serialize with them
             self.whitelist = self.get_whitelist()
 
     @classmethod
     def all_projects(cls):
-        return r.smembers(cls.index_slug)
+        ret_val = list(r.smembers(cls.index_slug))
+        ret_val.sort()
+        return ret_val
 
     @property
     def redis_slug(self):
@@ -285,6 +289,7 @@ class RedirectResource(Resource):
                         if not filter_project or filter_project in index_project:
                             obj = RedisRedirect(slug=key, project=index_project)
                             ret_val.append(obj)
+        ret_val.sort(key=lambda x: x.slug)
         return ret_val
 
 
