@@ -117,7 +117,7 @@
     if(!replaceStateSupported) {
       return;
     }
-    var url = "/search/project/?" + queryString();
+    var url = "?" + queryString();
     var title = getTitle() + " | Search";
     window.history.replaceState({}, title, url);
   }

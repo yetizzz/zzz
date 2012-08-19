@@ -67,7 +67,7 @@ class RedisProject(object):
 
     def delete(self):
         r.delete(self.redis_slug)
-        r.srem(self.index_slug, self.slug)
+        r.srem(self.index_slug, self.name)
 
     def exists(self):
         return r.hget(self.redis_slug, "exists") == "true"
