@@ -13,9 +13,18 @@
         {% for field in instance.editor %}
           {{ field|safe }}
         {% endfor %}
-        <div class="form-controls">
+        <div class="form-controls"> 
+
+        {% if schema.deletable and not is_new %}
         <a class="btn danger delete" rel="delete" href="{{ instance.resource_uri }}">Delete</a>
+        {% endif %}
+
+        {% if schema.editable and not is_new %} 
         <input type="submit" value="Save" />
+        {% endif %} 
+        {% if is_new and schema.instantiable %}
+        <input type="submit" value="Save" />
+        {% endif %}
         </div>
     </form>
 </div>

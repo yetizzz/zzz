@@ -70,19 +70,19 @@ proto.comparable = function() {
 }
 
 proto.instantiable = function() {
-  
+  return this._source.allowed_detail_http_methods.indexOf('put') !== -1
 }
 
 proto.editable = function() {
-
+  return this._source.allowed_detail_http_methods.indexOf('put') !== -1 || this._source.allowed_detail_http_methods.indexOf('post') !== -1
 }
 
 proto.deletable = function() {
-
+  return this._source.allowed_detail_http_methods.indexOf('delete') !== -1
 }
 
 proto.viewable = function() {
-
+  return this._source.allowed_detail_http_methods.indexOf('get') !== -1
 }
 
 proto.instantiate = function() {

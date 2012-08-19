@@ -2,6 +2,7 @@ module.exports = edit
 
 function edit(site, resource, full_resource) {
   var ctxt = {}
+    , is_new = !full_resource
 
   full_resource = full_resource ? full_resource.replace(/\/?$/, '/') : ''
 
@@ -18,6 +19,7 @@ function edit(site, resource, full_resource) {
     // alright
     ctxt.resource = resource
     ctxt.instance = instance
+    ctxt.is_new = is_new
 
     site.render('edit.html', ctxt, function(err, data) {
     })

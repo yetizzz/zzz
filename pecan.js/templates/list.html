@@ -25,7 +25,9 @@
         <a href="#search" rel="dropdown" class="btn mini search">Search<i class="icon-white icon-search"></i></a>
         {% endif %}
 
+        {% if schema.instantiable %}
         <a class="btn mini create" rel="add" href="_/new/">Create<i class="icon-white icon-upload"></i></a>
+        {% endif %}
       </div>  
     </h2>
 
@@ -55,11 +57,11 @@
               <tr>
               {% for field_name, value in item.fields %}
                 <td>
-                {% if forloop.first %}
+                {% if forloop.first and schema.viewable %}
                     <a href="_/{{ item.url }}/">
                 {% endif %}
                     {{ value }}
-                {% if forloop.first %}
+                {% if forloop.first and schema.viewable %}
                     </a>
                 {% endif %}
                 </td>
