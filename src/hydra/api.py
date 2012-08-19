@@ -210,6 +210,8 @@ class RedisRedirect(object):
                 r.zincrby(self.redis_slug, self.urls[0], 1)
 
     def save(self):
+        proj = RedisProject(name=self.slug)
+        proj.save()
         self.save_redirect()
         self.save_urls()
         return True
@@ -272,7 +274,6 @@ class RedirectResource(Resource):
             raise ImmediateHttpResponse(
                 HttpConflict("Object already exists")
             )
-
         return bundle
 
     def obj_update(self, bundle, request=None, **kwargs):

@@ -139,6 +139,7 @@
   function queryString() {
     return jQuery.param(getSearchData());
   }
+  Search.queryString = queryString
 
   // The active query value
   function getKeywords() {
