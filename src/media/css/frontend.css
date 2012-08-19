@@ -214,6 +214,10 @@ strong { font-weight:bold; }
 
 }
 
+.module-item p {
+    overflow:hidden;
+}
+
 header {
   background: black;
 }
