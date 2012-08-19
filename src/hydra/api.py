@@ -102,10 +102,15 @@ class ProjectResource(Resource):
 
     def obj_get_list(self, request=None, **kwargs):
         ret_val = []
+        filter_slug = request.GET.get('slug', None)
+        if not filter_slug:
+            filter_slug = request.GET.get('q', None)
         keys = RedisProject.all_projects()
         for key in keys:
-            obj = RedisProject(key)
-            ret_val.append(obj)
+            #filter
+            if not filter_slug or filter_slug in key:
+                obj = RedisProject(key)
+                ret_val.append(obj)
         return ret_val
 
     def obj_update(self, bundle, request=None, **kwargs):
@@ -210,12 +215,16 @@ class RedirectResource(Resource):
 
     def obj_get_list(self, request=None, project=None, **kwargs):
         ret_val = []
+        filter_project = request.GET.get('project', None)
+        filter_slug = request.GET.get('slug', None)
         if project:
             proj_obj = RedisRedirect(project=project)
             keys = proj_obj.all_slugs()
             for key in keys:
-                obj = RedisRedirect(slug=key, project=project)
-                ret_val.append(obj)
+                if not filter_slug or filter_slug in key:
+                    if not filter_project or filter_project in project:
+                        obj = RedisRedirect(slug=key, project=project)
+                        ret_val.append(obj)
         else:
             #Return all things for all projects
             indexes = r.keys("hydra:v1:projects:*:slugs")
@@ -224,8 +233,10 @@ class RedirectResource(Resource):
                 proj_obj = RedisRedirect(project=index_project)
                 keys = proj_obj.all_slugs()
                 for key in keys:
-                    obj = RedisRedirect(slug=key, project=index_project)
-                    ret_val.append(obj)
+                    if not filter_slug or filter_slug in key:
+                        if not filter_project or filter_project in index_project:
+                            obj = RedisRedirect(slug=key, project=index_project)
+                            ret_val.append(obj)
         return ret_val
 
     def obj_update(self, bundle, request=None, **kwargs):

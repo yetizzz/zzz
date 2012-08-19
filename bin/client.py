@@ -37,13 +37,29 @@ LIMIT = 500
 test_data = [
     ["rtd", "http://readthedocs.org", "django"],
     ["google", "http://google.com", "django"],
-    ["google", "http://google.com/2/", "django"],
+    ["google", "http://google.com/2/", "readthedocs"],
     ["dash", "http://djangodash.com", "django"],
 ]
 
 project_data = [
     {
         "name": "django",
+        "whitelist":
+            [
+                "djangoproject.com",
+                "readthedocs.org",
+            ]
+    },
+    {
+        "name": "readthedocs",
+        "whitelist":
+            [
+                "djangoproject.com",
+                "readthedocs.org",
+            ]
+    },
+    {
+        "name": "fabric",
         "whitelist":
             [
                 "djangoproject.com",
