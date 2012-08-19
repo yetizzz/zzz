@@ -89,6 +89,7 @@ API
 
 
 Redis Data Model
+----------------
 
 ```
     "hydra:v1:projects" = Index of projects <Set>
