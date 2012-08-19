@@ -1,4 +1,5 @@
 // Taken from Read the Docs
+// And heavily modified.
 
 // Searching as the user types.
 (function(){
