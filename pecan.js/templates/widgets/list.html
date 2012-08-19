@@ -3,26 +3,30 @@
 {% block form_row_target %}
     <ul class="list-value">
     {% for item in value %}
-        <li>
+      <li class="value">
         {% if item|is_object %}
             <div class="key-value">
             {% for key, value in item|iteritems %}
                 <div class="key-value-row">
                 <input name="key" type="text" value="{{ key }}" />:
                 <input name="value" type="text" value="{{ value }}" /> 
-                <a rel="remove-key" href="#"><i class="icon icon-remove-sign"></i></a>
+                <a rel="remove" href="#"><i class="icon icon-remove-sign"></i></a>
                 </div>
             {% endfor %}
-            <a rel="add-key" href="#"><i class="icon icon-plus-sign"></i></a>
+            <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
             </div>
         {% else %}
+            <div class="value">
             <input {% if meta.readonly %}disabled{% endif %} type="text" name="{{ name }}" id="id_{{ name }}" value="{{ item }}" />
+            </div>
         {% endif %}
+          <a rel="remove" href="#"><i class="icon icon-remove-sign"></i></a>
+          <a rel="add" href="#"><i class="icon icon-plus-sign"></i></a>
         </li>
     {% endfor %}
 
     {% if not value %}
-      <li>
+      <li class="value">
           <div class="key-value">
               <div class="key-value-row">
                   <input name="key" type="text" placeholder="add a key" />:

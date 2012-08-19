@@ -137,8 +137,10 @@ proto.buildFromForm = function(form) {
         name = el.attr('data-field')
         field = fields[name]
 
-        ;(self['handle_'+handle_field.type] || self.handle_default)(name, field, el, output)
+        ;(self['handle_'+field.type] || self.handle_default).call(self, name, field, el, output)
       })
+
+  return output
 }
 
 proto.handle_default = function(name, field, el, output) {
@@ -150,15 +152,40 @@ proto.handle_datetime = function(name, field, el, output) {
 }
 
 proto.handle_list = function(name, field, el, output) {
-
+  if(el.find('.key-value'))
+    return this.handle_list_object(name, field, el, output)
+  this.handle_list_input(name, field, el, output)
 }
 
 proto.handle_list_object = function(name, field, el, output) {
+  var list = []
 
+  el.find('.value')
+    .each(function(x, value_row) {
+      var current = {}
+      value_row = $(value_row)
+      value_row
+        .find('.key-value')
+        .each(function(x, key_value) {
+          key_value = $(key_value)
+          current[key_value.find('[name=key]').val()] = key_value.find('[name=value]').val()
+        })
+
+      list.push(current)
+    })
+
+  output[name] = list
 }
 
 proto.handle_list_input = function(name, field, el, output) {
+  var list = []
+  el.find('.value')
+    .each(function(x, value_row) {
+      value_row = $(value_row)
+      list.push(value_row.find(':input').val())
+    })
 
+  output[name] = list
 }
 
 

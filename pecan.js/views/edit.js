@@ -1,5 +1,7 @@
 module.exports = edit
 
+var current_instance
+  
 function edit(site, resource, full_resource) {
   var ctxt = {}
     , is_new = !full_resource
@@ -20,6 +22,7 @@ function edit(site, resource, full_resource) {
     ctxt.resource = resource
     ctxt.instance = instance
     ctxt.is_new = is_new
+    current_instance = instance
 
     site.render('edit.html', ctxt, function(err, data) {
     })
@@ -36,5 +39,16 @@ function delete_instance(ev) {
 }
 
 function save_instance(ev) {
+  ev.preventDefault()
 
+  current_instance.save($('form'), function(err, data) {
+    if(err) {
+      $('body').addClass('error')
+      $('[name=error]').text(err.message)
+
+      return setTimeout(function() { $('body').removeClass('error') }, 5000)
+    }
+    
+    alert('yay you saved it') 
+  })  
 }

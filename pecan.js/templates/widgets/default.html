@@ -1,4 +1,4 @@
-<div class="form-row {% if not meta.blank and not meta.nullable %}required{% endif %}">
+<div class="form-row {% if not meta.blank and not meta.nullable %}required{% endif %}" data-field="{{ name }}">
 <div class="form-row-label">
     <label for="id_{{ name }}">{{ name }}</label>
     {% if meta.help_text %}

@@ -38,6 +38,16 @@ proto.editor = function() {
 
 }
 
+proto.save = function(form, ready) {
+  var obj = this._schema.buildFromForm(form)
+
+  if(this.resource_uri) {
+    this._schema._site.put(this.resource_uri, obj, ready) 
+  } else {
+    this._schema._site.post(this._schema._source.urls.list_endpoint, obj, ready)
+  }
+}
+
 proto.name = function() {
   return this._data[this._schema.getSortedFields()[0]] || 'unknown'
 }

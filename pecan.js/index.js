@@ -201,6 +201,14 @@ proto.apiURL = function() {
   return this._apiURL
 }
 
+proto.put = function(uri, data, ready) {
+  request.put(uri, this.authHeader(), data, ready)
+}
+
+proto.post = function(uri, data, ready) {
+  request.post(uri, this.authHeader(), data, ready)
+}
+
 if(true) {
   proto.storage = {
     get: getStorage

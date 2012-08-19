@@ -5,7 +5,8 @@ function request(method, path, headers, body, ready) {
       type: method
     , url: path
     , headers: headers
-    , data: body
+    , data: ['POST', 'PUT', 'PATCH'].indexOf(method) !== -1 ? JSON.stringify(body) : ''
+    , contentType: 'application/json'
     , success: ready.bind(null, null)
     , error: function(_, __, err) { ready(err) }
   })
