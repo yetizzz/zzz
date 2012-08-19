@@ -54,7 +54,7 @@ function guard(datum) {
   if(Array.isArray(datum)) {
     var ul = $('<ul></ul>')
     datum.forEach(function(d) { ul.append($('<li />').html(guard(d)+'')) })
-    return _(ul.html())
+    return _('<ul>'+ul.html()+'</ul>')
   }
 
   var dl = $('<dl />')
@@ -64,7 +64,7 @@ function guard(datum) {
       .append(detail) 
   }
 
-  return _(dl.html())
+  return _('<dl>'+dl.html()+'</dl>')
 }
 
 function _(x) {

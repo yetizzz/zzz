@@ -70,5 +70,177 @@ body {
     margin:16pt auto;
     background:white;
     border-radius:3px;
+    padding:0;
+    -webkit-transition:opacity 0.2s ease-in-out;
+    -moz-transition:opacity 0.2s ease-in-out;
+    -ms-transition:opacity 0.2s ease-in-out;
+    -o-transition:opacity 0.2s ease-in-out;
+    transition:opacity 0.2s ease-in-out;
+    box-shadow:0px 0px 5px 4px rgba(0, 0, 0, 0.7);
+    border-bottom:6px solid #454565;
+    overflow:hidden;
+}
+.root > ul,
+.root > form {
+    margin:18px;
+}
+
+.form-row-label {
+    padding-top:12px;
+}
+
+label {
+    color:#999;
+    padding-bottom:9px;
+    display:block;
+}
+
+.required label {
+    color:#222;
+}
+
+input[type=password],
+input[type=date],
+input[type=time],
+input[type=text] {
+    padding:6px;
+    font-size:1.1em;
+    border:1px solid #CDCDCD;
+    border-radius:3px;
+    -webkit-transition:box-shadow 0.1s ease-in-out;
+    box-shadow:0px 0px 0px 0px #569CCE;
+}
+
+tr:nth-child(2n) {
+    background:#EFEFFF;
+}
+
+table {
+    min-width:100%;
+    max-width:100%;
+}
+
+table thead tr {
+    background:#ECECF;
+    color:black;
+    border-bottom:1px solid #343454;
+}
+
+table thead tr th {
     padding:18px;
+    border-bottom:1px dotted #646484;
+}
+
+table tbody tr td {
+    padding:6px; 
+}
+
+table tbody tr td:first-child {
+    padding-left:18px;
+}
+table tbody tr td:last-child {
+    padding-right:18px;
+}
+
+input:focus {
+    box-shadow:0px 0px 4px 2px #569CCE;
+}
+
+.form-row {
+    clear:both;
+    overflow:hidden;
+    padding:9px 0px;
+    margin-bottom:9px;
+    border-bottom:1px solid #CDCDCD; 
+}
+
+.form-row-target > input[type=text] {
+    width:60%;
+}
+
+.form-row-label {
+    width:16%;
+    float:left;
+}
+
+.form-row-target {
+    width:84%;
+    float:left;
+}
+
+.form-row-label aside {
+    font-size:0.8em;
+    color:#888;
+}
+
+.form-controls { 
+    text-align:right;
+}
+
+a,
+a:visited,
+a:active {
+    color:#0664BC;
+    text-decoration:none;
+}
+
+.root h2 {
+    font-size:1.2em;
+    padding:18px;
+  
+    background:-webkit-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:-moz-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:-ms-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:-o-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:linear-gradient(90deg, #0664BC, #569CCE); 
+    color:#EFEFFF;
+    box-shadow:0px 5px 5px rgba(128, 128, 144, 0.5);
+    border-bottom:1px solid #0664BC; 
+}
+
+header {
+    background:-webkit-linear-gradient(90deg, #363955, #424952);
+    background:-moz-linear-gradient(90deg, #363936, #121912);
+    background:-ms-linear-gradient(90deg, #363936, #121912);
+    background:-o-linear-gradient(90deg, #363936, #121912);
+    background:linear-gradient(90deg, #363936, #121912);
+    padding:6px;
+    box-shadow:0px 0px 2px 1px #0664BC, 0px 0px 2px 1px #569CCE;
+}
+
+.btn,
+input[type=submit] {
+    border:1px solid #CCC;
+    padding:9px;
+    color:white !important;
+    text-shadow:0px 1px 1px rgba(0,0,0,0.4);
+    font-size:16px;
+    text-decoration:none;
+    background:none;
+    border-radius:3px;
+    box-shadow:0px 0px 3px rgba(128, 128, 144, 0.5);
+}
+
+.btn:hover,
+input[type=submit]:hover {
+    box-shadow:0px 0px 3px rgba(128, 128, 144, 0.5), 0px 3px 7px 2px rgba(244, 244, 255, 0.2) inset, 0px -3px 7px 1px rgba(0, 0, 0, 0.2) inset;
+}
+
+input[type=submit] {
+    background:-webkit-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:-moz-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:-ms-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:-o-linear-gradient(90deg, #0664BC, #569CCE); 
+    background:linear-gradient(90deg, #0664BC, #569CCE); 
+    border-color:#0664BC;
+    cursor:pointer;
+}
+
+.btn.danger {
+    background:-webkit-linear-gradient(-90deg, #A20D11, #9D1418); 
+    background:-moz-linear-gradient(-90deg, #A20D11, #9D1418); 
+    background:-ms-linear-gradient(-90deg, #A20D11, #9D1418); 
+    background:-o-linear-gradient(-90deg, #A20D11, #9D1418); 
+    background:linear-gradient(-90deg, #A20D11, #9D1418); 
+    border-color:#9D1418;
 }

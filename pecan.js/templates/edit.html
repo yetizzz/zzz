@@ -8,12 +8,15 @@
 </header>
 
 <div class="root">
-    <h2>{% if instance.name %}Editing {{ instance.name }}{% else %}Create a new {{ resource }}{% endif %}</h2>
+    <h2>{% if instance.name %}{{ instance.name }}{% else %}Create a new {{ resource }}{% endif %}</h2>
     <form action="." method="POST">
         {% for field in instance.editor %}
           {{ field|safe }}
         {% endfor %}
+        <div class="form-controls">
+        <a class="btn danger delete" rel="delete" href="{{ instance.resource_uri }}">Delete</a>
         <input type="submit" value="Save" />
+        </div>
     </form>
 </div>
 

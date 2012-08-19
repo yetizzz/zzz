@@ -1,0 +1,6 @@
+{% extends "widgets/default.html" %}
+
+{% block form_row_target %}
+    <input {% if meta.readonly %}disabled{% endif %} type="date" name="{{ name }}_date" id="id_{{ name }}" value="{{ value|date_portion }}" />
+    <input {% if meta.readonly %}disabled{% endif %} type="time" name="{{ name }}_time" id="id_{{ name }}_time" value="{{ value|time_portion }}" />
+{% endblock %}

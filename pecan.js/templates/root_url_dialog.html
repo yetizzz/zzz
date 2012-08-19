@@ -5,23 +5,36 @@
 </header>
 
 <div class="root">
+  <h2>Login</h2>
   <form method="POST" action=".">
-    <div class="form-row mini">
-      <label for="root_url">Root API URL</label>
-      <input id="root_url" name="root_url" type="text" placeholder="e.g., /api/v1" value="" />
+    <div class="form-row required">
+      <div class="form-row-label">
+        <label for="root_url">Root API URL</label>
+      </div>
+      <div class="form-row-target">
+        <input id="root_url" name="root_url" type="text" placeholder="e.g., /api/v1" value="" />
+      </div>
     </div>
 
-    <div class="form-row mini optional">
-      <label for="user">Username</label>
-      <input id="user" name="user" type="text" placeholder="Your username" value="" />
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="user">Username</label>
+      </div>
+      <div class="form-row-target">
+        <input id="user" name="user" type="text" placeholder="Your username" value="" />
+      </div>
     </div>
 
-    <div class="form-row mini optional">
-      <label for="password">Password</label>
-      <input id="password" name="password" type="password" placeholder="Your password" value="" />
+    <div class="form-row">
+      <div class="form-row-label">
+        <label for="password">Password</label>
+      </div>
+      <div class="form-row-target">
+        <input id="password" name="password" type="password" placeholder="Your password" value="" />
+      </div>
     </div>
 
-    <div class="form-row submit-row mini">
+    <div class="form-controls">
       <input type="submit" value="Let&rsquo;s do this" />
     </div>
 

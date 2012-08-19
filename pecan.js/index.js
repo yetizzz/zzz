@@ -23,6 +23,14 @@ plate.Template.Meta.registerFilter('is_array', function(input) {
   return Array.isArray(input)
 })
 
+plate.Template.Meta.registerFilter('date_portion', function(input) {
+  return input.split('T')[0]
+})
+
+plate.Template.Meta.registerFilter('time_portion', function(input) {
+  return input.split('T')[1]
+})
+
 var cons = Site
   , proto = cons.prototype
 
