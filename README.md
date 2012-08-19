@@ -1,5 +1,5 @@
 What is this?
--------------
+=============
 
 We have built a generic, learning URL shortner. AKA, djamgo.me on steroids.
 
@@ -28,11 +28,21 @@ What we built
     * Uses Pecan to provide editing functionality
     * Tracks what links are clicked the most, so you can crowd-source the best shortcuts
 
-
-
-
 API
----
+===
+
+Redis Data Model
+----------------
+
+```
+    "hydra:v1:projects" = Index of projects <Set>
+    "hydra:v1:projects:<project>" = Project Metadata <Hash>
+    "hydra:v1:projects:<project>:slugs" = Index of slugs <Set>
+    "hydra:v1:projects:<project>:slugs:<slug>" = Slug Data <SortedSet>
+```
+
+REST API
+--------
 
 ```rest
     # List of projects
@@ -114,19 +124,5 @@ API
 
     #Edit redirect
     PUT /api/v1/redirect/django/get_object/
-
-```
-
-
-Redis Data Model
-----------------
-
-```
-    "hydra:v1:projects" = Index of projects <Set>
-    "hydra:v1:projects:<project>" = Project Metadata <Hash>
-    "hydra:v1:projects:<project>:slugs" = Index of slugs <Set>
-    "hydra:v1:projects:<project>:slugs:<slug>" = Slug Data <SortedSet>
-```
-
 
 ```
