@@ -1,4 +1,4 @@
-from tastypie.resources import ModelResource
+from tastypie.resources import ModelResource, ALL
 
 from .models import Visit
 
@@ -10,6 +10,6 @@ class VisitResource(ModelResource):
         resource_name = 'visits'
         allowed_methods = ('get',)
         filtering = {
-            'key': resources.ALL,
-            'when': resources.ALL,
+            'key': ALL,
+            'when': ALL,
         }
