@@ -151,6 +151,7 @@
   opacity:1.0;
   -webkit-transform:scale(1.0);
   -moz-transform:scale(1.0);
+  pointer-events:all;
 }
 
 #search_module ul {
