@@ -10,6 +10,7 @@ function Site() {
   this.root = null
   this._tplCache = {}
   this._auth = {}
+  this._offsetURL = null
 }
 
 plate.Template.Meta.registerPlugin('loader', function(name, ready) {
@@ -68,6 +69,8 @@ proto.init = function(body) {
     function please_route(path) {
       var first_bit = /^\/([^\/]+)\//g.exec(path)[1]
 
+      self._offsetURL = self._offsetURL || first_bit
+
       path = path
         .replace(/^\/([^\/]+)\//g, '')
 
@@ -95,6 +98,8 @@ proto.init = function(body) {
 
 proto.render = function(name, context, ready) {
   var self = this
+
+  context.site = self
 
   self.cachedTemplate(name).render(context, function(err, data) {
     self.root.html(data)

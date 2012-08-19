@@ -767,6 +767,10 @@ a:active {
     text-decoration:none;
 }
 
+a:hover {
+  color:#0997EF;
+}
+
 .root h2 {
     font-size:1.2em;
     padding:18px;
@@ -801,12 +805,20 @@ input[type=submit].mini,
 
 .btn.search {
     background:-webkit-linear-gradient(-90deg, #0553AB, #04429A);
+    background:-moz-linear-gradient(-90deg, #0553AB, #04429A);
+    background:-ms-linear-gradient(-90deg, #0553AB, #04429A);
+    background:-o-linear-gradient(-90deg, #0553AB, #04429A);
+    background:linear-gradient(-90deg, #0553AB, #04429A);
     border-color:#04429A;
     box-shadow:0px 0px 3px rgba(0, 0, 0, 0.2) inset;
 }
 
 .btn.create {
     background:-webkit-linear-gradient(-90deg, #5ea822, #487605);
+    background:-moz-linear-gradient(-90deg, #5ea822, #487605);
+    background:-ms-linear-gradient(-90deg, #5ea822, #487605);
+    background:-o-linear-gradient(-90deg, #5ea822, #487605);
+    background:linear-gradient(-90deg, #5ea822, #487605);
     border-color:#487605;
 }
 
@@ -824,13 +836,14 @@ input[type=submit].mini,
 }
 
 header {
-    background:-webkit-linear-gradient(90deg, #363955, #424952);
-    background:-moz-linear-gradient(90deg, #363936, #121912);
-    background:-ms-linear-gradient(90deg, #363936, #121912);
-    background:-o-linear-gradient(90deg, #363936, #121912);
-    background:linear-gradient(90deg, #363936, #121912);
+    background:-webkit-linear-gradient(90deg, #02205A, #01103A);
+    background:-moz-linear-gradient(90deg, #02205A, #01103A);
+    background:-ms-linear-gradient(90deg, #02205A, #01103A);
+    background:-o-linear-gradient(90deg, #02205A, #01103A);
+    background:linear-gradient(90deg, #02205A, #01103A);
     padding:6px;
-    box-shadow:0px 0px 2px 1px #0664BC, 0px 0px 2px 1px #569CCE;
+    box-shadow:0px 0px 12px 4px rgba(0, 0, 0, 0.5);
+    border-bottom:1px solid #0553AB;
 }
 
 td ul li { list-style:none; font-size:0.8em; font-family:monospace; color:#666; }
@@ -926,4 +939,49 @@ li.value > [rel=remove] {
     right:-27px;
 }
 
+.breadcrumb {
+  margin-top:9px; 
+}
 
+.breadcrumb a {
+  font-size:0.9em;
+  color:#569CCE;
+}
+
+.breadcrumb a:after {
+  content:' / ';
+  visibility:visible;
+  display:inline;
+}
+
+.breadcrumb a:last-child:after {
+  display:none;
+}
+
+header #logo {
+  display:block;
+  float:left;
+  font-weight:bold;
+  font-size:1.5em; 
+  margin-right:36px;
+  margin-left:18px;
+  margin-top:3px;
+}
+
+header #logo a {
+  margin-top:6px;
+  color:#569CCE;
+  text-shadow:0px 0px 2px #0664BC;
+}
+
+header [rel=logout] {
+  position:absolute;
+  right:18px;
+  color:white;
+  top:15px;
+  font-size:0.75em;
+} 
+
+header {
+  overflow:hidden;
+}

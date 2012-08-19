@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block breadcrumb %}
-<a href="..">..</a>
-<a href="{{ resource }}">{{ resource }}</a>
-<a href="#">{{ instance.resource_uri }}</a>
+<a href="/{{ site._offsetURL }}/">API</a>
+<a href="/{{ site._offsetURL }}/{{ schema._name }}/">{{ schema._name }}</a>
+<a href="#">{{ instance.name|default:"New" }}</a>
 {% endblock %} 
 
 {% block title %}

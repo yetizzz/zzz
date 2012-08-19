@@ -54,7 +54,7 @@ proto.delete = function(ready) {
 }
 
 proto.name = function() {
-  return this._data[this._schema.getSortedFields()[0]] || 'unknown'
+  return this._data[this._schema.getSortedFields()[0]] || 'New '+this._schema._name
 }
 
 function guard(datum) {

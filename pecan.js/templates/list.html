@@ -1,9 +1,9 @@
 {% extends "base.html" %}
 
 {% block breadcrumb %}
-    <a href="/">..</a>
-    <a href="#">{{ current }}</a>
-{% endblock %}
+<a href="/{{ site._offsetURL }}/">API</a>
+<a href="#">{{ resource }}</a>
+{% endblock %} 
 
 {% block outer %}
 <div class="compare">
