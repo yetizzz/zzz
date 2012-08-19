@@ -206,3 +206,10 @@ strong { font-weight:bold; }
 
 }
 
+header {
+  background: black;
+}
+
+header h1 a span {
+  color:white !important;
+}

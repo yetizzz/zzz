@@ -7,6 +7,7 @@ $(function() {
       anchor.click(makeHandler(el))
       anchor.text(makeText(el.val()))
       anchor.insertAfter(el)
+      anchor.attr('title', el.val())
       el.hide()
     })
 
@@ -21,6 +22,11 @@ $(function() {
     var a = document.createElement('a')
 
     a.href = text
-    return a.pathname
+    var link =  a.pathname + a.hash
+    if(link.length > 80) {
+      link = '...' + link.slice(-80)
+    }
+
+    return link
   }
 })
