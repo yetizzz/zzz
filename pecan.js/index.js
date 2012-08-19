@@ -6,11 +6,18 @@ var route = require('./routes')
   , Schema = require('./schema')
   , cookie = require('./cookie')
 
+var _BASE_URL = window.BASE_URL || null
+
+if(_BASE_URL) {
+  _BASE_URL = _BASE_URL.charAt(0) === '/' ? _BASE_URL.slice(1) : _BASE_URL
+  _BASE_URL = _BASE_URL.charAt(_BASE_URL.length-1) === '/' ? _BASE_URL.slice(0, -1) : _BASE_URL
+}
+
 function Site() {
   this.root = null
   this._tplCache = {}
   this._auth = {}
-  this._offsetURL = null
+  this._offsetURL = _BASE_URL
   this.go = null
 }
 
@@ -55,7 +62,7 @@ proto.init = function(body) {
           delete localStorage[k]
 
         ev.preventDefault()
-        window.location = self._offsetURL
+        window.location = '/'+self._offsetURL+'/'
         return
       }
 
