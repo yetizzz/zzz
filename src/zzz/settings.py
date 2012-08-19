@@ -14,7 +14,8 @@ DATABASES = {
 }
 
 SENTRY_DSN = os.getenv('SENTRY_DSN', None)
-REDIS_URL = os.getenv('REDISTOGO_URL', 'redis://localhost:6379')
+REDIS_ENV_VAR = 'OPENREDIS_URL'
+REDIS_URL = os.getenv(REDIS_ENV_VAR, 'redis://localhost:6379')
 
 TIME_ZONE = 'America/Chicago'
 LANGUAGE_CODE = 'en-us'
@@ -24,7 +25,7 @@ USE_L10N = True
 USE_TZ = True
 MEDIA_ROOT = _('media')
 MEDIA_URL = '/media/'
-if os.environ.get('REDISTOGO_URL') or not DEBUG:
+if os.environ.get(REDIS_ENV_VAR) or not DEBUG:
     MEDIA_URL = "https://s3.amazonaws.com/media.slug.in/"
 
 STATIC_ROOT = _('media/static')
