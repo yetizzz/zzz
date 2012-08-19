@@ -92,6 +92,19 @@ class RedisProject(object):
         return r.smembers("%s:whitelist" % self.redis_slug)
 
 
+class CustomBasicAuthentication(BasicAuthentication):
+    def is_authenticated(self, request, **kwargs):
+        if request.method == 'GET':
+            return True
+        return (super(CustomBasicAuthentication, self)
+                .is_authenticated(request, **kwargs))
+
+    def get_identifier(self, request):
+        if request.method == 'GET':
+            return 'anon'
+        return request.user.username
+
+
 class NonModelAuthorization(Authorization):
     def is_authorized(self, request, object=None):
         if request.method == 'GET':
@@ -100,10 +113,6 @@ class NonModelAuthorization(Authorization):
             return True
         return False
 
-    def get_identifier(self, request):
-        if request.method == 'GET':
-            return 'anon'
-        return request.user.username
 
 class ProjectResource(Resource):
     """
@@ -123,7 +132,7 @@ class ProjectResource(Resource):
         resource_name = "project"
         object_class = RedisProject
         authorization = NonModelAuthorization()
-        authentication = BasicAuthentication()
+        authentication = CustomBasicAuthentication()
 
     def get_resource_uri(self, bundle_or_obj):
         try:
@@ -303,7 +312,7 @@ class RedirectResource(Resource):
     class Meta:
         object_class = RedisRedirect
         authorization = NonModelAuthorization()
-        authentication = BasicAuthentication()
+        authentication = CustomBasicAuthentication()
         validation = URLValidation()
 
     def get_resource_uri(self, bundle_or_obj):
