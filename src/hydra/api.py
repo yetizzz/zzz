@@ -13,26 +13,6 @@ from tastypie.http import HttpConflict
 r = redis.StrictRedis.from_url(settings.REDIS_URL)
 
 
-"""
-"hydra:v1:projects" = Set of projects
-"hydra:v1:projects:<project>" = Metadata
-GET /api/v1/projects/
-    List of Projects
-GET /api/v1/projects/<project>/
-    Metadata on Project
-    resource_uri -> /slugs/
-
-"hydra:v1:projects:<project>:slugs" = Set of slugs
-GET /api/v1/projects/<project>/slugs/
-    Slugs for a project
-"hydra:v1:projects:<project>:slugs:<slug>" = Actual Data
-GET /api/v1/projects/<project>/slugs/<slug>/
-    Detail view for slug
-"""
-
-
-
-
 class RedisProject(object):
     index_slug = "hydra:v1:projects"
 
@@ -47,10 +27,6 @@ class RedisProject(object):
     @classmethod
     def all_projects(cls):
         return r.smembers(cls.index_slug)
-
-    @classmethod
-    def make_key(cls, key):
-        return "hydra:v1:projects:%s" % (key)
 
     @property
     def redis_slug(self):
@@ -195,9 +171,6 @@ class RedisRedirect(object):
 
     def all_slugs(self):
         return r.smembers(self.index_slug)
-
-    def make_key(cls, key):
-        return "%s:%s" % (self.index_slug, key)
 
     def save_redirect(self):
         r.sadd(self.index_slug, self.slug)
