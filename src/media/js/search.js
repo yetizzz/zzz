@@ -97,11 +97,14 @@
       slug = obj['slug']
       url = "/_/" + project + "/" + slug + "/"
       html.push([
-        '<li class="module-item">',
-          '<p class="module-item-title">',
-              '<a href="', url,
-                    '">',
-                    slug,
+        '<li class="module-item"></li>',
+          $('<div />')
+            .append($('<p class="module-item-title"></p>')
+              .append($('<a href="#"></a>')
+                  .attr('href', url)
+                  .text(slug)
+                )
+              ).html(),
           "</p>",
         "</li>"].join('')
       );
